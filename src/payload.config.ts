@@ -29,7 +29,7 @@ export default buildConfig({
   // Global (1 bản ghi duy nhất) — thông tin công ty cho Header/Footer/FloatingContact
   globals: [SiteSettings],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: process.env.PAYLOAD_SECRET || 'dsh-nature-fallback-payload-secret-key-2026',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
