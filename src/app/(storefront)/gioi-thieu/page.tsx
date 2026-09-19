@@ -81,64 +81,61 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 02. Sứ mệnh & Tầm nhìn (với hình ảnh thực tế) */}
-      <section className="bg-cream px-4 py-12 md:px-6 md:py-16">
-        <div className="mx-auto max-w-7xl">
-          <SectionTitle
-            eyebrow="Định hướng chiến lược"
-            title="Sứ mệnh & Tầm nhìn"
-          />
-          <div className="grid gap-8 md:grid-cols-2">
-            {/* Khối Sứ mệnh */}
-            <div className="flex flex-col justify-between overflow-hidden rounded-2xl border border-border bg-white p-6 md:p-8 shadow-soft">
-              <div className="space-y-4">
-                <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl border border-border bg-cream">
-                  <Image
-                    src="/gioi-thieu/su-menh.png"
-                    alt="Sứ mệnh DSH Nature"
-                    fill
-                    className="object-contain p-2"
-                  />
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="flex size-10 items-center justify-center rounded-lg bg-primary-light text-primary">
-                    <HeartHandshake className="size-5" />
-                  </div>
-                  <h3 className="font-heading text-xl font-bold text-primary">Sứ mệnh DSH Nature</h3>
-                </div>
-                <p className="leading-relaxed text-xs md:text-sm text-muted-foreground">
-                  Đồng hành cùng sức khỏe mọi gia đình Việt Nam bằng những giải pháp hỗ trợ chăm sóc sức khỏe an toàn, tinh khiết từ tự nhiên và đáng tin cậy. DSH Nature không ngừng lắng nghe và thấu hiểu nhu cầu của từng thành viên trong gia đình để mang tới sự chăm sóc chu đáo nhất.
-                </p>
-              </div>
+      {/* 02. Khối Sứ Mệnh (FULL SCREEN / FULL WIDTH) */}
+      <section className="w-full bg-cream py-16 md:py-24 border-y border-border px-4 md:px-6">
+        <div className="mx-auto max-w-6xl space-y-8 text-center">
+          <div className="space-y-3">
+            <div className="inline-flex size-14 items-center justify-center rounded-2xl bg-primary-light text-primary shadow-soft mx-auto">
+              <HeartHandshake className="size-7" />
             </div>
+            <SectionTitle
+              eyebrow="Định hướng chiến lược"
+              title="Sứ mệnh DSH Nature"
+              description="Đồng hành cùng sức khỏe mọi gia đình Việt Nam bằng những giải pháp chăm sóc sức khỏe an toàn, tinh khiết từ tự nhiên và đáng tin cậy. DSH Nature không ngừng lắng nghe và thấu hiểu nhu cầu của từng thành viên trong gia đình để mang tới sự chăm sóc chu đáo nhất."
+            />
+          </div>
 
-            {/* Khối Tầm nhìn */}
-            <div className="flex flex-col justify-between overflow-hidden rounded-2xl border border-border bg-white p-6 md:p-8 shadow-soft">
-              <div className="space-y-4">
-                <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl border border-border bg-cream">
-                  <Image
-                    src="/gioi-thieu/tam-nhin.png"
-                    alt="Tầm nhìn DSH Nature"
-                    fill
-                    className="object-contain p-2"
-                  />
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="flex size-10 items-center justify-center rounded-lg bg-primary-light text-primary">
-                    <Target className="size-5" />
-                  </div>
-                  <h3 className="font-heading text-xl font-bold text-primary">Tầm nhìn DSH Nature</h3>
-                </div>
-                <p className="leading-relaxed text-xs md:text-sm text-muted-foreground">
-                  Trở thành biểu tượng uy tín hàng đầu trong ngành thảo dược chăm sóc sức khỏe gia đình tại Việt Nam, mở rộng quy mô hệ thống phân phối đại lý rộng khắp 63 tỉnh thành và vươn tầm khu vực trong tương lai.
-                </p>
-              </div>
-            </div>
+          {/* Full Screen / Full Width Image Sứ mệnh */}
+          <div className="relative aspect-[16/9] min-h-[350px] md:min-h-[500px] w-full overflow-hidden rounded-3xl border border-border bg-white p-4 md:p-8 shadow-soft-hover">
+            <Image
+              src="/gioi-thieu/su-menh.png"
+              alt="Sứ mệnh DSH Nature - Full màn hình"
+              fill
+              className="object-contain p-2 md:p-4"
+              priority
+            />
           </div>
         </div>
       </section>
 
-      {/* 03. Sơ đồ chiến lược phát triển */}
+      {/* 03. Khối Tầm Nhìn (FULL SCREEN / FULL WIDTH) */}
+      <section className="w-full bg-white py-16 md:py-24 border-b border-border px-4 md:px-6">
+        <div className="mx-auto max-w-6xl space-y-8 text-center">
+          <div className="space-y-3">
+            <div className="inline-flex size-14 items-center justify-center rounded-2xl bg-primary-light text-primary shadow-soft mx-auto">
+              <Target className="size-7" />
+            </div>
+            <SectionTitle
+              eyebrow="Tương lai thương hiệu"
+              title="Tầm nhìn DSH Nature"
+              description="Trở thành biểu tượng uy tín hàng đầu trong ngành thảo dược chăm sóc sức khỏe gia đình tại Việt Nam, mở rộng quy mô hệ thống phân phối đại lý rộng khắp 63 tỉnh thành và vươn tầm khu vực trong tương lai."
+            />
+          </div>
+
+          {/* Full Screen / Full Width Image Tầm nhìn */}
+          <div className="relative aspect-[16/9] min-h-[350px] md:min-h-[500px] w-full overflow-hidden rounded-3xl border border-border bg-cream p-4 md:p-8 shadow-soft-hover">
+            <Image
+              src="/gioi-thieu/tam-nhin.png"
+              alt="Tầm nhìn DSH Nature - Full màn hình"
+              fill
+              className="object-contain p-2 md:p-4"
+              priority
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* 04. Sơ đồ chiến lược phát triển */}
       <section className="mx-auto max-w-7xl px-4 md:px-6">
         <SectionTitle
           eyebrow="Định hướng phát triển"
@@ -155,7 +152,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 04. 5 Giá trị cốt lõi */}
+      {/* 05. 5 Giá trị cốt lõi */}
       <section className="bg-cream px-4 py-12 md:px-6 md:py-16">
         <div className="mx-auto max-w-7xl">
           <SectionTitle
@@ -206,7 +203,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 05. Tiêu chuẩn & Chứng nhận */}
+      {/* 06. Tiêu chuẩn & Chứng nhận */}
       <section className="mx-auto max-w-7xl px-4 md:px-6">
         <SectionTitle
           eyebrow="Cam kết chất lượng"
@@ -243,7 +240,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 06. Đội ngũ chuyên gia */}
+      {/* 07. Đội ngũ chuyên gia */}
       <section className="bg-cream px-4 py-12 md:px-6 md:py-16">
         <div className="mx-auto max-w-7xl">
           <SectionTitle
