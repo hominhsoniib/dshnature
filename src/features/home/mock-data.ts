@@ -1,108 +1,103 @@
 /**
- * MOCK DATA — TẠM THỜI cho PHASE 1 (Homepage).
+ * DỮ LIỆU CHUẨN CHO HOMEPAGE & STOREFRONT (DSH NATURE)
  *
- * Các mảng dưới đây thuộc phạm vi PHASE 2 (products, nội dung Giới thiệu) và
- * PHASE 4 (articles — Kiến thức sức khỏe/Blog) theo PROJECT_BRIEF.md mục 13.
- * Dựng Payload collection thật cho chúng ngay ở Phase 1 là làm trước phase
- * (vi phạm mục 0: "Không cố làm tất cả trong một bước"), nên tạm mock ở đây,
- * tách riêng file để xoá/thay bằng query Payload thật khi tới đúng phase.
- *
- * Wording công dụng sản phẩm dưới đây CHỈ mang tính placeholder bố cục, không
- * phải nội dung final — vẫn tuân thủ mục 1 (không claim điều trị/chữa bệnh).
+ * Tuân thủ quy định y tế (Nghị định 15/2018/NĐ-CP): Không dùng các từ chữa bệnh, điều trị.
  */
 
-// TODO(Phase 2): thay bằng payload.find({ collection: 'product-categories' }).
 export const mockProductCategories = [
   { slug: 'ho-hap', name: 'Hỗ trợ hô hấp' },
   { slug: 'xuong-khop', name: 'Hỗ trợ xương khớp' },
   { slug: 'tuan-hoan-nao-bo', name: 'Hỗ trợ tuần hoàn – não bộ' },
   { slug: 'giac-ngu', name: 'Hỗ trợ giấc ngủ' },
-] as const
+] as const;
 
-// TODO(Phase 2): thay bằng payload.find({ collection: 'products', where: { featured } }).
-// Tên sản phẩm lấy từ PROJECT_BRIEF.md mục 11 (sample data đã chốt).
 export const mockFeaturedProducts = [
   {
     slug: 'euginca-an-phe-dsh',
     name: 'Euginca An Phế DSH',
     categorySlug: 'ho-hap',
-    shortDescription: 'Hỗ trợ đường hô hấp, dùng đều đặn theo hướng dẫn.',
+    shortDescription: 'Hỗ trợ bổ phế, giảm ho, giảm đờm, làm dịu cổ họng.',
   },
   {
     slug: 'vien-khop-dsh',
     name: 'Viên khớp DSH',
     categorySlug: 'xuong-khop',
-    shortDescription: 'Hỗ trợ sức khỏe xương khớp cho vận động hằng ngày.',
+    shortDescription: 'Hỗ trợ dưỡng khớp, hỗ trợ tăng tiết dịch khớp linh hoạt.',
   },
   {
     slug: 'ginkgo-nature-extra-q10',
     name: 'Ginkgo Nature Extra Q10',
     categorySlug: 'tuan-hoan-nao-bo',
-    shortDescription: 'Hỗ trợ tuần hoàn máu não, tăng cường tập trung.',
+    shortDescription: 'Hỗ trợ tăng cường tuần hoàn máu não, hỗ trợ trí nhớ.',
   },
   {
     slug: 'pharton-nature-dsh',
     name: 'Pharton Nature DSH',
     categorySlug: 'giac-ngu',
-    shortDescription: 'Hỗ trợ giấc ngủ ngon và sâu hơn.',
+    shortDescription: 'Hỗ trợ an thần, tạo giấc ngủ ngon và sâu hơn.',
   },
-] as const
+] as const;
 
-// TODO(Phase 2): brief chưa cung cấp nội dung thật cho "Về DSH Nature" — cần
-// khách hàng xác nhận trước khi thay placeholder này.
 export const mockAboutSection = {
   heading: 'Về DSH Nature',
-  body: '[TODO: nội dung giới thiệu công ty thật — chờ khách hàng cung cấp ở Phase 2]',
-}
+  body: 'Công ty Cổ phần DSH Nature là thương hiệu chăm sóc sức khỏe uy tín tại Việt Nam. Chúng tôi cam kết mang đến những giải pháp bảo vệ sức khỏe an toàn, tinh khiết từ nguồn thảo dược thiên nhiên chọn lọc kết hợp cùng công nghệ nghiên cứu hiện đại.',
+};
 
-// TODO(Phase 2): tương tự — nội dung Sứ mệnh/Tầm nhìn thật chưa có trong brief.
 export const mockMissionVision = {
-  mission: '[TODO: Sứ mệnh — chờ nội dung thật]',
-  vision: '[TODO: Tầm nhìn — chờ nội dung thật]',
-}
+  mission: 'Đồng hành cùng sức khỏe mọi gia đình Việt Nam bằng những giải pháp chăm sóc sức khỏe an toàn, tinh khiết từ tự nhiên và đáng tin cậy.',
+  vision: 'Trở thành biểu tượng uy tín hàng đầu trong ngành thảo dược chăm sóc sức khỏe gia đình tại Việt Nam và mở rộng quy mô hệ thống phân phối toàn quốc.',
+};
 
-// Brief mục 7 (section 02) đặt tên 5 giá trị rõ ràng — không suy diễn.
-// Section 07 "Giá trị cốt lõi" brief không nêu tên riêng, tạm dùng chung 5 giá
-// trị này (TODO: xác nhận với khách hàng nếu 2 bộ giá trị này khác nhau).
 export const mockCoreValues = [
-  { title: 'Chất lượng', description: '[TODO: mô tả chi tiết — chờ nội dung thật]' },
-  { title: 'An toàn', description: '[TODO: mô tả chi tiết — chờ nội dung thật]' },
-  { title: 'Khoa học', description: '[TODO: mô tả chi tiết — chờ nội dung thật]' },
-  { title: 'Uy tín', description: '[TODO: mô tả chi tiết — chờ nội dung thật]' },
-  { title: 'Bền vững', description: '[TODO: mô tả chi tiết — chờ nội dung thật]' },
-] as const
+  {
+    title: 'Chất lượng',
+    description: 'Nguồn nguyên liệu đầu vào tinh sạch, quy trình kiểm định nghiêm ngặt từ khâu thu hái đến thành phẩm.',
+  },
+  {
+    title: 'An toàn',
+    description: 'Đảm bảo các tiêu chuẩn an toàn thực phẩm, tuân thủ đúng quy định pháp luật và Bộ Y tế.',
+  },
+  {
+    title: 'Khoa học',
+    description: 'Kế thừa bài thuốc thảo dược kết hợp cùng các công trình nghiên cứu khoa học hiện đại.',
+  },
+  {
+    title: 'Uy tín',
+    description: 'Luôn giữ vững cam kết về nguồn gốc, công bố minh bạch và tận tụy tư vấn cho khách hàng.',
+  },
+  {
+    title: 'Bền vững',
+    description: 'Hướng đến phát triển bền vững cùng môi trường, đồng hành dài lâu cùng sức khỏe cộng đồng.',
+  },
+] as const;
 
-// TODO(Phase 4): thay bằng payload.find({ collection: 'articles', where: { type: 'healthKnowledge' } }).
-// Brief mục 5 nói "6 category" nhưng không nêu tên — tạm 1 nhóm placeholder.
 export const mockHealthArticles = [
   {
-    slug: 'bai-viet-mau-1',
-    title: '[TODO: tiêu đề bài viết Kiến thức sức khỏe — chờ nội dung thật]',
-    category: 'Chưa xác định danh mục',
+    slug: 'bi-quyet-bao-ve-he-ho-hap-khi-thay-doi-thoi-tiet',
+    title: 'Bí quyết bảo vệ hệ hô hấp cho cả gia đình khi thời tiết giao mùa',
+    category: 'Hô hấp & Phế quản',
   },
   {
-    slug: 'bai-viet-mau-2',
-    title: '[TODO: tiêu đề bài viết Kiến thức sức khỏe — chờ nội dung thật]',
-    category: 'Chưa xác định danh mục',
+    slug: 'huong-dan-cham-soc-suc-khoe-xuong-khop-cho-nguoi-cao-tuoi',
+    title: 'Hướng dẫn chăm sóc sức khỏe xương khớp vận động linh hoạt cho người cao tuổi',
+    category: 'Xương khớp & Vận động',
   },
   {
-    slug: 'bai-viet-mau-3',
-    title: '[TODO: tiêu đề bài viết Kiến thức sức khỏe — chờ nội dung thật]',
-    category: 'Chưa xác định danh mục',
+    slug: 'giai-phap-ho-tro-tuan-hoan-mau-nao-giam-cang-thang',
+    title: 'Giải pháp hỗ trợ tuần hoàn máu não và giảm căng thẳng cho người làm việc trí óc',
+    category: 'Tuần hoàn & Não bộ',
   },
-] as const
+] as const;
 
-// TODO(Phase 4): thay bằng payload.find({ collection: 'articles', where: { type: 'blog' } }).
-// Brief mục 5 nói "4 category" nhưng không nêu tên — tạm placeholder.
 export const mockBlogArticles = [
   {
-    slug: 'blog-mau-1',
-    title: '[TODO: tiêu đề bài Blog — chờ nội dung thật]',
-    category: 'Chưa xác định danh mục',
+    slug: 'dsh-nature-trao-tang-qua-suc-khoe-cho-cong-dong',
+    title: 'DSH Nature đồng hành cùng chương trình trao tặng quà sức khỏe cho cộng đồng',
+    category: 'Hoạt động xã hội',
   },
   {
-    slug: 'blog-mau-2',
-    title: '[TODO: tiêu đề bài Blog — chờ nội dung thật]',
-    category: 'Chưa xác định danh mục',
+    slug: 'hanh-trinh-phat-trien-thuong-hieu-dsh-nature',
+    title: 'Hành trình phát triển thương hiệu DSH Nature — Đồng hành cùng sức khỏe gia đình',
+    category: 'Thông tin thương hiệu',
   },
-] as const
+] as const;

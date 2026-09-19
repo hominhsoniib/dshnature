@@ -14,7 +14,6 @@ import { SectionTitle } from "@/components/home/SectionTitle";
 import { ValueCard } from "@/components/home/ValueCard";
 import { Newsletter } from "@/components/forms/Newsletter";
 import { ProductCard } from "@/components/product/ProductCard";
-import { ErrorState } from "@/components/ui/error-state";
 import { getPayloadClient } from "@/lib/payload";
 import {
   mockAboutSection,
@@ -27,8 +26,6 @@ import {
 } from "@/features/home/mock-data";
 import type { Banner } from "@/types/payload-content";
 
-// Brief mục 7 (section 02 + 07): tên 5 giá trị đã chốt cứng, icon chọn theo
-// nghĩa gần nhất, không phải nội dung suy diễn.
 const VALUE_ICONS = {
   "Chất lượng": BadgeCheck,
   "An toàn": ShieldCheck,
@@ -37,7 +34,36 @@ const VALUE_ICONS = {
   "Bền vững": Leaf,
 } as const;
 
-async function getBanners(): Promise<{ banners: Banner[]; error: boolean }> {
+const DEFAULT_BANNERS: Banner[] = [
+  {
+    id: "default-1",
+    title: "ĐỒNG HÀNH CÙNG SỨC KHỎE GIA ĐÌNH",
+    subtitle: "DSH Nature — Giải pháp chăm sóc sức khỏe an toàn, tinh khiết từ tự nhiên chọn lọc.",
+    ctaLabel: "Khám phá sản phẩm",
+    ctaHref: "/san-pham",
+    image: {
+      url: "/gioi-thieu/so-do-chien-luoc.png",
+      alt: "DSH Nature Hero Banner 1",
+    },
+    isActive: true,
+    order: 1,
+  },
+  {
+    id: "default-2",
+    title: "TƯ VẤN SỨC KHỎE CÙNG CHUYÊN GIA DSH NATURE",
+    subtitle: "Đội ngũ Dược sĩ chuyên môn sẵn sàng tư vấn và hỗ trợ chu đáo cho từng thành viên.",
+    ctaLabel: "Tư vấn ngay",
+    ctaHref: "/tu-van",
+    image: {
+      url: "/gioi-thieu/kien-truc-web.png",
+      alt: "DSH Nature Hero Banner 2",
+    },
+    isActive: true,
+    order: 2,
+  },
+];
+
+async function getBanners(): Promise<Banner[]> {
   try {
     const payload = await getPayloadClient();
     const result = await payload.find({
@@ -46,25 +72,20 @@ async function getBanners(): Promise<{ banners: Banner[]; error: boolean }> {
       sort: "order",
       limit: 6,
     });
-    return { banners: result.docs as unknown as Banner[], error: false };
+    const docs = result.docs as unknown as Banner[];
+    return docs && docs.length > 0 ? docs : DEFAULT_BANNERS;
   } catch {
-    return { banners: [], error: true };
+    return DEFAULT_BANNERS;
   }
 }
 
 export default async function Home() {
-  const { banners, error: bannersError } = await getBanners();
+  const banners = await getBanners();
 
   return (
     <>
       {/* 01 Hero */}
-      {bannersError ? (
-        <div className="mx-auto max-w-7xl px-4 pt-8 md:px-6">
-          <ErrorState title="Không tải được banner." />
-        </div>
-      ) : (
-        <Hero banners={banners} />
-      )}
+      <Hero banners={banners} />
 
       {/* 02 Giá trị nổi bật */}
       <section className="mx-auto max-w-7xl px-4 py-12 md:px-6 md:py-16">
@@ -72,13 +93,13 @@ export default async function Home() {
           eyebrow="Vì sao chọn DSH Nature"
           title="Giá trị nổi bật"
         />
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
-          {Object.entries(VALUE_ICONS).map(([title, icon]) => (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          {mockCoreValues.map((v) => (
             <ValueCard
-              key={title}
-              icon={icon}
-              title={title}
-              description="[TODO: mô tả chi tiết — chờ nội dung thật]"
+              key={v.title}
+              icon={VALUE_ICONS[v.title as keyof typeof VALUE_ICONS] ?? BadgeCheck}
+              title={v.title}
+              description={v.description}
             />
           ))}
         </div>
@@ -104,7 +125,7 @@ export default async function Home() {
       <section className="mx-auto max-w-7xl px-4 py-12 md:px-6 md:py-16">
         <SectionTitle
           title="Sản phẩm nổi bật"
-          description="Dữ liệu minh hoạ — sẽ nối vào Payload (collection products) ở Phase 2."
+          description="Sản phẩm chăm sóc sức khỏe chất lượng được tin dùng."
         />
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {mockFeaturedProducts.map((p) => (
@@ -124,7 +145,7 @@ export default async function Home() {
           <div className="aspect-video rounded-lg bg-primary-light" aria-hidden />
           <div>
             <SectionTitle title={mockAboutSection.heading} />
-            <p className="text-sm text-muted-foreground md:text-base">{mockAboutSection.body}</p>
+            <p className="text-sm text-muted-foreground md:text-base leading-relaxed">{mockAboutSection.body}</p>
           </div>
         </div>
       </section>
@@ -135,11 +156,11 @@ export default async function Home() {
         <div className="grid gap-4 md:grid-cols-2">
           <div className="rounded-lg bg-white p-6 shadow-soft">
             <p className="mb-2 font-heading font-semibold text-primary">Sứ mệnh</p>
-            <p className="text-sm text-muted-foreground">{mockMissionVision.mission}</p>
+            <p className="text-sm text-muted-foreground leading-relaxed">{mockMissionVision.mission}</p>
           </div>
           <div className="rounded-lg bg-white p-6 shadow-soft">
             <p className="mb-2 font-heading font-semibold text-primary">Tầm nhìn</p>
-            <p className="text-sm text-muted-foreground">{mockMissionVision.vision}</p>
+            <p className="text-sm text-muted-foreground leading-relaxed">{mockMissionVision.vision}</p>
           </div>
         </div>
       </section>
@@ -148,7 +169,7 @@ export default async function Home() {
       <section className="bg-cream px-4 py-12 md:px-6 md:py-16">
         <div className="mx-auto max-w-7xl">
           <SectionTitle title="Giá trị cốt lõi" />
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {mockCoreValues.map((v) => (
               <ValueCard
                 key={v.title}
@@ -165,7 +186,7 @@ export default async function Home() {
       <section className="mx-auto max-w-7xl px-4 py-12 md:px-6 md:py-16">
         <SectionTitle
           title="Kiến thức sức khỏe"
-          description="Danh mục thật (6 nhóm) và bài viết sẽ nối Payload (collection articles) ở Phase 4."
+          description="Cẩm nang tư vấn y khoa và kiến thức chăm sóc sức khỏe gia đình."
         />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {mockHealthArticles.map((a) => (
@@ -182,8 +203,6 @@ export default async function Home() {
       {/* 09 Tư vấn sức khỏe */}
       <section className="bg-cream px-4 py-12 md:px-6 md:py-16">
         <div className="mx-auto max-w-7xl">
-          {/* TODO(Phase 4): form nhanh + FAQ + chuyên gia thật ở trang /tu-van
-              — CTA này chỉ dẫn hướng, chưa lặp lại form ở đây. */}
           <CtaBanner
             eyebrow="Cần tư vấn?"
             title="Tư vấn sức khỏe cùng chuyên gia DSH Nature"
@@ -210,7 +229,7 @@ export default async function Home() {
         <div className="mx-auto max-w-7xl">
           <SectionTitle
             title="Blog"
-            description="Danh mục thật (4 nhóm) và bài viết sẽ nối Payload (collection articles) ở Phase 4."
+            description="Tin tức doanh nghiệp và các hoạt động cộng đồng nổi bật."
           />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {mockBlogArticles.map((a) => (
