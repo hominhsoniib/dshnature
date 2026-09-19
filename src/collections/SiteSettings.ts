@@ -1,5 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
+import { isAdminOrEditor } from '@/access/isAdminOrEditor'
+
 /**
  * Global (không phải collection — chỉ 1 bản ghi duy nhất) chứa thông tin công ty
  * dùng chung cho Header/Footer/FloatingContact (Phase 1) — brief mục 10:
@@ -10,6 +12,7 @@ export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
   access: {
     read: () => true,
+    update: isAdminOrEditor,
   },
   fields: [
     {

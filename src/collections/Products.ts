@@ -1,5 +1,8 @@
 import type { CollectionConfig } from 'payload'
 
+import { isAdmin } from '@/access/isAdmin'
+import { isAdminOrEditor } from '@/access/isAdminOrEditor'
+
 const FORBIDDEN_WORDS = ['chữa bệnh', 'điều trị', 'trị dứt điểm', 'thay thế thuốc']
 
 function validateNoForbiddenWords(value: string | undefined | null) {
@@ -22,6 +25,9 @@ export const Products: CollectionConfig = {
   },
   access: {
     read: () => true,
+    create: isAdminOrEditor,
+    update: isAdminOrEditor,
+    delete: isAdmin,
   },
   hooks: {
     beforeChange: [

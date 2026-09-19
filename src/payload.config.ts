@@ -17,6 +17,18 @@ import { Users } from './collections/Users'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+// Fail-fast: không cho phép app khởi động với secret ký session suy đoán
+// được. Trước đây có fallback hardcoded ('dsh-nature-fallback-payload-secret-key-2026')
+// — đã bị coi là lỗ hổng CRITICAL vì secret đó nằm trong git history công khai
+// (xem SECURITY_AUDIT_REPORT.md / SECURITY_FIXES_APPLIED.md).
+if (!process.env.PAYLOAD_SECRET) {
+  throw new Error(
+    '[Payload] Thiếu biến môi trường PAYLOAD_SECRET. Tạo giá trị ngẫu nhiên đủ dài ' +
+      '(vd: openssl rand -base64 32) và set vào .env trước khi khởi động app — ' +
+      'không được chạy với secret cố định/suy đoán được.',
+  )
+}
+
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -29,7 +41,7 @@ export default buildConfig({
   // Global (1 bản ghi duy nhất) — thông tin công ty cho Header/Footer/FloatingContact
   globals: [SiteSettings],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || 'dsh-nature-fallback-payload-secret-key-2026',
+  secret: process.env.PAYLOAD_SECRET,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
@@ -41,27 +53,24 @@ export default buildConfig({
   }),
   sharp,
   onInit: async (payload) => {
+    // KHÔNG tự tạo admin ở đây nữa — tạo admin bằng hardcoded password mỗi lần
+    // server start là lỗ hổng CRITICAL (mật khẩu nằm trong git history công
+    // khai). Chỉ cảnh báo, việc tạo admin đầu tiên chuyển sang
+    // `scripts/seed-admin.ts` (npm run seed:admin) hoặc màn "Create first user"
+    // của Payload Admin UI.
     try {
       const existingUsers = await payload.find({
         collection: 'users',
-        where: {
-          email: {
-            equals: 'admin@dshnature.vn',
-          },
-        },
+        limit: 1,
       })
       if (existingUsers.totalDocs === 0) {
-        await payload.create({
-          collection: 'users',
-          data: {
-            email: 'admin@dshnature.vn',
-            password: 'Admin@dshnature2026',
-          },
-        })
-        console.log('[Payload] Auto-created admin user: admin@dshnature.vn')
+        console.warn(
+          '[Payload] Chưa có user admin nào trong hệ thống. Chạy `npm run seed:admin` ' +
+            '(xem scripts/seed-admin.ts) hoặc mở /admin để tạo user đầu tiên.',
+        )
       }
     } catch (err) {
-      console.error('[Payload] Error checking/creating admin user:', err)
+      console.error('[Payload] Error checking existing admin users:', err)
     }
   },
   plugins: [

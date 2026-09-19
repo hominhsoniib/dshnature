@@ -1,5 +1,8 @@
 import type { CollectionConfig } from 'payload'
 
+import { isAdmin } from '@/access/isAdmin'
+import { isAdminOrEditor } from '@/access/isAdminOrEditor'
+
 export const ProductCategories: CollectionConfig = {
   slug: 'product-categories',
   admin: {
@@ -8,6 +11,9 @@ export const ProductCategories: CollectionConfig = {
   },
   access: {
     read: () => true,
+    create: isAdminOrEditor,
+    update: isAdminOrEditor,
+    delete: isAdmin,
   },
   fields: [
     {

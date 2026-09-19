@@ -1,5 +1,8 @@
 import type { CollectionConfig } from 'payload'
 
+import { isAdmin } from '@/access/isAdmin'
+import { isAdminOrEditor } from '@/access/isAdminOrEditor'
+
 /**
  * Hero slider ở section 01 trang chủ (brief mục 7: "slider 3-4 banner").
  * Không phụ thuộc business logic của phase sau nên build thật ở Phase 1,
@@ -13,6 +16,9 @@ export const Banners: CollectionConfig = {
   },
   access: {
     read: () => true,
+    create: isAdminOrEditor,
+    update: isAdminOrEditor,
+    delete: isAdmin,
   },
   fields: [
     {
