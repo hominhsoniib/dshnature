@@ -6,7 +6,9 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
+import { Banners } from './collections/Banners'
 import { Media } from './collections/Media'
+import { SiteSettings } from './collections/SiteSettings'
 import { Users } from './collections/Users'
 
 const filename = fileURLToPath(import.meta.url)
@@ -19,10 +21,14 @@ export default buildConfig({
       baseDir: path.resolve(dirname, 'app', '(payload)', 'admin'),
     },
   },
-  // PHASE 0: chỉ Users (auth admin) + Media (upload, cần cho plugin R2). Các
-  // collection nội dung (products, articles, banners...) thuộc PHASE 1/2 theo
-  // PROJECT_BRIEF.md mục 13 — chưa tạo ở bước setup này.
-  collections: [Users, Media],
+  // PHASE 1: thêm Banners (Hero slider, section 01 trang chủ) — pattern đơn
+  // giản, không phụ thuộc business logic phase sau. Products/Articles/... vẫn
+  // hoãn đúng PHASE 2/4 theo PROJECT_BRIEF.md mục 13 (dùng mock data tạm, xem
+  // src/features/home/mock-data.ts).
+  collections: [Users, Media, Banners],
+  // Global (1 bản ghi duy nhất) — thông tin công ty cho Header/Footer/
+  // FloatingContact, brief mục 10.
+  globals: [SiteSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
