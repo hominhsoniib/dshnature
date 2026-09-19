@@ -8,6 +8,11 @@ export default defineConfig({
   migrations: {
     path: "prisma/migrations",
   },
+  // Prisma 7 config API KHÔNG có `directUrl` (khác concept cũ ở Prisma ≤6) —
+  // chỉ có `url` và `shadowDatabaseUrl` (dùng cho shadow DB của Migrate, không
+  // phải "bypass connection pooler" như directUrl trước đây). DIRECT_URL trong
+  // .env hiện chưa có chỗ dùng tương ứng ở Prisma 7 — báo lại người dùng thay vì
+  // tự đoán cách dùng khác.
   datasource: {
     url: process.env["DATABASE_URL"],
   },

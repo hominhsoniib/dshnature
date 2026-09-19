@@ -8,6 +8,9 @@ generator client {
   output   = "../src/generated/prisma"
 }
 
+// Prisma 7: url/directUrl KHÔNG còn khai báo ở đây nữa (lỗi P1012 nếu để) —
+// chuyển sang khai báo trong prisma7.config.ts theo đúng convention mới.
+// Xem: https://pris.ly/d/config-datasource
 datasource db {
   provider = "postgresql"
 }

@@ -32,6 +32,15 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
+    // TẠM THỜI push:true (Phase 0) — lý tưởng nên push:false + migration tường
+    // minh (an toàn hơn cho production), nhưng `payload migrate:create` đang lỗi
+    // thật với Node 24.17 (ERR_REQUIRE_ASYNC_MODULE khi require() gói
+    // @payloadcms/richtext-lexical — gói này có top-level await, không thể
+    // require() đồng bộ được). Đã thử --use-swc và --disable-transpile đều lỗi
+    // khác (thiếu @swc-node/register / mất khả năng resolve extension .ts).
+    // TODO: quay lại push:false + migration thật khi Payload/Node tương thích
+    // hơn, hoặc trước khi lên production thật.
+    push: true,
   }),
   sharp,
   // Cloudflare R2 qua @payloadcms/storage-s3 (R2 tương thích S3 API) — brief
