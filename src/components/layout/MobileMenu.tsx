@@ -7,7 +7,13 @@ import { useState } from "react";
 import { NAV_ITEMS } from "@/lib/nav";
 
 /** Hamburger drawer mobile (brief mục 2: "Mobile: hamburger drawer + bottom nav"). */
-export function MobileMenu({ cartCount = 0 }: { cartCount?: number }) {
+export function MobileMenu({
+  cartCount = 0,
+  onOpenSearch,
+}: {
+  cartCount?: number;
+  onOpenSearch?: () => void;
+}) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -60,7 +66,11 @@ export function MobileMenu({ cartCount = 0 }: { cartCount?: number }) {
             <div className="mt-2 flex items-center gap-1 border-t border-border pt-2">
               <button
                 type="button"
-                className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
+                onClick={() => {
+                  setOpen(false);
+                  onOpenSearch?.();
+                }}
+                className="flex w-full items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
               >
                 <Search className="size-4" aria-hidden />
                 Tìm kiếm
@@ -68,7 +78,7 @@ export function MobileMenu({ cartCount = 0 }: { cartCount?: number }) {
               <Link
                 href="/tai-khoan"
                 onClick={() => setOpen(false)}
-                className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
+                className="flex w-full items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
               >
                 <User className="size-4" aria-hidden />
                 Tài khoản

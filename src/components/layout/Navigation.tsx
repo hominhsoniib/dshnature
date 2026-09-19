@@ -10,7 +10,13 @@ import { NAV_ITEMS } from "@/lib/nav";
  * Nav chính desktop — thứ tự CHỐT CỨNG (brief mục 2), client component vì cần
  * `usePathname` để highlight mục đang active.
  */
-export function Navigation({ cartCount = 0 }: { cartCount?: number }) {
+export function Navigation({
+  cartCount = 0,
+  onOpenSearch,
+}: {
+  cartCount?: number;
+  onOpenSearch?: () => void;
+}) {
   const pathname = usePathname();
 
   return (
@@ -37,10 +43,10 @@ export function Navigation({ cartCount = 0 }: { cartCount?: number }) {
       })}
 
       <div className="ml-2 flex items-center gap-1 border-l border-border pl-2">
-        {/* TODO(phase sau): mở SearchModal — chưa có ở Phase 1. */}
         <button
           type="button"
           aria-label="Tìm kiếm"
+          onClick={onOpenSearch}
           className="flex size-8 items-center justify-center rounded-md text-foreground hover:bg-muted"
         >
           <Search className="size-4" aria-hidden />

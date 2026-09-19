@@ -9,6 +9,8 @@ import { ToastProvider, Toaster } from "@/components/ui/toast";
 import { getPayloadClient } from "@/lib/payload";
 import type { SiteSettings as SiteSettingsType } from "@/types/payload-content";
 
+import { CartProvider } from "@/context/cart-context";
+
 // Brief mục 6: fontFamily.sans = Inter. Cần subset "vietnamese" vì toàn bộ site
 // chỉ tiếng Việt (mục 3: "Ngôn ngữ: Chỉ tiếng Việt") — subset "latin" thôi không
 // đủ dấu tiếng Việt (ư, ơ, ệ, ...).
@@ -42,11 +44,13 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="vi" className={`${inter.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         <ToastProvider>
-          <Header siteSettings={siteSettings} />
-          <main className="flex flex-1 flex-col pb-16 lg:pb-0">{children}</main>
-          <Footer siteSettings={siteSettings} />
-          <FloatingContact siteSettings={siteSettings} />
-          <Toaster />
+          <CartProvider>
+            <Header siteSettings={siteSettings} />
+            <main className="flex flex-1 flex-col pb-16 lg:pb-0">{children}</main>
+            <Footer siteSettings={siteSettings} />
+            <FloatingContact siteSettings={siteSettings} />
+            <Toaster />
+          </CartProvider>
         </ToastProvider>
       </body>
     </html>

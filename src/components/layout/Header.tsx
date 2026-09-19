@@ -1,22 +1,26 @@
-import Link from "next/link";
+"use client";
 
+import React, { useState } from "react";
+import Link from "next/link";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { Navigation } from "@/components/layout/Navigation";
 import { TopBar } from "@/components/layout/TopBar";
+import { SearchModal } from "@/components/layout/SearchModal";
+import { useCart } from "@/context/cart-context";
 import type { SiteSettings } from "@/types/payload-content";
 
 /**
- * Header sticky (brief mục 2). `cartCount` mặc định 0 — Phase 3 (Cart) sẽ nối
- * state giỏ hàng thật vào đây thay vì hard-code.
+ * Header sticky (brief mục 2). Kết nối với useCart() để lấy số lượng giỏ hàng thực tế.
  */
 export function Header({
   siteSettings,
-  cartCount = 0,
 }: {
   siteSettings: SiteSettings | null;
-  cartCount?: number;
 }) {
+  const { totalItems } = useCart();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
   return (
     <>
       <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
@@ -26,15 +30,22 @@ export function Header({
             DSH NATURE
           </Link>
 
-          <Navigation cartCount={cartCount} />
+          <Navigation
+            cartCount={totalItems}
+            onOpenSearch={() => setIsSearchOpen(true)}
+          />
 
           <div className="flex items-center gap-1 lg:hidden">
-            <MobileMenu cartCount={cartCount} />
+            <MobileMenu
+              cartCount={totalItems}
+              onOpenSearch={() => setIsSearchOpen(true)}
+            />
           </div>
         </div>
       </header>
 
-      <BottomNav cartCount={cartCount} />
+      <BottomNav cartCount={totalItems} />
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>
   );
 }

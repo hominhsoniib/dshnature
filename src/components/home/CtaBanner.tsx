@@ -28,6 +28,7 @@ export function CtaBanner({
         size="lg"
         variant="secondary"
         className="mt-6"
+        nativeButton={false}
         render={<Link href={ctaHref}>{ctaLabel}</Link>}
       />
     </div>

@@ -66,6 +66,7 @@ export function Hero({ banners }: { banners: Banner[] }) {
             <Button
               size="lg"
               className="mt-1"
+              nativeButton={false}
               render={<Link href={banner.ctaHref}>{banner.ctaLabel}</Link>}
             />
           ) : null}
