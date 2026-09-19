@@ -1,0 +1,24 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// PHASE 0: chỉ setup tooling (generator/datasource), chưa định nghĩa model.
+// Các bảng business logic (customers, addresses, orders, order_items, payments,
+// shipments, dealers, dealer_regions, dealer_documents, consultation_requests,
+// reviews, wishlists, newsletter_subscribers, contact_requests, notifications,
+// users/roles/permissions nhân sự admin) thuộc PROJECT_BRIEF.md mục 4 — sẽ định
+// nghĩa dần theo đúng phase cần tới (Phase 3 Cart/Checkout, Phase 4 Consultation,
+// Phase 5 Dealer...) vì brief mới chỉ liệt kê TÊN bảng, chưa có field chi tiết
+// cho từng bảng — tự suy diễn field lúc này sẽ vi phạm yêu cầu "không tự suy diễn".
+// Cùng 1 Postgres (Neon) với Payload — Payload tự quản lý bảng riêng của nó
+// (users, media...), Prisma chỉ quản lý các bảng liệt kê ở trên, không đụng nhau.
