@@ -1,120 +1,170 @@
 /* DSH NATURE CUSTOM PAYLOAD ADMIN UI STYLES */
 
-/* Căn giữa trang đăng nhập & phông nền tự nhiên */
-body, .payload-admin, html {
+/* Reset & layout căn giữa trang login */
+html, body {
   background-color: #f7faf4 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100% !important;
 }
 
-/* Container trang Login */
-.template-default, .login, [class*="login"] {
+/* Target chính xác wrapper MinimalTemplate của Payload 3 */
+section.template-minimal {
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
   min-height: 100vh !important;
-  padding: 1.5rem !important;
-  background: radial-gradient(circle at 50% 30%, #eaf6ef 0%, #f7faf4 80%) !important;
+  padding: 2rem 1rem !important;
+  box-sizing: border-box !important;
+  background: radial-gradient(circle at 50% 35%, #eaf6ef 0%, #f7faf4 85%) !important;
 }
 
-/* Card Form thu nhỏ gọn giữa màn hình (max 420px, bo góc 20px, shadow cao cấp) */
-.login__wrap, [class*="login__wrap"], form[class*="login"] {
+/* Card Form thu nhỏ gọn giữa màn hình (max 400px, bo góc 20px, shadow mượt) */
+.template-minimal__wrap {
   width: 100% !important;
-  max-width: 420px !important;
+  max-width: 400px !important;
   margin: 0 auto !important;
-  padding: 2.5rem 2rem !important;
+  padding: 2.25rem 2rem !important;
   background: #ffffff !important;
-  border: 1px solid rgba(8, 116, 67, 0.15) !important;
+  border: 1px solid rgba(8, 116, 67, 0.12) !important;
   border-radius: 20px !important;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(8, 116, 67, 0.04) !important;
+  box-shadow: 0 20px 40px -10px rgba(8, 116, 67, 0.08), 0 8px 16px -6px rgba(0, 0, 0, 0.05) !important;
+  box-sizing: border-box !important;
 }
 
-/* Thêm tiêu đề thương hiệu DSH NATURE bên dưới Logo */
-.login__header::after {
+/* Brand & Logo Payload Container */
+.login__brand {
+  margin-bottom: 1.5rem !important;
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.login__brand svg,
+.login__brand img {
+  max-height: 42px !important;
+  width: auto !important;
+}
+
+.login__brand::after {
   content: "DSH NATURE — QUẢN TRỊ WEBSITE";
   display: block;
-  font-family: var(--font-sans, system-ui, sans-serif);
-  font-size: 0.75rem;
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   color: #087443;
-  margin-top: 0.75rem;
+  margin-top: 0.85rem;
   text-align: center;
 }
 
-/* Input Styling (Bo góc 12px, Focus Ring Emerald) */
-input[type="email"],
-input[type="text"],
-input[type="password"] {
-  border-radius: 12px !important;
-  border: 1px solid #cbd5e1 !important;
-  padding: 0.75rem 1rem !important;
-  font-size: 0.9rem !important;
-  background-color: #f8fafc !important;
-  transition: all 0.2s ease-in-out !important;
+/* Reset form container inside card */
+form.login__form {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.25rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  width: 100% !important;
 }
 
-input[type="email"]:focus,
-input[type="text"]:focus,
-input[type="password"]:focus {
+/* Input Styles */
+.template-minimal input[type="email"],
+.template-minimal input[type="text"],
+.template-minimal input[type="password"] {
+  width: 100% !important;
+  border-radius: 10px !important;
+  border: 1px solid #d1d5db !important;
+  padding: 0.7rem 0.9rem !important;
+  font-size: 0.9rem !important;
+  background-color: #f9fafb !important;
+  transition: all 0.2s ease !important;
+  box-sizing: border-box !important;
+}
+
+.template-minimal input[type="email"]:focus,
+.template-minimal input[type="text"]:focus,
+.template-minimal input[type="password"]:focus {
   background-color: #ffffff !important;
   border-color: #087443 !important;
   box-shadow: 0 0 0 3px rgba(8, 116, 67, 0.15) !important;
   outline: none !important;
 }
 
-/* Nút Submit Login màu xanh DSH Nature */
-button[type="submit"],
-.btn--style-primary {
-  background-color: #087443 !important;
-  color: #ffffff !important;
-  border-radius: 12px !important;
-  padding: 0.85rem 1.5rem !important;
-  font-weight: 600 !important;
-  font-size: 0.95rem !important;
-  border: none !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease-in-out !important;
-  box-shadow: 0 4px 12px rgba(8, 116, 67, 0.25) !important;
-}
-
-button[type="submit"]:hover,
-.btn--style-primary:hover {
-  background-color: #005c36 !important;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(8, 116, 67, 0.35) !important;
-}
-
-/* Container chứa Input Password & Nút mắt xem mật khẩu */
+/* Container chứa Password Input & Nút xem/ẩn mật khẩu */
 .dsh-password-container {
   position: relative !important;
-  display: flex !important;
-  align-items: center !important;
+  display: block !important;
   width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .dsh-password-container input {
-  padding-right: 2.75rem !important;
-  width: 100% !important;
+  padding-right: 2.5rem !important;
 }
 
 .dsh-eye-btn {
   position: absolute !important;
-  right: 12px !important;
+  right: 10px !important;
   top: 50% !important;
   transform: translateY(-50%) !important;
   background: transparent !important;
   border: none !important;
   cursor: pointer !important;
   padding: 4px !important;
-  color: #64748b !important;
+  color: #6b7280 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   border-radius: 6px !important;
+  z-index: 2 !important;
   transition: color 0.15s ease !important;
 }
 
 .dsh-eye-btn:hover {
   color: #087443 !important;
   background-color: rgba(8, 116, 67, 0.08) !important;
+}
+
+/* Primary submit button */
+.template-minimal button[type="submit"],
+.template-minimal .btn--style-primary {
+  width: 100% !important;
+  background-color: #087443 !important;
+  color: #ffffff !important;
+  border-radius: 10px !important;
+  padding: 0.75rem 1.25rem !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 4px 12px rgba(8, 116, 67, 0.2) !important;
+  margin-top: 0.5rem !important;
+}
+
+.template-minimal button[type="submit"]:hover,
+.template-minimal .btn--style-primary:hover {
+  background-color: #005c36 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(8, 116, 67, 0.3) !important;
+}
+
+/* Forgot password link */
+.template-minimal a[href*="forgot"] {
+  color: #087443 !important;
+  font-size: 0.85rem !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+}
+
+.template-minimal a[href*="forgot"]:hover {
+  text-decoration: underline !important;
 }
