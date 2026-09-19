@@ -40,6 +40,30 @@ export default buildConfig({
     push: true,
   }),
   sharp,
+  onInit: async (payload) => {
+    try {
+      const existingUsers = await payload.find({
+        collection: 'users',
+        where: {
+          email: {
+            equals: 'admin@dshnature.vn',
+          },
+        },
+      })
+      if (existingUsers.totalDocs === 0) {
+        await payload.create({
+          collection: 'users',
+          data: {
+            email: 'admin@dshnature.vn',
+            password: 'Admin@dshnature2026',
+          },
+        })
+        console.log('[Payload] Auto-created admin user: admin@dshnature.vn')
+      }
+    } catch (err) {
+      console.error('[Payload] Error checking/creating admin user:', err)
+    }
+  },
   plugins: [
     s3Storage({
       collections: {
