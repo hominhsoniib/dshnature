@@ -66,13 +66,19 @@ export function AdminEyeToggle() {
     };
 
     const attachChangePwMenu = () => {
-      const navContainer =
-        document.querySelector("nav.nav") ||
-        document.querySelector("aside.sidebar nav") ||
-        document.querySelector("aside.sidebar");
-      if (!navContainer) return;
-
       if (document.querySelector(".dsh-change-pw-link")) return;
+
+      const navContainer =
+        document.querySelector(".nav__scroll") ||
+        document.querySelector("aside.nav") ||
+        document.querySelector("nav.nav") ||
+        document.querySelector("aside[class*='nav']") ||
+        document.querySelector("aside.sidebar nav") ||
+        document.querySelector("aside.sidebar") ||
+        document.querySelector(".nav-group")?.parentElement ||
+        document.querySelector("nav");
+
+      if (!navContainer) return;
 
       const group = document.createElement("div");
       group.className = "nav-group dsh-account-nav-group";

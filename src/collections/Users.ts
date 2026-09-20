@@ -18,8 +18,13 @@ import { isAdmin } from '@/access/isAdmin'
  */
 export const Users: CollectionConfig = {
   slug: 'users',
+  labels: {
+    singular: 'Tài khoản Admin',
+    plural: 'Tài khoản Admin (Đổi MK)',
+  },
   admin: {
     useAsTitle: 'email',
+    group: 'Tài khoản',
   },
   auth: true,
   access: {
