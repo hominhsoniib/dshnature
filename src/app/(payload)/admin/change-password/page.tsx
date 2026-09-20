@@ -6,6 +6,7 @@ import Link from 'next/link'
 export default function ChangePasswordPage() {
   const [currentUser, setCurrentUser] = useState<{ id: string; email: string } | null>(null)
   const [loadingUser, setLoadingUser] = useState(true)
+  const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -36,23 +37,48 @@ export default function ChangePasswordPage() {
     e.preventDefault()
     setMessage(null)
 
+    if (!currentPassword) {
+      setMessage({ type: 'error', text: 'Vui lòng nhập mật khẩu hiện tại (mật khẩu cũ).' })
+      return
+    }
+
     if (!newPassword || newPassword.length < 8) {
       setMessage({ type: 'error', text: 'Mật khẩu mới phải có ít nhất 8 ký tự.' })
       return
     }
 
     if (newPassword !== confirmPassword) {
-      setMessage({ type: 'error', text: 'Mật khẩu xác nhận không trùng khớp.' })
+      setMessage({ type: 'error', text: 'Mật khẩu mới và mật khẩu xác nhận không trùng khớp.' })
       return
     }
 
-    if (!currentUser?.id) {
+    if (!currentUser?.id || !currentUser?.email) {
       setMessage({ type: 'error', text: 'Không tìm thấy thông tin tài khoản đang đăng nhập.' })
       return
     }
 
     setIsSubmitting(true)
     try {
+      // Step 1: Verify current password via login API
+      const verifyRes = await fetch('/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          email: currentUser.email,
+          password: currentPassword,
+        }),
+      })
+
+      if (!verifyRes.ok) {
+        setMessage({ type: 'error', text: 'Mật khẩu hiện tại (mật khẩu cũ) không chính xác. Vui lòng kiểm tra lại.' })
+        setIsSubmitting(false)
+        return
+      }
+
+      // Step 2: Update password to new password
       const res = await fetch(`/api/users/${currentUser.id}`, {
         method: 'PATCH',
         headers: {
@@ -66,6 +92,7 @@ export default function ChangePasswordPage() {
 
       if (res.ok) {
         setMessage({ type: 'success', text: 'Đổi mật khẩu thành công! Vui lòng lưu lại mật khẩu mới của bạn.' })
+        setCurrentPassword('')
         setNewPassword('')
         setConfirmPassword('')
       } else {
@@ -102,7 +129,7 @@ export default function ChangePasswordPage() {
             <h1 style={{ fontSize: '1.35rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>Đổi mật khẩu tài khoản Admin</h1>
             {currentUser && (
               <p style={{ fontSize: '0.85rem', color: '#64748b', margin: '4px 0 0 0' }}>
-                Đang đăng nhập với email: <strong style={{ color: '#087443' }}>{currentUser.email}</strong>
+                Tài khoản: <strong style={{ color: '#087443' }}>{currentUser.email}</strong>
               </p>
             )}
           </div>
@@ -132,7 +159,29 @@ export default function ChangePasswordPage() {
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#334155', marginBottom: '0.45rem' }}>
-                Mật khẩu mới <span style={{ color: '#ef4444' }}>*</span>
+                1. Mật khẩu hiện tại (mật khẩu cũ) <span style={{ color: '#ef4444' }}>*</span>
+              </label>
+              <input
+                type="password"
+                required
+                placeholder="Nhập mật khẩu hiện tại của bạn"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '0.7rem 0.9rem',
+                  fontSize: '0.9rem',
+                  borderRadius: '8px',
+                  border: '1px solid #cbd5e1',
+                  boxSizing: 'border-box',
+                  outline: 'none',
+                }}
+              />
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#334155', marginBottom: '0.45rem' }}>
+                2. Mật khẩu mới <span style={{ color: '#ef4444' }}>*</span>
               </label>
               <input
                 type="password"
@@ -154,7 +203,7 @@ export default function ChangePasswordPage() {
 
             <div>
               <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#334155', marginBottom: '0.45rem' }}>
-                Xác nhận mật khẩu mới <span style={{ color: '#ef4444' }}>*</span>
+                3. Xác nhận mật khẩu mới <span style={{ color: '#ef4444' }}>*</span>
               </label>
               <input
                 type="password"
@@ -192,7 +241,7 @@ export default function ChangePasswordPage() {
                   transition: 'all 0.2s ease',
                 }}
               >
-                {isSubmitting ? 'Đang cập nhật...' : 'Cập nhật mật khẩu'}
+                {isSubmitting ? 'Đang xác thực & Cập nhật...' : 'Cập nhật mật khẩu'}
               </button>
               <Link
                 href="/admin"
