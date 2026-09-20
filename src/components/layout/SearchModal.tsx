@@ -23,19 +23,21 @@ export function SearchModal({
   // Component nên không thể gọi Payload Local API trực tiếp
   // (CMS_INTEGRATION_PLAN.md §5.1/§5.2).
   //
-  // Không setState đồng bộ khi query rỗng (react-hooks/set-state-in-effect) —
-  // render dựa thẳng vào `isEmptyQuery` để ẩn kết quả cũ thay vì phải
-  // setResults([])/setIsLoading(false) ngay trong effect body. `results`/
-  // `isLoading` chỉ đổi bên trong callback bất đồng bộ (setTimeout/fetch).
+  // react-hooks/set-state-in-effect: effect body (phần chạy đồng bộ ngay khi
+  // effect fire) không được gọi setState ở bất kỳ đâu — kể cả setIsLoading(true).
+  // Mọi setState (setIsLoading/setResults) phải nằm bên trong callback bất
+  // đồng bộ thật sự của setTimeout (chạy sau 300ms, ở tick khác), không phải
+  // ngay khi effect chạy. Nhánh early-return (query rỗng) cũng không setState
+  // — render dựa thẳng vào `isEmptyQuery` để ẩn kết quả cũ.
   useEffect(() => {
     if (isEmptyQuery) {
       return;
     }
 
     const controller = new AbortController();
-    setIsLoading(true);
 
     const timer = setTimeout(async () => {
+      setIsLoading(true);
       try {
         const res = await fetch(`/api/search?q=${encodeURIComponent(trimmedQuery)}`, {
           signal: controller.signal,
