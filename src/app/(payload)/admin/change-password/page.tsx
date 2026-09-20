@@ -100,7 +100,8 @@ export default function ChangePasswordPage() {
         const errorMsg = errorData?.errors?.[0]?.message || 'Cập nhật mật khẩu thất bại. Vui lòng thử lại.'
         setMessage({ type: 'error', text: errorMsg })
       }
-    } catch (err) {
+    } catch (error) {
+      console.error('[ChangePassword] Lỗi kết nối khi đổi mật khẩu:', error)
       setMessage({ type: 'error', text: 'Có lỗi kết nối xảy ra. Vui lòng kiểm tra lại.' })
     } finally {
       setIsSubmitting(false)

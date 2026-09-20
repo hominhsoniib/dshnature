@@ -16,14 +16,19 @@ export function SearchModal({
   const [results, setResults] = useState<ProductViewModel[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const trimmedQuery = query.trim();
+  const isEmptyQuery = trimmedQuery === "";
+
   // Debounce 300ms trước khi gọi /api/search — SearchModal là Client
   // Component nên không thể gọi Payload Local API trực tiếp
   // (CMS_INTEGRATION_PLAN.md §5.1/§5.2).
+  //
+  // Không setState đồng bộ khi query rỗng (react-hooks/set-state-in-effect) —
+  // render dựa thẳng vào `isEmptyQuery` để ẩn kết quả cũ thay vì phải
+  // setResults([])/setIsLoading(false) ngay trong effect body. `results`/
+  // `isLoading` chỉ đổi bên trong callback bất đồng bộ (setTimeout/fetch).
   useEffect(() => {
-    const trimmed = query.trim();
-    if (!trimmed) {
-      setResults([]);
-      setIsLoading(false);
+    if (isEmptyQuery) {
       return;
     }
 
@@ -32,7 +37,7 @@ export function SearchModal({
 
     const timer = setTimeout(async () => {
       try {
-        const res = await fetch(`/api/search?q=${encodeURIComponent(trimmed)}`, {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(trimmedQuery)}`, {
           signal: controller.signal,
         });
         const data: { results?: ProductViewModel[] } = await res.json();
@@ -49,7 +54,7 @@ export function SearchModal({
       clearTimeout(timer);
       controller.abort();
     };
-  }, [query]);
+  }, [trimmedQuery, isEmptyQuery]);
 
   if (!isOpen) return null;
 
@@ -83,7 +88,7 @@ export function SearchModal({
         </div>
 
         <div className="mt-4 max-h-[60vh] overflow-y-auto">
-          {query.trim() === "" ? (
+          {isEmptyQuery ? (
             <div className="py-8 text-center text-sm text-muted-foreground">
               Nhập từ khóa để tìm kiếm sản phẩm DSH Nature...
             </div>
