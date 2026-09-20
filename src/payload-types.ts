@@ -184,11 +184,11 @@ export interface Banner {
   id: number;
   title: string;
   subtitle?: string | null;
-  image: number | Media;
   ctaLabel?: string | null;
   ctaHref?: string | null;
   order?: number | null;
   isActive?: boolean | null;
+  image: number | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -210,6 +210,9 @@ export interface ProductCategory {
 export interface Product {
   id: number;
   name: string;
+  /**
+   * Tự động tạo slug chuẩn SEO từ Tên sản phẩm nếu để trống (vd: xuong-khop).
+   */
   slug: string;
   category: number | ProductCategory;
   price: number;
@@ -241,9 +244,14 @@ export interface Product {
 export interface Article {
   id: number;
   title: string;
+  /**
+   * Tự động tạo từ Tiêu đề bài viết nếu để trống.
+   */
   slug: string;
   type: 'healthKnowledge' | 'blog';
   category: string;
+  author?: string | null;
+  featuredImage?: (number | null) | Media;
   excerpt?: string | null;
   content?: {
     root: {
@@ -260,8 +268,6 @@ export interface Article {
     };
     [k: string]: unknown;
   } | null;
-  featuredImage?: (number | null) | Media;
-  author?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -405,11 +411,11 @@ export interface MediaSelect<T extends boolean = true> {
 export interface BannersSelect<T extends boolean = true> {
   title?: T;
   subtitle?: T;
-  image?: T;
   ctaLabel?: T;
   ctaHref?: T;
   order?: T;
   isActive?: T;
+  image?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -464,10 +470,10 @@ export interface ArticlesSelect<T extends boolean = true> {
   slug?: T;
   type?: T;
   category?: T;
+  author?: T;
+  featuredImage?: T;
   excerpt?: T;
   content?: T;
-  featuredImage?: T;
-  author?: T;
   updatedAt?: T;
   createdAt?: T;
 }
