@@ -17,24 +17,28 @@ export const mockFeaturedProducts = [
     name: 'Euginca An Phế DSH',
     categorySlug: 'ho-hap',
     shortDescription: 'Hỗ trợ bổ phế, giảm ho, giảm đờm, làm dịu cổ họng.',
+    image: '/san-pham/euginca-chai.png',
   },
   {
     slug: 'vien-khop-dsh',
     name: 'Viên khớp DSH',
     categorySlug: 'xuong-khop',
     shortDescription: 'Hỗ trợ dưỡng khớp, hỗ trợ tăng tiết dịch khớp linh hoạt.',
+    image: '/san-pham/xuong-khop.png',
   },
   {
     slug: 'ginkgo-nature-extra-q10',
     name: 'Ginkgo Nature Extra Q10',
     categorySlug: 'tuan-hoan-nao-bo',
     shortDescription: 'Hỗ trợ tăng cường tuần hoàn máu não, hỗ trợ trí nhớ.',
+    image: '/san-pham/ginkgo.png',
   },
   {
     slug: 'pharton-nature-dsh',
     name: 'Pharton Nature DSH',
     categorySlug: 'giac-ngu',
     shortDescription: 'Hỗ trợ an thần, tạo giấc ngủ ngon và sâu hơn.',
+    image: '/san-pham/euginca-tui.png',
   },
 ] as const;
 
@@ -76,16 +80,19 @@ export const mockHealthArticles = [
     slug: 'bi-quyet-bao-ve-he-ho-hap-khi-thay-doi-thoi-tiet',
     title: 'Bí quyết bảo vệ hệ hô hấp cho cả gia đình khi thời tiết giao mùa',
     category: 'Hô hấp & Phế quản',
+    image: '/gioi-thieu/su-menh.png',
   },
   {
     slug: 'huong-dan-cham-soc-suc-khoe-xuong-khop-cho-nguoi-cao-tuoi',
     title: 'Hướng dẫn chăm sóc sức khỏe xương khớp vận động linh hoạt cho người cao tuổi',
     category: 'Xương khớp & Vận động',
+    image: '/san-pham/xuong-khop.png',
   },
   {
     slug: 'giai-phap-ho-tro-tuan-hoan-mau-nao-giam-cang-thang',
     title: 'Giải pháp hỗ trợ tuần hoàn máu não và giảm căng thẳng cho người làm việc trí óc',
     category: 'Tuần hoàn & Não bộ',
+    image: '/san-pham/ginkgo.png',
   },
 ] as const;
 
@@ -94,10 +101,12 @@ export const mockBlogArticles = [
     slug: 'dsh-nature-trao-tang-qua-suc-khoe-cho-cong-dong',
     title: 'DSH Nature đồng hành cùng chương trình trao tặng quà sức khỏe cho cộng đồng',
     category: 'Hoạt động xã hội',
+    image: '/gioi-thieu/so-do-chien-luoc.png',
   },
   {
     slug: 'hanh-trinh-phat-trien-thuong-hieu-dsh-nature',
     title: 'Hành trình phát triển thương hiệu DSH Nature — Đồng hành cùng sức khỏe gia đình',
     category: 'Thông tin thương hiệu',
+    image: '/gioi-thieu/tam-nhin.png',
   },
 ] as const;

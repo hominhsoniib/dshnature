@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   Award,
   BadgeCheck,
@@ -134,6 +135,7 @@ export default async function Home() {
               name={p.name}
               slug={p.slug}
               shortDescription={p.shortDescription}
+              image={p.image}
             />
           ))}
         </div>
@@ -142,7 +144,14 @@ export default async function Home() {
       {/* 05 Về DSH Nature */}
       <section className="bg-cream px-4 py-12 md:px-6 md:py-16">
         <div className="mx-auto grid max-w-7xl items-center gap-8 md:grid-cols-2">
-          <div className="aspect-video rounded-lg bg-primary-light" aria-hidden />
+          <div className="relative aspect-video overflow-hidden rounded-2xl border border-border bg-white shadow-soft">
+            <Image
+              src="/gioi-thieu/su-menh.png"
+              alt="Về DSH Nature"
+              fill
+              className="object-contain p-2"
+            />
+          </div>
           <div>
             <SectionTitle title={mockAboutSection.heading} />
             <p className="text-sm text-muted-foreground md:text-base leading-relaxed">{mockAboutSection.body}</p>
@@ -195,6 +204,7 @@ export default async function Home() {
               title={a.title}
               category={a.category}
               href={`/kien-thuc/${a.slug}`}
+              image={a.image}
             />
           ))}
         </div>
@@ -238,6 +248,7 @@ export default async function Home() {
                 title={a.title}
                 category={a.category}
                 href={`/blog/${a.slug}`}
+                image={a.image}
               />
             ))}
           </div>
