@@ -51,3 +51,7 @@ next-env.d.ts
 
 .vercel
 .env*
+
+# .env.example chỉ chứa placeholder/tên biến (không có secret thật) — nên
+# track qua git để dev mới/CI biết cần set biến môi trường nào.
+!.env.example
