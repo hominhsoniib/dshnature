@@ -1,7 +1,17 @@
 import React from "react";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Calendar } from "lucide-react";
+import { RichText } from "@payloadcms/richtext-lexical/react";
+import { getArticleBySlug, getArticles } from "@/lib/queries/articles";
+
+export const revalidate = 120;
+
+export async function generateStaticParams() {
+  const articles = await getArticles("blog");
+  return articles.map((article) => ({ slug: article.slug }));
+}
 
 export async function generateMetadata({
   params,
@@ -9,13 +19,30 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const article = await getArticleBySlug("blog", slug);
+
+  if (!article) {
+    return { title: "Bài viết không tồn tại | DSH NATURE" };
+  }
+
   return {
-    title: "Blog bài viết | DSH NATURE",
-    description: `Tin tức blog chi tiết - ${slug}`,
+    title: `${article.title} | DSH NATURE`,
+    description: article.excerpt || undefined,
   };
 }
 
-export default async function BlogDetailPage() {
+export default async function BlogDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const article = await getArticleBySlug("blog", slug);
+
+  if (!article) {
+    notFound();
+  }
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 md:px-6 md:py-12 space-y-6">
       <Link href="/blog" className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline">
@@ -24,32 +51,30 @@ export default async function BlogDetailPage() {
 
       <div className="space-y-3">
         <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-          Tin tức DSH Nature
+          {article.category}
         </span>
         <h1 className="font-heading text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-tight">
-          Hành trình xây dựng thương hiệu chăm sóc sức khỏe gia đình uy tín hàng đầu
+          {article.title}
         </h1>
 
         <div className="flex items-center gap-4 text-xs text-muted-foreground border-b border-border pb-4">
           <span className="flex items-center gap-1">
-            <Calendar className="size-4" /> 14/09/2026
+            <Calendar className="size-4" /> {article.dateDisplay}
           </span>
         </div>
       </div>
 
-      <div className="prose prose-emerald max-w-none text-muted-foreground leading-relaxed space-y-4 text-sm md:text-base">
-        <p className="font-medium text-foreground leading-relaxed">
-          Với thông điệp “Đồng hành cùng sức khỏe gia đình”, DSH Nature không ngừng nỗ lực cải tiến chất lượng và nâng cao dịch vụ chăm sóc người tiêu dùng Việt Nam.
+      {article.content ? (
+        <div className="prose prose-emerald max-w-none text-muted-foreground leading-relaxed text-sm md:text-base">
+          <RichText data={article.content} />
+        </div>
+      ) : article.excerpt ? (
+        <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{article.excerpt}</p>
+      ) : (
+        <p className="text-sm text-muted-foreground italic">
+          Bài viết chưa có nội dung chi tiết — vui lòng bổ sung trong Payload Admin.
         </p>
-
-        <p>
-          Trong suốt thời gian qua, các dòng sản phẩm của DSH Nature như Euginca An Phế DSH, Viên khớp DSH, Ginkgo Nature Extra Q10 và Pharton Nature DSH đã nhận được sự tin tưởng đồng hành từ đông đảo gia đình trên cả nước.
-        </p>
-
-        <p>
-          Chúng tôi tự hào tiếp tục phát triển mạng lưới đại lý và đối tác phân phối rộng khắp nhằm đưa các giải pháp thảo dược an toàn đến gần hơn với mọi ngôi nhà Việt.
-        </p>
-      </div>
+      )}
     </div>
   );
 }
