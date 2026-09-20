@@ -18,14 +18,18 @@ export const ProductCategories: CollectionConfig = {
   fields: [
     {
       name: 'name',
+      label: 'Tên danh mục sản phẩm',
       type: 'text',
       required: true,
+      admin: { width: '50%' },
     },
     {
       name: 'slug',
+      label: 'Đường dẫn (Slug)',
       type: 'text',
       required: true,
       unique: true,
+      admin: { width: '50%' },
     },
   ],
 }

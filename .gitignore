@@ -30,8 +30,11 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files (can opt-in for committing if needed) — .env* also covers any
+# custom env file used with scripts/*.mts --env-file, e.g.
+# .env.production-secret.local, .env.*-secret*.local
 .env*
+*.local
 
 # vercel
 .vercel

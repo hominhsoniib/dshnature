@@ -45,60 +45,89 @@ export const Products: CollectionConfig = {
   },
   fields: [
     {
-      name: 'name',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'slug',
-      type: 'text',
-      required: true,
-      unique: true,
-    },
-    {
-      name: 'category',
-      type: 'relationship',
-      relationTo: 'product-categories',
-      required: true,
-    },
-    {
-      name: 'price',
-      type: 'number',
-      required: true,
-    },
-    {
-      name: 'originalPrice',
-      type: 'number',
-    },
-    {
-      name: 'shortDescription',
-      type: 'textarea',
-      required: true,
-    },
-    {
-      name: 'images',
-      type: 'array',
-      fields: [
+      type: 'tabs',
+      tabs: [
         {
-          name: 'image',
-          type: 'upload',
-          relationTo: 'media',
-          required: true,
+          label: 'Thông tin cơ bản',
+          fields: [
+            {
+              name: 'name',
+              label: 'Tên sản phẩm',
+              type: 'text',
+              required: true,
+              admin: { width: '50%' },
+            },
+            {
+              name: 'slug',
+              label: 'Đường dẫn (Slug)',
+              type: 'text',
+              required: true,
+              unique: true,
+              admin: { width: '50%' },
+            },
+            {
+              name: 'category',
+              label: 'Danh mục sản phẩm',
+              type: 'relationship',
+              relationTo: 'product-categories',
+              required: true,
+              admin: { width: '50%' },
+            },
+            {
+              name: 'price',
+              label: 'Giá bán (VNĐ)',
+              type: 'number',
+              required: true,
+              admin: { width: '25%' },
+            },
+            {
+              name: 'originalPrice',
+              label: 'Giá gốc / Chưa giảm (VNĐ)',
+              type: 'number',
+              admin: { width: '25%' },
+            },
+            {
+              name: 'shortDescription',
+              label: 'Mô tả ngắn (Hiển thị danh sách & card)',
+              type: 'textarea',
+              required: true,
+            },
+            {
+              name: 'images',
+              label: 'Bộ sưu tập hình ảnh sản phẩm',
+              type: 'array',
+              fields: [
+                {
+                  name: 'image',
+                  label: 'Hình ảnh',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                },
+              ],
+            },
+          ],
         },
-      ],
-    },
-    {
-      name: 'tabs',
-      type: 'group',
-      fields: [
-        { name: 'description', type: 'textarea' },
-        { name: 'ingredients', type: 'textarea' },
-        { name: 'usage', type: 'textarea' },
-        { name: 'targetUsers', type: 'textarea' },
-        { name: 'howToUse', type: 'textarea' },
-        { name: 'specification', type: 'textarea' },
-        { name: 'storage', type: 'textarea' },
-        { name: 'productDossier', type: 'textarea' },
+        {
+          label: 'Chi tiết nội dung sản phẩm',
+          fields: [
+            {
+              name: 'tabs',
+              label: 'Các thông tin chi tiết (Tabs SP)',
+              type: 'group',
+              fields: [
+                { name: 'description', label: '1. Mô tả chi tiết', type: 'textarea' },
+                { name: 'ingredients', label: '2. Thành phần chính', type: 'textarea' },
+                { name: 'usage', label: '3. Công dụng sản phẩm', type: 'textarea' },
+                { name: 'targetUsers', label: '4. Đối tượng sử dụng', type: 'textarea' },
+                { name: 'howToUse', label: '5. Hướng dẫn sử dụng', type: 'textarea' },
+                { name: 'specification', label: '6. Quy cách đóng gói', type: 'textarea' },
+                { name: 'storage', label: '7. Hướng dẫn bảo quản', type: 'textarea' },
+                { name: 'productDossier', label: '8. Hồ sơ công bố / Giấy phép', type: 'textarea' },
+              ],
+            },
+          ],
+        },
       ],
     },
   ],

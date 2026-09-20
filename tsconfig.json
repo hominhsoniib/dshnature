@@ -23,6 +23,10 @@
       "@payload-config": ["./src/payload.config.ts"]
     }
   },
+  "ts-node": {
+    "esm": true,
+    "transpileOnly": true
+  },
   "include": [
     "next-env.d.ts",
     "**/*.ts",

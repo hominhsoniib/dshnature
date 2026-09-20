@@ -23,36 +23,49 @@ export const Banners: CollectionConfig = {
   fields: [
     {
       name: 'title',
+      label: 'Tiêu đề Banner',
       type: 'text',
       required: true,
+      admin: { width: '50%' },
     },
     {
       name: 'subtitle',
+      label: 'Phụ đề Banner',
       type: 'text',
-    },
-    {
-      name: 'image',
-      type: 'upload',
-      relationTo: 'media',
-      required: true,
+      admin: { width: '50%' },
     },
     {
       name: 'ctaLabel',
+      label: 'Nút bấm CTA (VD: Khám phá ngay)',
       type: 'text',
+      admin: { width: '35%' },
     },
     {
       name: 'ctaHref',
+      label: 'Đường dẫn liên kết (URL)',
       type: 'text',
+      admin: { width: '35%' },
     },
     {
       name: 'order',
+      label: 'Thứ tự ưu tiên',
       type: 'number',
       defaultValue: 0,
+      admin: { width: '15%' },
     },
     {
       name: 'isActive',
+      label: 'Kích hoạt hiển thị',
       type: 'checkbox',
       defaultValue: true,
+      admin: { width: '15%' },
+    },
+    {
+      name: 'image',
+      label: 'Hình ảnh Banner (Nền / Hero)',
+      type: 'upload',
+      relationTo: 'media',
+      required: true,
     },
   ],
 }

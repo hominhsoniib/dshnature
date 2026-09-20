@@ -1,24 +1,67 @@
-import 'dotenv/config'
 import crypto from 'node:crypto'
-
-import { getPayload } from 'payload'
-
-import configPromise from '../src/payload.config'
+import path from 'node:path'
 
 /**
  * Script CLI reset password admin — chạy LOCAL, KHÔNG phải API route public.
  * Dùng khi cần reset mật khẩu admin trên production mà không có DB console
- * trực tiếp: pull DATABASE_URL thật về máy (vd: `vercel env pull
- * .env.production.local`) rồi chạy script này trỏ vào DB đó. Payload local
- * API đảm bảo hash password đúng chuẩn (không update thẳng cột DB).
+ * trực tiếp. Payload local API đảm bảo hash password đúng chuẩn (không update
+ * thẳng cột DB).
  *
  * Không thêm endpoint HTTP nào vào app — mật khẩu mới chỉ in ra terminal của
  * người chạy, không qua mạng, không ghi vào log file nào.
  *
  * Cách dùng:
- *   npm run reset:admin-password                        # tự tìm nếu chỉ có 1 admin
+ *   npm run reset:admin-password                        # tự tìm nếu chỉ có 1 admin, đọc DATABASE_URL/PAYLOAD_SECRET từ process.env/.env mặc định
  *   RESET_ADMIN_EMAIL=admin@dshnature.vn npm run reset:admin-password
+ *
+ *   # Nhắm vào DB khác (vd: production) mà KHÔNG cần tự set biến môi trường
+ *   # qua shell (tránh lỗi PowerShell nuốt ký tự đặc biệt trong password khi
+ *   # dùng $env:DATABASE_URL="..."): đặt các biến cần thiết (DATABASE_URL,
+ *   # PAYLOAD_SECRET, ...) vào 1 file .env riêng (KHÔNG commit — xem
+ *   # .gitignore) rồi trỏ script vào file đó qua --env-file:
+ *   npm run reset:admin-password -- --env-file=.env.production-secret.local
+ *
+ *   # RESET_ADMIN_EMAIL cũng đọc được từ file --env-file đó luôn (thêm dòng
+ *   # RESET_ADMIN_EMAIL=admin@dshnature.vn vào file .env.production-secret.local)
+ *   # — không cần set thêm gì qua shell.
+ *
+ *   (Không truyền --env-file thì hành vi giữ nguyên như trước: đọc
+ *   process.env / .env mặc định ở thư mục gốc — không breaking change.)
  */
+
+function parseEnvFileArg(argv: string[]): string | undefined {
+  const prefix = '--env-file='
+  for (const arg of argv) {
+    if (arg.startsWith(prefix)) {
+      return arg.slice(prefix.length)
+    }
+  }
+  return undefined
+}
+
+async function loadEnv() {
+  const envFileArg = parseEnvFileArg(process.argv.slice(2))
+  const { config } = await import('dotenv')
+
+  if (!envFileArg) {
+    // Tương đương `import 'dotenv/config'` (load .env mặc định ở cwd) nhưng
+    // gọi trực tiếp API có type thay vì import module side-effect không có
+    // declaration — tránh lỗi `tsc` "implicitly has an any type".
+    config()
+    return
+  }
+
+  const resolvedPath = path.resolve(process.cwd(), envFileArg)
+  const result = config({ path: resolvedPath, override: true })
+
+  if (result.error) {
+    throw new Error(`Không đọc được --env-file="${envFileArg}" (${resolvedPath}): ${result.error.message}`)
+  }
+
+  console.log(
+    `[env] Đã load biến môi trường từ ${resolvedPath} (ghi đè lên process.env/.env mặc định).`,
+  )
+}
 
 function generateStrongPassword(length = 16): string {
   const lower = 'abcdefghijkmnopqrstuvwxyz'
@@ -44,6 +87,15 @@ function generateStrongPassword(length = 16): string {
 }
 
 async function main() {
+  // Phải load env TRƯỚC khi import payload/payload.config — payload.config.ts
+  // đọc process.env.PAYLOAD_SECRET/DATABASE_URL ngay ở module scope (fail-fast
+  // nếu thiếu), nên dùng dynamic import() ở đây thay vì static import để đảm
+  // bảo --env-file có hiệu lực trước khi payload.config được load.
+  await loadEnv()
+
+  const { getPayload } = await import('payload')
+  const { default: configPromise } = await import('../src/payload.config')
+
   const payload = await getPayload({ config: configPromise })
 
   const targetEmail = process.env.RESET_ADMIN_EMAIL
