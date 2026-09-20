@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // distDir tuỳ chỉnh (next.config.ts) — máy dev không có quyền admin để
+    // dùng lại .next mặc định.
+    "build-output/**",
   ]),
 ]);
 

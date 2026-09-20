@@ -17,6 +17,10 @@
 /.next/
 /out/
 
+# custom distDir (next.config.ts) — máy dev không có quyền admin, .next bị
+# khoá ACL nên build ra thư mục này thay vì .next mặc định
+/build-output/
+
 # production
 /build
 

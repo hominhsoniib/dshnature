@@ -31,8 +31,10 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts",
+    // distDir đổi sang "build-output" (next.config.ts) — type do Next.js tự
+    // sinh giờ nằm ở đây thay vì .next/types mặc định.
+    "build-output/types/**/*.ts",
+    "build-output/dev/types/**/*.ts",
     "**/*.mts"
   ],
   "exclude": ["node_modules"]
