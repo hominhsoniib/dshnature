@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Search, X } from "lucide-react";
 import Link from "next/link";
-import { mockFeaturedProducts } from "@/features/home/mock-data";
+import type { ProductViewModel } from "@/types/product";
 
 export function SearchModal({
   isOpen,
@@ -13,15 +13,45 @@ export function SearchModal({
   onClose: () => void;
 }) {
   const [query, setQuery] = useState("");
+  const [results, setResults] = useState<ProductViewModel[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Debounce 300ms trước khi gọi /api/search — SearchModal là Client
+  // Component nên không thể gọi Payload Local API trực tiếp
+  // (CMS_INTEGRATION_PLAN.md §5.1/§5.2).
+  useEffect(() => {
+    const trimmed = query.trim();
+    if (!trimmed) {
+      setResults([]);
+      setIsLoading(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    setIsLoading(true);
+
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(trimmed)}`, {
+          signal: controller.signal,
+        });
+        const data: { results?: ProductViewModel[] } = await res.json();
+        setResults(data.results ?? []);
+      } catch {
+        // AbortError (gõ tiếp) hoặc lỗi mạng — không để crash UI, giữ nguyên
+        // trạng thái loading để lần gọi tiếp theo (nếu có) tự cập nhật lại.
+      } finally {
+        setIsLoading(false);
+      }
+    }, 300);
+
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [query]);
 
   if (!isOpen) return null;
-
-  const filtered = query.trim()
-    ? mockFeaturedProducts.filter((p) =>
-        p.name.toLowerCase().includes(query.toLowerCase()) ||
-        p.shortDescription.toLowerCase().includes(query.toLowerCase())
-      )
-    : [];
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24">
@@ -57,16 +87,20 @@ export function SearchModal({
             <div className="py-8 text-center text-sm text-muted-foreground">
               Nhập từ khóa để tìm kiếm sản phẩm DSH Nature...
             </div>
-          ) : filtered.length === 0 ? (
+          ) : isLoading ? (
+            <div className="py-8 text-center text-sm text-muted-foreground">
+              Đang tìm kiếm...
+            </div>
+          ) : results.length === 0 ? (
             <div className="py-8 text-center text-sm text-muted-foreground">
               Không tìm thấy sản phẩm nào khớp với &quot;{query}&quot;
             </div>
           ) : (
             <div className="space-y-2">
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                Kết quả tìm kiếm ({filtered.length})
+                Kết quả tìm kiếm ({results.length})
               </p>
-              {filtered.map((item) => (
+              {results.map((item) => (
                 <Link
                   key={item.slug}
                   href={`/san-pham/${item.slug}`}

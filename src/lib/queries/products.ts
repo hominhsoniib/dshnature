@@ -132,3 +132,26 @@ export async function getProductCategories(): Promise<ProductCategorySummary[]> 
     return [];
   }
 }
+
+/**
+ * Dùng bởi Route Handler `/api/search` — SearchModal là Client Component nên
+ * không thể gọi Local API trực tiếp (chỉ chạy được ở server/Node context).
+ */
+export async function searchProducts(query: string, limit = 8): Promise<ProductViewModel[]> {
+  const trimmed = query.trim();
+  if (!trimmed) return [];
+  try {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "products",
+      where: {
+        or: [{ name: { like: trimmed } }, { shortDescription: { like: trimmed } }],
+      },
+      limit,
+      depth: 1,
+    });
+    return (result.docs as unknown as PayloadProduct[]).map(toViewModel);
+  } catch {
+    return [];
+  }
+}
