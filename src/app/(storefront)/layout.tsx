@@ -6,8 +6,7 @@ import { FloatingContact } from "@/components/layout/FloatingContact";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { ToastProvider, Toaster } from "@/components/ui/toast";
-import { getPayloadClient } from "@/lib/payload";
-import type { SiteSettings as SiteSettingsType } from "@/types/payload-content";
+import { getSiteSettings } from "@/lib/queries/site-settings";
 
 import { CartProvider } from "@/context/cart-context";
 
@@ -24,18 +23,6 @@ export const metadata: Metadata = {
   description:
     "DSH NATURE — sản phẩm chăm sóc sức khỏe chất lượng, an toàn và phù hợp với nhu cầu của gia đình Việt.",
 };
-
-async function getSiteSettings(): Promise<SiteSettingsType | null> {
-  try {
-    const payload = await getPayloadClient();
-    const settings = await payload.findGlobal({ slug: "site-settings" });
-    return settings as unknown as SiteSettingsType;
-  } catch {
-    // Brief mục 12: không để trắng trang khi lỗi DB — Header/Footer vẫn
-    // render với giá trị mặc định (xem fallback trong từng component).
-    return null;
-  }
-}
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const siteSettings = await getSiteSettings();

@@ -16,6 +16,11 @@ import { ValueCard } from "@/components/home/ValueCard";
 import { Newsletter } from "@/components/forms/Newsletter";
 import { ProductCard } from "@/components/product/ProductCard";
 import { getPayloadClient } from "@/lib/payload";
+import { getArticles } from "@/lib/queries/articles";
+import { getFeaturedProducts, getProductCategories } from "@/lib/queries/products";
+// TODO(Phase A2): Core Values (Global "CoreValues") và About/Mission/Vision
+// (Global "AboutPage") chưa có collection Payload — giữ hardcode theo quyết
+// định đã duyệt ở CMS_INTEGRATION_PLAN.md mục 4.
 import {
   mockAboutSection,
   mockBlogArticles,
@@ -26,6 +31,10 @@ import {
   mockProductCategories,
 } from "@/features/home/mock-data";
 import type { Banner } from "@/types/payload-content";
+
+// Nội dung trang chủ đổi khi admin sửa CMS, nhưng không cần realtime tuyệt
+// đối — cache 5 phút (CMS_INTEGRATION_PLAN.md §5.2).
+export const revalidate = 300;
 
 const VALUE_ICONS = {
   "Chất lượng": BadgeCheck,
@@ -81,7 +90,39 @@ async function getBanners(): Promise<Banner[]> {
 }
 
 export default async function Home() {
-  const banners = await getBanners();
+  const [banners, productCategories, featuredProducts, healthArticles, blogArticles] =
+    await Promise.all([
+      getBanners(),
+      getProductCategories(),
+      getFeaturedProducts(4),
+      getArticles("healthKnowledge", 3),
+      getArticles("blog", 2),
+    ]);
+
+  // Fallback về data tĩnh khi CMS chưa có bản ghi nào (chưa nhập qua /admin) —
+  // cùng cơ chế DEFAULT_BANNERS đã dùng cho banner (CMS_INTEGRATION_PLAN.md §5.3).
+  const categories =
+    productCategories.length > 0
+      ? productCategories
+      : mockProductCategories.map((c) => ({ slug: c.slug, name: c.name }));
+
+  const featured =
+    featuredProducts.length > 0
+      ? featuredProducts.map((p) => ({
+          slug: p.slug,
+          name: p.name,
+          shortDescription: p.shortDescription,
+          image: p.images[0],
+        }))
+      : mockFeaturedProducts.map((p) => ({
+          slug: p.slug,
+          name: p.name,
+          shortDescription: p.shortDescription,
+          image: p.image as string,
+        }));
+
+  const health = healthArticles.length > 0 ? healthArticles : mockHealthArticles;
+  const blog = blogArticles.length > 0 ? blogArticles : mockBlogArticles;
 
   return (
     <>
@@ -111,7 +152,7 @@ export default async function Home() {
         <div className="mx-auto max-w-7xl">
           <SectionTitle title="Danh mục sản phẩm" />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {mockProductCategories.map((cat) => (
+            {categories.map((cat) => (
               <CategoryCard
                 key={cat.slug}
                 name={cat.name}
@@ -129,7 +170,7 @@ export default async function Home() {
           description="Sản phẩm chăm sóc sức khỏe chất lượng được tin dùng."
         />
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          {mockFeaturedProducts.map((p) => (
+          {featured.map((p) => (
             <ProductCard
               key={p.slug}
               name={p.name}
@@ -198,7 +239,7 @@ export default async function Home() {
           description="Cẩm nang tư vấn y khoa và kiến thức chăm sóc sức khỏe gia đình."
         />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {mockHealthArticles.map((a) => (
+          {health.map((a) => (
             <ArticleCard
               key={a.slug}
               title={a.title}
@@ -242,7 +283,7 @@ export default async function Home() {
             description="Tin tức doanh nghiệp và các hoạt động cộng đồng nổi bật."
           />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {mockBlogArticles.map((a) => (
+            {blog.map((a) => (
               <ArticleCard
                 key={a.slug}
                 title={a.title}
