@@ -9,6 +9,7 @@
     "lint": "eslint",
     "type-check": "tsc --noEmit",
     "seed:admin": "node --experimental-specifier-resolution=node --loader ts-node/esm --loader ./scripts/alias-loader.mjs scripts/seed-admin.mts",
+    "seed:data": "node --experimental-specifier-resolution=node --loader ts-node/esm --loader ./scripts/alias-loader.mjs scripts/seed-data.mts",
     "reset:admin-password": "node --experimental-specifier-resolution=node --loader ts-node/esm --loader ./scripts/alias-loader.mjs scripts/reset-admin-password.mts"
   },
   "dependencies": {
