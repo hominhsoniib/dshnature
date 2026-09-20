@@ -65,8 +65,43 @@ export function AdminEyeToggle() {
       });
     };
 
+    const attachChangePwMenu = () => {
+      const navContainer =
+        document.querySelector("nav.nav") ||
+        document.querySelector("aside.sidebar nav") ||
+        document.querySelector("aside.sidebar");
+      if (!navContainer) return;
+
+      if (document.querySelector(".dsh-change-pw-link")) return;
+
+      const group = document.createElement("div");
+      group.className = "nav-group dsh-account-nav-group";
+      group.style.marginTop = "1.25rem";
+      group.style.paddingTop = "0.75rem";
+      group.style.borderTop = "1px solid #e2e8f0";
+
+      group.innerHTML = `
+        <div class="nav-group__title" style="font-size:0.75rem; font-weight:700; color:#087443; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.4rem; padding:0 0.5rem;">Tài khoản</div>
+        <a href="/admin/change-password" class="nav__link dsh-change-pw-link" style="display:flex; align-items:center; gap:8px; padding:0.55rem 0.85rem; color:#087443; font-weight:600; text-decoration:none; border-radius:8px; background-color:#eaf6ef; transition:all 0.2s ease;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <span>Đổi mật khẩu</span>
+        </a>
+      `;
+
+      navContainer.appendChild(group);
+    };
+
     attachEyeToggle();
-    const timer = setInterval(attachEyeToggle, 500);
+    attachChangePwMenu();
+
+    const timer = setInterval(() => {
+      attachEyeToggle();
+      attachChangePwMenu();
+    }, 500);
+
     return () => clearInterval(timer);
   }, []);
 
