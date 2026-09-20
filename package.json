@@ -8,8 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "type-check": "tsc --noEmit",
-    "seed:admin": "tsx scripts/seed-admin.ts",
-    "reset:admin-password": "tsx scripts/reset-admin-password.ts"
+    "seed:admin": "node --experimental-specifier-resolution=node --loader ts-node/esm --loader ./scripts/alias-loader.mjs scripts/seed-admin.mts",
+    "reset:admin-password": "node --experimental-specifier-resolution=node --loader ts-node/esm --loader ./scripts/alias-loader.mjs scripts/reset-admin-password.mts"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
@@ -43,7 +43,7 @@
     "eslint-config-next": "16.3.5",
     "prisma": "^7.10.0",
     "tailwindcss": "^4",
-    "tsx": "^4.23.13",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }
