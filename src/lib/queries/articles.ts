@@ -1,3 +1,5 @@
+import type { SerializedEditorState } from "lexical";
+
 import { getPayloadClient } from "@/lib/payload";
 import type { ArticleDetail, ArticleSummary, ArticleType } from "@/types/article";
 
@@ -18,7 +20,7 @@ type PayloadArticle = {
   author?: string | null;
   excerpt?: string | null;
   featuredImage?: MediaRef;
-  content?: unknown;
+  content?: SerializedEditorState | null;
   createdAt: string;
 };
 

@@ -1,3 +1,5 @@
+import type { SerializedEditorState } from "lexical";
+
 /**
  * View model chuẩn hoá từ collection `articles` (Payload) — dùng chung cho cả
  * "Kiến thức sức khỏe" (type=healthKnowledge) và "Blog" (type=blog), đúng
@@ -16,6 +18,10 @@ export type ArticleSummary = {
 };
 
 export type ArticleDetail = ArticleSummary & {
-  /** Lexical `SerializedEditorState` — render bằng <RichText> của @payloadcms/richtext-lexical/react. */
-  content: unknown;
+  /**
+   * Render bằng <RichText> của @payloadcms/richtext-lexical/react. Field
+   * `content` không bắt buộc ở Payload (Articles.ts) nên có thể null/undefined
+   * nếu admin chưa nhập — trang chi tiết cần tự xử lý trường hợp này.
+   */
+  content?: SerializedEditorState | null;
 };
