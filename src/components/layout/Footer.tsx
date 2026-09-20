@@ -1,4 +1,4 @@
-import { Globe, Mail, MapPin, Phone } from "lucide-react";
+import { Globe, Lock, Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 
 import { NAV_ITEMS } from "@/lib/nav";
@@ -102,13 +102,29 @@ export function Footer({ siteSettings }: { siteSettings: SiteSettings | null }) 
                 </Link>
               </li>
             ))}
+            <li className="pt-2">
+              <Link href="/admin/login" className="inline-flex items-center gap-1.5 font-medium text-primary hover:underline">
+                <Lock className="size-3.5" />
+                <span>Quản trị Admin</span>
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
 
-      <div className="border-t border-border/60 px-6 py-4 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} {siteSettings?.companyName ?? "CÔNG TY CỔ PHẦN DSH NATURE"}.
-        Đã đăng ký bản quyền.
+      <div className="border-t border-border/60 px-6 py-4 text-xs text-muted-foreground">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 sm:flex-row">
+          <span>
+            © {new Date().getFullYear()} {siteSettings?.companyName ?? "CÔNG TY CỔ PHẦN DSH NATURE"}. Đã đăng ký bản quyền.
+          </span>
+          <Link
+            href="/admin/login"
+            className="inline-flex items-center gap-1.5 text-xs text-muted-foreground/80 hover:text-primary transition-colors hover:underline"
+          >
+            <Lock className="size-3" />
+            <span>Quản trị Admin</span>
+          </Link>
+        </div>
       </div>
     </footer>
   );
