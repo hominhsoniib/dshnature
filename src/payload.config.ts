@@ -1,6 +1,7 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { s3Storage } from '@payloadcms/storage-s3'
+import { buildStoragePathData } from '@payloadcms/plugin-cloud-storage/utilities'
 import path from 'path'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
@@ -16,6 +17,28 @@ import { Users } from './collections/Users'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+/**
+ * Build URL public trực tiếp tới R2 (vd https://pub-xxxx.r2.dev/<key>) thay
+ * vì mặc định của Payload (proxy qua /api/media/file/<filename>, xem
+ * @payloadcms/plugin-cloud-storage/dist/hooks/afterRead.js — khi không truyền
+ * generateFileURL, Payload tự phục vụ file qua route riêng của nó, không cần
+ * bucket public). Bucket R2 đã bật Public Access (r2.dev) — dùng
+ * buildStoragePathData (chính hàm nội bộ generateURL.js của
+ * @payloadcms/storage-s3 dùng) để đảm bảo key khớp đúng file thật đã upload,
+ * không tự đoán cách ghép prefix/filename.
+ *
+ * Đánh đổi: bỏ qua hoàn toàn access control của Payload cho Media — ai có URL
+ * đều xem trực tiếp được qua R2, không phụ thuộc access.read của collection.
+ * Chấp nhận vì Media.access.read đã là public (`() => true`) từ đầu.
+ */
+function generateR2PublicFileURL({ filename, prefix }: { filename: string; prefix?: string }): string {
+  const { storageFilePath } = buildStoragePathData({ docPrefix: prefix, filename })
+  const dir = path.posix.dirname(storageFilePath)
+  const encodedFilename = encodeURIComponent(path.posix.basename(storageFilePath))
+  const fileKey = dir === '.' ? encodedFilename : path.posix.join(dir, encodedFilename)
+  return `${process.env.R2_PUBLIC_URL}/${fileKey}`
+}
 
 // Fail-fast: không cho phép app khởi động với secret ký session suy đoán
 // được. Trước đây có fallback hardcoded ('dsh-nature-fallback-payload-secret-key-2026')
@@ -76,7 +99,12 @@ export default buildConfig({
   plugins: [
     s3Storage({
       collections: {
-        media: true,
+        // Fallback về true (proxy qua Payload) nếu R2_PUBLIC_URL chưa set —
+        // môi trường dev chưa bật Public Access trên R2 vẫn chạy được, không
+        // crash. Set R2_PUBLIC_URL để chuyển sang URL public trực tiếp.
+        media: process.env.R2_PUBLIC_URL
+          ? { generateFileURL: generateR2PublicFileURL }
+          : true,
       },
       bucket: process.env.R2_BUCKET || '',
       config: {
