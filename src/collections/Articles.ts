@@ -3,6 +3,19 @@ import type { CollectionConfig } from 'payload'
 import { isAdmin } from '@/access/isAdmin'
 import { isAdminOrEditor } from '@/access/isAdminOrEditor'
 
+function slugify(text: string): string {
+  return text
+    .toString()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[đĐ]/g, 'd')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9 -]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+}
+
 export const Articles: CollectionConfig = {
   slug: 'articles',
   admin: {
@@ -14,6 +27,18 @@ export const Articles: CollectionConfig = {
     create: isAdminOrEditor,
     update: isAdminOrEditor,
     delete: isAdmin,
+  },
+  hooks: {
+    beforeChange: [
+      ({ data }) => {
+        if (data?.title && (!data.slug || data.slug.trim() === '')) {
+          data.slug = slugify(data.title)
+        } else if (data?.slug) {
+          data.slug = slugify(data.slug)
+        }
+        return data
+      },
+    ],
   },
   fields: [
     {
@@ -29,7 +54,10 @@ export const Articles: CollectionConfig = {
       type: 'text',
       required: true,
       unique: true,
-      admin: { width: '50%' },
+      admin: {
+        width: '50%',
+        description: 'Tự động tạo từ Tiêu đề bài viết nếu để trống.',
+      },
     },
     {
       name: 'type',

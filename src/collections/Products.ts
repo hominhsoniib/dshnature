@@ -17,6 +17,19 @@ function validateNoForbiddenWords(value: string | undefined | null) {
   }
 }
 
+function slugify(text: string): string {
+  return text
+    .toString()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[đĐ]/g, 'd')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9 -]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+}
+
 export const Products: CollectionConfig = {
   slug: 'products',
   admin: {
@@ -32,6 +45,11 @@ export const Products: CollectionConfig = {
   hooks: {
     beforeChange: [
       ({ data }) => {
+        if (data?.name && (!data.slug || data.slug.trim() === '')) {
+          data.slug = slugify(data.name)
+        } else if (data?.slug) {
+          data.slug = slugify(data.slug)
+        }
         if (data?.tabs) {
           validateNoForbiddenWords(data.tabs.description)
           validateNoForbiddenWords(data.tabs.usage)
@@ -63,7 +81,10 @@ export const Products: CollectionConfig = {
               type: 'text',
               required: true,
               unique: true,
-              admin: { width: '50%' },
+              admin: {
+                width: '50%',
+                description: 'Tự động tạo slug chuẩn SEO từ Tên sản phẩm nếu để trống (vd: xuong-khop).',
+              },
             },
             {
               name: 'category',
