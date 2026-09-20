@@ -100,12 +100,48 @@ export function AdminEyeToggle() {
       navContainer.appendChild(group);
     };
 
+    const attachViewWebsiteBtn = () => {
+      if (document.querySelector(".dsh-view-website-btn")) return;
+
+      const navHeader =
+        document.querySelector(".nav__header") ||
+        document.querySelector("aside.nav") ||
+        document.querySelector(".nav__scroll") ||
+        document.querySelector("aside") ||
+        document.querySelector("nav");
+
+      if (!navHeader) return;
+
+      const btnContainer = document.createElement("div");
+      btnContainer.className = "dsh-view-website-wrapper";
+      btnContainer.style.padding = "0.75rem 0.85rem 0.5rem 0.85rem";
+      btnContainer.style.marginBottom = "0.5rem";
+
+      btnContainer.innerHTML = `
+        <a href="/" target="_blank" rel="noopener noreferrer" class="dsh-view-website-btn" style="display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:0.65rem 1rem; color:#ffffff; background-color:#087443; font-weight:600; font-size:0.85rem; text-decoration:none; border-radius:10px; box-shadow:0 2px 8px rgba(8,116,67,0.25); transition:all 0.2s ease;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          <span>Quay lại Trang Web</span>
+        </a>
+      `;
+
+      if (navHeader.firstChild) {
+        navHeader.insertBefore(btnContainer, navHeader.firstChild);
+      } else {
+        navHeader.appendChild(btnContainer);
+      }
+    };
+
     attachEyeToggle();
     attachChangePwMenu();
+    attachViewWebsiteBtn();
 
     const timer = setInterval(() => {
       attachEyeToggle();
       attachChangePwMenu();
+      attachViewWebsiteBtn();
     }, 500);
 
     return () => clearInterval(timer);
