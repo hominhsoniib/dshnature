@@ -193,3 +193,71 @@ Lý do:
 ---
 
 **→ Bước 2 đã chốt đầy đủ (bao gồm mục 5.5). Chờ bạn xác nhận để bắt đầu Bước 3 (code từng trang, commit riêng theo brief đã yêu cầu).**
+
+---
+
+# BƯỚC 3 — Đã triển khai (2026-09-20)
+
+9 commit riêng, theo đúng thứ tự đã duyệt (trang chủ → danh sách sản phẩm → chi tiết sản phẩm → search → kiến thức sức khỏe list+detail → blog list+detail → liên hệ):
+
+1. `docs: add full project audit report and CMS integration plan`
+2. `feat(cms): connect homepage sections to Payload CMS`
+3. `feat(cms): connect product catalog to Payload CMS`
+4. `feat(cms): connect product detail page to Payload CMS`
+5. `feat(cms): connect search modal to Payload via new /api/search route`
+6. `feat(cms): connect health knowledge list to Payload CMS`
+7. `feat(cms): implement health knowledge detail page backed by Payload CMS`
+8. `feat(cms): connect blog list to Payload CMS`
+9. `feat(cms): implement blog detail page backed by Payload CMS`
+10. `fix(cms): use SiteSettings hotline instead of hardcoded value on contact page`
+
+**Hạ tầng mới dùng chung:** `src/lib/queries/{products,articles,site-settings}.ts` (mọi hàm bọc try/catch trả `[]`/`null` khi lỗi, đúng §5.3), `src/types/{product,article}.ts` (view model chuẩn hoá, tách khỏi shape gốc Payload), `src/app/api/search/route.ts` (Route Handler đầu tiên phục vụ business logic của dự án).
+
+**⚠️ Giới hạn quan trọng:** môi trường thực hiện Bước 3 này **không có Node.js/npm** (đã nêu ở `AUDIT_REPORT.md` mục 1) nên **không tự chạy được `npm run build` / `type-check` / `lint`** để xác nhận biên dịch sau khi sửa. Mọi thay đổi đã được rà soát thủ công kỹ (khớp field Payload đã xác nhận ở Bước 1, khớp type `RichText`/`SerializedEditorState` đã kiểm tra trực tiếp trong `node_modules`), nhưng **bắt buộc bạn chạy `npm run build && npm run type-check` trên máy thật trước khi deploy** — đây là việc chưa từng được xác nhận cho các thay đổi này.
+
+---
+
+# BƯỚC 4 — Báo cáo kết thúc
+
+## Trang/tính năng giờ đã sống bằng CMS thật
+
+| Trang/tính năng | Nguồn dữ liệu mới |
+|---|---|
+| `/` — Danh mục sản phẩm, Sản phẩm nổi bật, Kiến thức sức khỏe, Blog | Payload (`products`, `product-categories`, `articles`) — Banner đã nối từ trước |
+| `/san-pham` | Payload `products` + `product-categories`, filter/sort/search vẫn client-side trên data thật |
+| `/san-pham/[slug]` | Payload `products`, query theo `slug`, `notFound()` khi không có |
+| Search (icon kính lúp ở Header, mọi trang) | Payload `products` qua Route Handler `/api/search` mới |
+| `/kien-thuc` | Payload `articles` (`type=healthKnowledge`), danh mục chip tính distinct từ data thật |
+| `/kien-thuc/[slug]` | **Viết lại hoàn toàn** — trước đây bỏ qua `slug`, giờ query đúng bài viết + render Lexical richText thật |
+| `/blog` | Payload `articles` (`type=blog`), tương tự `/kien-thuc` |
+| `/blog/[slug]` | **Viết lại hoàn toàn**, tương tự `/kien-thuc/[slug]` |
+| `/lien-he` | Hotline đọc từ `SiteSettings.hotline` thay vì hardcode |
+
+## Vẫn hardcode — có lý do, đã ghi `// TODO` tại chỗ trong code
+
+| Nơi | Lý do | Theo dõi ở |
+|---|---|---|
+| Trang chủ: Giá trị nổi bật/cốt lõi, Về DSH Nature, Sứ mệnh & Tầm nhìn (`mock-data.ts`) | Chưa có Global `CoreValues`/`AboutPage` | Phase A2 |
+| `gioi-thieu/page.tsx` (toàn bộ — Tổng quan, Sơ đồ chiến lược, Chứng nhận, Đội ngũ) | Chưa có Global/Collection tương ứng | Phase A2 |
+| `tu-van/page.tsx` — `FAQS` | Chưa có collection `Faqs` | Phase A2 |
+| `dai-ly/page.tsx` — `MOCK_DEALERS` | Thuộc domain Prisma (đăng ký đại lý), không phải Payload content | Phase B (dealer backend) |
+| SEO field riêng cho `Products` (title/description/OG tuỳ chỉnh) | Dùng metadata mặc định (name + shortDescription) tạm thời | Phase C (cùng sitemap/robots/Schema.org) |
+| `getFeaturedProducts()` chọn "sản phẩm nổi bật" bằng N sản phẩm mới nhất | `Products` chưa có field `isFeatured` để admin tự chọn | Phase A2 (ghi chú ngay trong code) |
+
+`src/lib/products-data.ts` và `src/features/home/mock-data.ts` **chưa bị xoá** — đúng yêu cầu, giữ làm tham chiếu/fallback. `products-data.ts` hiện không còn được import ở đâu (đã xác nhận bằng grep); `mock-data.ts` vẫn được trang chủ import làm fallback khi CMS rỗng.
+
+## Cần bạn nhập data qua `/admin` để các trang trên hiển thị đúng (không phải lỗi — đúng thiết kế đã duyệt ở §5.5)
+
+Cho tới khi nhập, các trang sẽ hiện `EmptyState` (sản phẩm/bài viết) hoặc fallback về `mock-data.ts` (trang chủ):
+
+1. **`Product Categories`** (`/admin/collections/product-categories`) — 4 nhóm: Hỗ trợ hô hấp, Hỗ trợ xương khớp, Hỗ trợ tuần hoàn – não bộ, Hỗ trợ giấc ngủ (slug đúng theo brief để URL `?nhom=` hoạt động: `ho-hap`, `xuong-khop`, `tuan-hoan-nao-bo`, `giac-ngu`).
+2. **`Products`** (`/admin/collections/products`) — ít nhất vài sản phẩm, nhớ điền đủ `tabs` (8 mục) và ít nhất 1 ảnh để trang chi tiết/card hiển thị đủ.
+3. **`Articles`** (`/admin/collections/articles`) — cần cả 2 loại (`type = Kiến thức sức khỏe` và `type = Blog tin tức`); **nhớ điền field `content` (richText)** — nếu để trống, trang chi tiết sẽ hiện "Bài viết chưa có nội dung chi tiết" thay vì bài viết đầy đủ.
+4. **`Banners`** — không đổi so với trước (đã hoạt động từ Phase 1), nhắc lại nếu chưa nhập.
+
+## Việc chưa làm trong Phase A (nằm ngoài phạm vi đã duyệt)
+
+- Core Values, About/Mission/Vision, Sơ đồ chiến lược, Chứng nhận, Đội ngũ, FAQs (Phase A2 — cần bạn duyệt schema Global/Collection mới trước khi làm, xem mục 4).
+- Dealer system thật (Phase B).
+- SEO field riêng cho Products, sitemap.ts/robots.ts/Schema.org (Phase C, theo `AUDIT_REPORT.md` mục 9).
+- Chưa chạy `npm run build`/`type-check`/`lint` để xác nhận biên dịch (môi trường này không có Node.js) — **bạn cần tự chạy trước khi deploy**.
