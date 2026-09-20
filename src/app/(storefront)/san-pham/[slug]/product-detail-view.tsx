@@ -5,17 +5,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChevronRight, Minus, Plus, ShieldCheck, ShoppingBag, Truck } from "lucide-react";
-import type { ProductDetail } from "@/lib/products-data";
+import type { ProductViewModel } from "@/types/product";
 import { useCart } from "@/context/cart-context";
 
-export function ProductDetailView({ product }: { product: ProductDetail }) {
+export function ProductDetailView({ product }: { product: ProductViewModel }) {
   const router = useRouter();
   const { addToCart } = useCart();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState<keyof ProductDetail["tabs"]>("description");
+  const [activeTab, setActiveTab] = useState<keyof ProductViewModel["tabs"]>("description");
 
-  const TAB_LABELS: Record<keyof ProductDetail["tabs"], string> = {
+  const TAB_LABELS: Record<keyof ProductViewModel["tabs"], string> = {
     description: "Mô tả sản phẩm",
     ingredients: "Thành phần",
     usage: "Công dụng hỗ trợ",
@@ -32,7 +32,7 @@ export function ProductDetailView({ product }: { product: ProductDetail }) {
         slug: product.slug,
         name: product.name,
         price: product.price,
-        image: product.images[0],
+        image: product.images[0] ?? "",
         categoryName: product.categoryName,
       },
       quantity
@@ -60,13 +60,17 @@ export function ProductDetailView({ product }: { product: ProductDetail }) {
         {/* Product Gallery */}
         <div className="space-y-4">
           <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-border bg-white shadow-soft">
-            <Image
-              src={product.images[selectedImageIndex] || product.images[0]}
-              alt={product.name}
-              fill
-              className="object-contain p-6"
-              priority
-            />
+            {product.images.length > 0 ? (
+              <Image
+                src={product.images[selectedImageIndex] || product.images[0]}
+                alt={product.name}
+                fill
+                className="object-contain p-6"
+                priority
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-primary-light" aria-hidden />
+            )}
           </div>
 
           {product.images.length > 1 && (
@@ -171,7 +175,7 @@ export function ProductDetailView({ product }: { product: ProductDetail }) {
       {/* Product Detail Tabs */}
       <div className="mt-12 rounded-2xl border border-border bg-white p-6 shadow-soft">
         <div className="flex flex-wrap border-b border-border gap-2 pb-3">
-          {(Object.keys(TAB_LABELS) as Array<keyof ProductDetail["tabs"]>).map((key) => (
+          {(Object.keys(TAB_LABELS) as Array<keyof ProductViewModel["tabs"]>).map((key) => (
             <button
               key={key}
               type="button"
