@@ -134,14 +134,60 @@ export function AdminEyeToggle() {
       }
     };
 
+    const attachTopHeaderBtn = () => {
+      if (document.querySelector(".dsh-top-view-website-btn")) return;
+
+      const headerBar =
+        document.querySelector(".app-header") ||
+        document.querySelector("header") ||
+        document.querySelector(".step-nav") ||
+        document.querySelector(".template-default__header");
+
+      if (!headerBar) return;
+
+      const link = document.createElement("a");
+      link.href = "/";
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.className = "dsh-top-view-website-btn";
+      link.style.display = "inline-flex";
+      link.style.alignItems = "center";
+      link.style.gap = "6px";
+      link.style.padding = "0.4rem 0.85rem";
+      link.style.marginLeft = "auto";
+      link.style.marginRight = "1rem";
+      link.style.color = "#ffffff";
+      link.style.backgroundColor = "#087443";
+      link.style.fontSize = "0.82rem";
+      link.style.fontWeight = "600";
+      link.style.borderRadius = "8px";
+      link.style.textDecoration = "none";
+      link.style.boxShadow = "0 2px 6px rgba(8, 116, 67, 0.22)";
+      link.style.transition = "all 0.2s ease";
+      link.style.zIndex = "999";
+
+      link.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+          <path d="M2 12h20"/>
+        </svg>
+        <span>Quay về Website DSH</span>
+      `;
+
+      headerBar.appendChild(link);
+    };
+
     attachEyeToggle();
     attachChangePwMenu();
     attachViewWebsiteBtn();
+    attachTopHeaderBtn();
 
     const timer = setInterval(() => {
       attachEyeToggle();
       attachChangePwMenu();
       attachViewWebsiteBtn();
+      attachTopHeaderBtn();
     }, 500);
 
     return () => clearInterval(timer);
