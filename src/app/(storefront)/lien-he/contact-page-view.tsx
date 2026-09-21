@@ -68,7 +68,7 @@ export function ContactPageView({ siteSettings }: { siteSettings: SiteSettings |
         <div className="space-y-6">
           <div className="rounded-2xl border border-border bg-white p-6 shadow-soft space-y-6">
             <h3 className="font-heading font-bold text-foreground text-lg border-b border-border pb-3">
-              CÔNG TY CỔ PHẦN DSH NATURE
+              {siteSettings?.companyName || "CÔNG TY CỔ PHẦN DSH NATURE"}
             </h3>
 
             <div className="space-y-4 text-xs md:text-sm text-muted-foreground">
@@ -76,7 +76,7 @@ export function ContactPageView({ siteSettings }: { siteSettings: SiteSettings |
                 <MapPin className="size-5 text-primary shrink-0 mt-0.5" />
                 <div>
                   <strong className="text-foreground block">Địa chỉ trụ sở:</strong>
-                  <span>Tầng 5, Tòa nhà DSH Nature, Hà Nội, Việt Nam</span>
+                  <span>{siteSettings?.address || "23 Nguyễn Văn Thủ, Q12, TP.Hồ Chí Minh"}</span>
                 </div>
               </div>
 
@@ -85,7 +85,7 @@ export function ContactPageView({ siteSettings }: { siteSettings: SiteSettings |
                 <div>
                   <strong className="text-foreground block">Hotline tư vấn:</strong>
                   <span className="text-primary font-semibold">
-                    {siteSettings?.hotline || "1900 xxxx / 0987 654 321"}
+                    {siteSettings?.hotline || "0886554242"}
                   </span>
                 </div>
               </div>
@@ -94,7 +94,7 @@ export function ContactPageView({ siteSettings }: { siteSettings: SiteSettings |
                 <Mail className="size-5 text-primary shrink-0 mt-0.5" />
                 <div>
                   <strong className="text-foreground block">Email tiếp nhận:</strong>
-                  <span>cskh@dshnature.vn</span>
+                  <span>{siteSettings?.email || "dshnature@gmail.com"}</span>
                 </div>
               </div>
 

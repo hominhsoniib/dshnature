@@ -18,6 +18,9 @@ const inter = Inter({
   subsets: ["latin", "vietnamese"],
 });
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "DSH NATURE | Đồng hành cùng sức khỏe gia đình",
   description:

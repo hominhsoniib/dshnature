@@ -15,6 +15,19 @@ export const SiteSettings: GlobalConfig = {
     read: () => true,
     update: isAdminOrEditor,
   },
+  hooks: {
+    afterChange: [
+      async () => {
+        try {
+          const { revalidatePath } = await import('next/cache')
+          revalidatePath('/', 'layout')
+          revalidatePath('/lien-he')
+        } catch {
+          // Ignore outside Next.js request lifecycle
+        }
+      },
+    ],
+  },
   fields: [
     {
       type: 'tabs',
