@@ -7,9 +7,17 @@ import { CheckCircle2, CreditCard, QrCode, ShieldCheck, Truck, Wallet } from "lu
 import { useCart } from "@/context/cart-context";
 import { SectionTitle } from "@/components/home/SectionTitle";
 
+type PaymentMethodId = "cod" | "bank" | "vnpay" | "momo";
+
+// TODO: re-enable "vnpay" and "momo" once C4 (real VNPay/MoMo gateway
+// integration — signature verify + webhook) ships. Until then, selecting
+// them would create an order with paymentStatus "pending" while showing
+// the customer a fake success screen. See audit report, item C4.
+const ENABLED_PAYMENT_METHODS: PaymentMethodId[] = ["cod", "bank"];
+
 export default function CheckoutPage() {
   const { items, totalPrice, clearCart } = useCart();
-  const [paymentMethod, setPaymentMethod] = useState<"cod" | "bank" | "vnpay" | "momo">("cod");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethodId>("cod");
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -266,35 +274,37 @@ export default function CheckoutPage() {
                   desc: "Thanh toán qua ứng dụng ví MoMo",
                   icon: Wallet,
                 },
-              ].map((method) => {
-                const Icon = method.icon;
-                const isSelected = paymentMethod === method.id;
-                return (
-                  <label
-                    key={method.id}
-                    className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer transition-all ${
-                      isSelected
-                        ? "border-primary bg-primary-light/30 ring-1 ring-primary"
-                        : "border-border hover:border-primary/50 bg-white"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="payment"
-                      checked={isSelected}
-                      onChange={() => setPaymentMethod(method.id)}
-                      className="mt-1 accent-primary"
-                    />
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <Icon className="size-4 text-primary" />
-                        <span className="font-semibold text-sm text-foreground">{method.title}</span>
+              ]
+                .filter((method) => ENABLED_PAYMENT_METHODS.includes(method.id))
+                .map((method) => {
+                  const Icon = method.icon;
+                  const isSelected = paymentMethod === method.id;
+                  return (
+                    <label
+                      key={method.id}
+                      className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer transition-all ${
+                        isSelected
+                          ? "border-primary bg-primary-light/30 ring-1 ring-primary"
+                          : "border-border hover:border-primary/50 bg-white"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="payment"
+                        checked={isSelected}
+                        onChange={() => setPaymentMethod(method.id)}
+                        className="mt-1 accent-primary"
+                      />
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <Icon className="size-4 text-primary" />
+                          <span className="font-semibold text-sm text-foreground">{method.title}</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-0.5">{method.desc}</p>
                       </div>
-                      <p className="text-xs text-muted-foreground mt-0.5">{method.desc}</p>
-                    </div>
-                  </label>
-                );
-              })}
+                    </label>
+                  );
+                })}
             </div>
           </div>
         </div>

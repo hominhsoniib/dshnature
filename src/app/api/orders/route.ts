@@ -12,6 +12,12 @@ const orderItemSchema = z.object({
   quantity: z.number().int().positive(),
 });
 
+// TODO: re-enable "vnpay", "momo" once C4 (real gateway integration —
+// signature verify + webhook) ships. Until then, reject them here too so a
+// direct API call bypassing the checkout UI can't create a "paid"-looking
+// order without a real payment. See audit report, item C4.
+const ENABLED_PAYMENT_METHODS = ["cod"] as const;
+
 const orderSchema = z.object({
   customerName: z.string().trim().min(2, "Họ tên phải có ít nhất 2 ký tự"),
   customerPhone: z.string().trim().min(9, "Số điện thoại không hợp lệ"),
@@ -21,7 +27,9 @@ const orderSchema = z.object({
   district: z.string().optional(),
   ward: z.string().optional(),
   note: z.string().optional(),
-  paymentMethod: z.enum(["cod", "vnpay", "momo"]),
+  paymentMethod: z.enum(ENABLED_PAYMENT_METHODS, {
+    message: "Phương thức thanh toán này hiện chưa được hỗ trợ. Vui lòng chọn Thanh toán khi nhận hàng (COD).",
+  }),
   items: z.array(orderItemSchema).min(1, "Giỏ hàng rỗng"),
 });
 
