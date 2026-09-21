@@ -154,9 +154,11 @@ nav.step-nav {
 
 /* Fix overlapping floating button */
 .dsh-top-view-website-btn {
+  position: static !important;
   margin-left: auto !important;
   margin-right: 1.5rem !important;
   flex-shrink: 0 !important;
+  align-self: center !important;
 }
 
 /* Sidebar Branding & Navigation */
@@ -519,25 +521,33 @@ button.form-submit__button {
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
+/* Explicit Disabled States (Unmodified Form / Initializing / Processing) */
+.btn--disabled,
+.btn[aria-disabled="true"],
+.form-submit__button[aria-disabled="true"],
 button[type="submit"]:disabled,
 .btn--style-primary:disabled,
 button.form-submit__button:disabled {
-  opacity: 0.65 !important;
+  background: #e2e8f0 !important;
+  color: #94a3b8 !important;
   cursor: not-allowed !important;
   pointer-events: none !important;
   box-shadow: none !important;
+  transform: none !important;
+  opacity: 0.75 !important;
 }
 
-.btn--style-primary:hover:not(:disabled),
-button[type="submit"]:hover:not(:disabled),
-button.form-submit__button:hover:not(:disabled) {
+/* Active / Enabled State Hover & Active Effects */
+.btn--style-primary:not(.btn--disabled):not([aria-disabled="true"]):not(:disabled):hover,
+button[type="submit"]:not(.btn--disabled):not([aria-disabled="true"]):not(:disabled):hover,
+button.form-submit__button:not(.btn--disabled):not([aria-disabled="true"]):not(:disabled):hover {
   background: linear-gradient(135deg, #0a8f53 0%, var(--dsh-primary) 100%) !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 8px 20px rgba(8, 116, 67, 0.38) !important;
 }
 
-.btn--style-primary:active:not(:disabled),
-button[type="submit"]:active:not(:disabled) {
+.btn--style-primary:not(.btn--disabled):not([aria-disabled="true"]):not(:disabled):active,
+button[type="submit"]:not(.btn--disabled):not([aria-disabled="true"]):not(:disabled):active {
   transform: scale(0.98) !important;
 }
 
