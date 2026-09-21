@@ -137,13 +137,13 @@ export function AdminEyeToggle() {
     const attachTopHeaderBtn = () => {
       if (document.querySelector(".dsh-top-view-website-btn")) return;
 
-      const headerBar =
+      const headerControls =
+        document.querySelector(".app-header__controls") ||
+        document.querySelector(".template-default__user") ||
         document.querySelector(".app-header") ||
-        document.querySelector("header") ||
-        document.querySelector(".step-nav") ||
-        document.querySelector(".template-default__header");
+        document.querySelector("header");
 
-      if (!headerBar) return;
+      if (!headerControls) return;
 
       const link = document.createElement("a");
       link.href = "/";
@@ -153,29 +153,34 @@ export function AdminEyeToggle() {
       link.style.display = "inline-flex";
       link.style.alignItems = "center";
       link.style.gap = "6px";
-      link.style.padding = "0.4rem 0.85rem";
+      link.style.padding = "0.45rem 0.95rem";
       link.style.marginLeft = "auto";
-      link.style.marginRight = "1rem";
+      link.style.marginRight = "1.25rem";
       link.style.color = "#ffffff";
       link.style.backgroundColor = "#087443";
       link.style.fontSize = "0.82rem";
       link.style.fontWeight = "600";
       link.style.borderRadius = "8px";
       link.style.textDecoration = "none";
-      link.style.boxShadow = "0 2px 6px rgba(8, 116, 67, 0.22)";
+      link.style.boxShadow = "0 2px 8px rgba(8, 116, 67, 0.25)";
       link.style.transition = "all 0.2s ease";
-      link.style.zIndex = "999";
+      link.style.zIndex = "10";
+      link.style.whiteSpace = "nowrap";
 
       link.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"/>
           <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
           <path d="M2 12h20"/>
         </svg>
-        <span>Quay về Website DSH</span>
+        <span>Xem Trang Web</span>
       `;
 
-      headerBar.appendChild(link);
+      if (headerControls.firstChild) {
+        headerControls.insertBefore(link, headerControls.firstChild);
+      } else {
+        headerControls.appendChild(link);
+      }
     };
 
     attachEyeToggle();

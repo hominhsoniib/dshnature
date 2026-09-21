@@ -1,55 +1,285 @@
-/* DSH NATURE CUSTOM PAYLOAD ADMIN UI STYLES */
+/* DSH NATURE PREMIUM PAYLOAD CMS 3 ADMIN UI STYLES */
 
 :root {
   --dsh-primary: #087443;
   --dsh-primary-dark: #005c36;
   --dsh-primary-light: #eaf6ef;
+  --dsh-primary-hover: #0a8f53;
   --dsh-bg-main: #f8faf7;
+  --dsh-card-bg: #ffffff;
   --dsh-border: #e2e8f0;
   --dsh-text-title: #0f172a;
   --dsh-text-body: #334155;
   --dsh-text-muted: #64748b;
-  --dsh-radius: 10px;
+  --dsh-shadow-sm: 0 2px 8px rgba(8, 116, 67, 0.05);
+  --dsh-shadow-md: 0 8px 24px -4px rgba(8, 116, 67, 0.12), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  --dsh-shadow-hover: 0 16px 36px -6px rgba(8, 116, 67, 0.22), 0 6px 16px -2px rgba(0, 0, 0, 0.06);
+  --dsh-radius: 14px;
 }
 
-/* Reset & Layout Nền Trang Admin */
+/* Reset & Main Background */
 html, body {
   background-color: var(--dsh-bg-main) !important;
   margin: 0 !important;
   padding: 0 !important;
   font-family: var(--font-sans, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif) !important;
+  color: var(--dsh-text-body) !important;
 }
 
-/* Page & Header Title Styling */
+/* Header & Top Bar Fix */
+.app-header,
+header.app-header,
+.template-default__header {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  border-bottom: 1px solid var(--dsh-border) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02) !important;
+  display: flex !important;
+  align-items: center !important;
+  position: relative !important;
+  z-index: 20 !important;
+}
+
+.step-nav,
+nav.step-nav {
+  display: flex !important;
+  align-items: center !important;
+  font-weight: 600 !important;
+  color: var(--dsh-text-title) !important;
+}
+
+/* Fix overlapping floating button */
+.dsh-top-view-website-btn {
+  margin-left: auto !important;
+  margin-right: 1.5rem !important;
+  flex-shrink: 0 !important;
+}
+
+/* Sidebar Branding & Navigation */
+aside.nav,
+nav.nav,
+.nav__scroll {
+  background-color: #ffffff !important;
+  border-right: 1px solid var(--dsh-border) !important;
+}
+
+.nav-group__title {
+  font-size: 0.75rem !important;
+  font-weight: 800 !important;
+  color: var(--dsh-primary) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  padding: 0.6rem 0.85rem !important;
+  margin-top: 1.25rem !important;
+  opacity: 0.95 !important;
+}
+
+nav.nav a.nav__link,
+.nav a {
+  border-radius: 10px !important;
+  margin-bottom: 4px !important;
+  padding: 0.65rem 0.95rem !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  color: var(--dsh-text-body) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+nav.nav a.nav__link:hover {
+  background-color: var(--dsh-primary-light) !important;
+  color: var(--dsh-primary) !important;
+  transform: translateX(3px) !important;
+}
+
+nav.nav a.nav__link--active,
+nav.nav a[aria-current="page"] {
+  background-color: var(--dsh-primary) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 12px rgba(8, 116, 67, 0.25) !important;
+}
+
+/* DASHBOARD PAGE OVERHAUL */
+.dashboard,
+.dashboard__wrap {
+  padding: 2.25rem 2.5rem !important;
+  max-width: 1400px !important;
+  margin: 0 auto !important;
+}
+
+.dashboard__group,
+.dashboard-group {
+  margin-bottom: 2.5rem !important;
+}
+
+.dashboard__group-title,
+.dashboard-group__title,
+h2.dashboard__group-title,
+.dashboard h2 {
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+  color: var(--dsh-text-title) !important;
+  letter-spacing: -0.02em !important;
+  margin-top: 1.75rem !important;
+  margin-bottom: 1.25rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.6rem !important;
+}
+
+.dashboard__group-title::before,
+.dashboard-group__title::before,
+.dashboard h2::before {
+  content: "" !important;
+  display: inline-block !important;
+  width: 5px !important;
+  height: 20px !important;
+  background: var(--dsh-primary) !important;
+  border-radius: 4px !important;
+}
+
+/* Dashboard Cards Grid & Cards */
+.dashboard__card-list,
+.card-list,
+ul[class*="card"] {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important;
+  gap: 1.5rem !important;
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.card,
+.dashboard__card,
+a.card,
+div.card,
+li[class*="card"] {
+  background: #ffffff !important;
+  border: 1px solid var(--dsh-border) !important;
+  border-radius: var(--dsh-radius) !important;
+  padding: 1.5rem 1.65rem !important;
+  box-shadow: var(--dsh-shadow-sm) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  min-height: 110px !important;
+  text-decoration: none !important;
+}
+
+.card::before,
+.dashboard__card::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 4px !important;
+  background: linear-gradient(90deg, var(--dsh-primary) 0%, #10b981 100%) !important;
+  opacity: 0.85 !important;
+  transition: height 0.25s ease !important;
+}
+
+.card:hover,
+.dashboard__card:hover,
+a.card:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: var(--dsh-shadow-hover) !important;
+  border-color: rgba(8, 116, 67, 0.35) !important;
+}
+
+.card:hover::before,
+.dashboard__card:hover::before {
+  height: 6px !important;
+  opacity: 1 !important;
+}
+
+.card__header,
+.dashboard__card-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 0.75rem !important;
+}
+
+.card__title,
+.dashboard__card-title,
+a.card__title {
+  font-size: 1.1rem !important;
+  font-weight: 700 !important;
+  color: var(--dsh-text-title) !important;
+  letter-spacing: -0.01em !important;
+  text-decoration: none !important;
+}
+
+.card__actions,
+.dashboard__card-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+.card__actions button,
+.card__actions a,
+.dashboard__card-actions a {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  background-color: var(--dsh-primary-light) !important;
+  color: var(--dsh-primary) !important;
+  border: none !important;
+  font-weight: 700 !important;
+  font-size: 1.15rem !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  text-decoration: none !important;
+}
+
+.card__actions button:hover,
+.card__actions a:hover,
+.dashboard__card-actions a:hover {
+  background-color: var(--dsh-primary) !important;
+  color: #ffffff !important;
+  transform: scale(1.12) rotate(90deg) !important;
+  box-shadow: 0 4px 12px rgba(8, 116, 67, 0.3) !important;
+}
+
+/* Edit / Content Pages Styling */
 .collection-edit__header,
 .global-edit__header,
 .list-header {
-  padding-bottom: 1rem !important;
-  margin-bottom: 1.5rem !important;
+  padding-bottom: 1.25rem !important;
+  margin-bottom: 1.75rem !important;
   border-bottom: 1px solid var(--dsh-border) !important;
 }
 
 .collection-edit__header h1,
 .global-edit__header h1,
 .list-header h1 {
-  font-size: 1.65rem !important;
-  font-weight: 700 !important;
+  font-size: 1.75rem !important;
+  font-weight: 800 !important;
   color: var(--dsh-text-title) !important;
-  letter-spacing: -0.02em !important;
+  letter-spacing: -0.025em !important;
 }
 
-/* Single-Column & Card Wrapper cho Edit Form */
 .collection-edit__wrap,
 .global-edit__wrap {
   background: #ffffff !important;
   border: 1px solid var(--dsh-border) !important;
-  border-radius: 14px !important;
-  padding: 1.75rem !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+  border-radius: 16px !important;
+  padding: 2rem !important;
+  box-shadow: var(--dsh-shadow-md) !important;
   margin-bottom: 2rem !important;
 }
 
-/* Tabs Field Navigation (Giao diện Tabs hiện đại, sang trọng) */
+/* Tabs Field Navigation */
 .tabs-field__navigation,
 div[class*="tabs-field"] nav {
   display: flex !important;
@@ -124,7 +354,7 @@ label.field-label,
   font-weight: bold !important;
 }
 
-/* Style cho Inputs, Textareas & Select Controls */
+/* Form Inputs, Textareas & Selects */
 input[type="text"],
 input[type="email"],
 input[type="number"],
@@ -132,10 +362,10 @@ input[type="password"],
 textarea,
 select {
   width: 100% !important;
-  border-radius: 8px !important;
+  border-radius: 10px !important;
   border: 1px solid #cbd5e1 !important;
-  padding: 0.65rem 0.85rem !important;
-  font-size: 0.9rem !important;
+  padding: 0.7rem 0.95rem !important;
+  font-size: 0.92rem !important;
   color: var(--dsh-text-title) !important;
   background-color: #ffffff !important;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
@@ -160,60 +390,37 @@ textarea:focus,
 select:focus {
   background-color: #ffffff !important;
   border-color: var(--dsh-primary) !important;
-  box-shadow: 0 0 0 3px rgba(8, 116, 67, 0.15) !important;
+  box-shadow: 0 0 0 3px rgba(8, 116, 67, 0.18) !important;
   outline: none !important;
 }
 
-/* Textarea Min Height */
 textarea {
-  min-height: 100px !important;
+  min-height: 110px !important;
   line-height: 1.5 !important;
 }
 
-/* Buttons (Nút Lưu, Thêm, Sửa) */
+/* Buttons (Save, Submit, Add) */
 .btn--style-primary,
 button[type="submit"],
 button.form-submit__button {
-  background-color: var(--dsh-primary) !important;
+  background: linear-gradient(135deg, var(--dsh-primary) 0%, var(--dsh-primary-dark) 100%) !important;
   color: #ffffff !important;
-  border-radius: 8px !important;
-  padding: 0.65rem 1.35rem !important;
-  font-weight: 600 !important;
-  font-size: 0.9rem !important;
+  border-radius: 10px !important;
+  padding: 0.72rem 1.65rem !important;
+  font-weight: 700 !important;
+  font-size: 0.92rem !important;
   border: none !important;
   cursor: pointer !important;
-  box-shadow: 0 2px 6px rgba(8, 116, 67, 0.22) !important;
-  transition: all 0.2s ease !important;
+  box-shadow: 0 4px 14px rgba(8, 116, 67, 0.28) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .btn--style-primary:hover,
 button[type="submit"]:hover,
 button.form-submit__button:hover {
-  background-color: var(--dsh-primary-dark) !important;
-  transform: translateY(-1px) !important;
-  box-shadow: 0 4px 12px rgba(8, 116, 67, 0.32) !important;
-}
-
-/* Sidebar Navigation Items */
-nav.nav a.nav__link,
-.nav a {
-  border-radius: 8px !important;
-  margin-bottom: 2px !important;
-  padding: 0.55rem 0.85rem !important;
-  font-size: 0.9rem !important;
-  transition: all 0.15s ease !important;
-}
-
-nav.nav a.nav__link:hover {
-  background-color: var(--dsh-primary-light) !important;
-  color: var(--dsh-primary) !important;
-}
-
-nav.nav a.nav__link--active,
-nav.nav a[aria-current="page"] {
-  background-color: var(--dsh-primary-light) !important;
-  color: var(--dsh-primary) !important;
-  font-weight: 700 !important;
+  background: linear-gradient(135deg, #0a8f53 0%, var(--dsh-primary) 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(8, 116, 67, 0.38) !important;
 }
 
 /* Login Page Minimal Template */

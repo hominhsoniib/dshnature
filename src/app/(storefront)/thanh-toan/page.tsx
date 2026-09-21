@@ -41,14 +41,54 @@ export default function CheckoutPage() {
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmitOrder = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
-    const generatedId = `#DSH-${Math.floor(100000 + Math.random() * 900000)}`;
-    setOrderId(generatedId);
-    setIsSuccess(true);
-    clearCart();
+    setIsSubmitting(true);
+    setSubmitError("");
+
+    try {
+      const apiPaymentMethod = paymentMethod === "bank" ? "cod" : paymentMethod;
+
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customerName: formData.fullName,
+          customerPhone: formData.phone,
+          customerEmail: formData.email,
+          shippingAddress: formData.address,
+          province: formData.city,
+          district: formData.district,
+          note: formData.note,
+          paymentMethod: apiPaymentMethod,
+          items: items.map((item) => ({
+            slug: item.slug,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+          })),
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Không thể tạo đơn hàng. Vui lòng thử lại.");
+      }
+
+      setOrderId(data.orderNumber);
+      setIsSuccess(true);
+      clearCart();
+    } catch (err: unknown) {
+      setSubmitError(err instanceof Error ? err.message : "Có lỗi xảy ra khi tạo đơn hàng.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isSuccess) {
@@ -302,11 +342,16 @@ export default function CheckoutPage() {
             </span>
           </div>
 
+          {submitError && (
+            <p className="text-xs text-red-500 font-medium text-center">{submitError}</p>
+          )}
+
           <button
             type="submit"
-            className="w-full rounded-xl bg-primary py-3.5 text-center text-sm font-semibold text-primary-foreground shadow-soft transition-colors hover:bg-primary-dark"
+            disabled={isSubmitting}
+            className="w-full rounded-xl bg-primary py-3.5 text-center text-sm font-semibold text-primary-foreground shadow-soft transition-colors hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Xác nhận đặt hàng
+            {isSubmitting ? "Đang xử lý..." : "Xác nhận đặt hàng"}
           </button>
 
           <div className="flex items-center justify-center gap-1 text-[11px] text-muted-foreground pt-2">

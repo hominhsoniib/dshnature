@@ -4,7 +4,7 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
@@ -15,13 +15,85 @@ datasource db {
   provider = "postgresql"
 }
 
-// PHASE 0: chỉ setup tooling (generator/datasource), chưa định nghĩa model.
-// Các bảng business logic (customers, addresses, orders, order_items, payments,
-// shipments, dealers, dealer_regions, dealer_documents, consultation_requests,
-// reviews, wishlists, newsletter_subscribers, contact_requests, notifications,
-// users/roles/permissions nhân sự admin) thuộc PROJECT_BRIEF.md mục 4 — sẽ định
-// nghĩa dần theo đúng phase cần tới (Phase 3 Cart/Checkout, Phase 4 Consultation,
-// Phase 5 Dealer...) vì brief mới chỉ liệt kê TÊN bảng, chưa có field chi tiết
-// cho từng bảng — tự suy diễn field lúc này sẽ vi phạm yêu cầu "không tự suy diễn".
-// Cùng 1 Postgres (Neon) với Payload — Payload tự quản lý bảng riêng của nó
-// (users, media...), Prisma chỉ quản lý các bảng liệt kê ở trên, không đụng nhau.
+// PHASE 3 & PHASE 4: Các bảng nghiệp vụ E-commerce và Form tương tác
+// Cùng 1 Postgres (Neon) với Payload — Payload tự quản lý bảng riêng của nó (users, media...), Prisma quản lý các bảng nghiệp vụ dưới đây.
+
+model Order {
+  id              String      @id @default(cuid())
+  orderNumber     String      @unique
+  customerName    String
+  customerPhone   String
+  customerEmail   String?
+  shippingAddress String
+  province        String?
+  district        String?
+  ward            String?
+  note            String?
+  paymentMethod   String      // "cod" | "vnpay" | "momo"
+  paymentStatus   String      @default("pending") // "pending" | "paid" | "failed"
+  orderStatus     String      @default("pending") // "pending" | "processing" | "completed" | "cancelled"
+  totalAmount     Int
+  items           OrderItem[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productSlug String
+  productName String
+  price       Int
+  quantity    Int
+  createdAt   DateTime @default(now())
+
+  @@map("order_items")
+}
+
+model DealerRequest {
+  id          String   @id @default(cuid())
+  fullName    String
+  phone       String
+  email       String?
+  region      String
+  experience  String?
+  message     String?
+  status      String   @default("pending") // "pending" | "contacted" | "approved" | "rejected"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("dealer_requests")
+}
+
+model ConsultationRequest {
+  id          String   @id @default(cuid())
+  fullName    String
+  phone       String
+  email       String?
+  age         Int?
+  gender      String?
+  healthIssue String
+  status      String   @default("pending") // "pending" | "advised" | "closed"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("consultation_requests")
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  fullName  String
+  phone     String
+  email     String?
+  subject   String?
+  message   String
+  status    String   @default("unread") // "unread" | "read" | "replied"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("contact_messages")
+}
+

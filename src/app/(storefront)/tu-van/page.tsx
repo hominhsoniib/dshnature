@@ -32,14 +32,40 @@ export default function ConsultationPage() {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.fullName || !formData.phone || !formData.question) {
       toast.add({ description: "Vui lòng điền đầy đủ Họ tên, Số điện thoại và Câu hỏi." });
       return;
     }
-    setIsSubmitted(true);
-    toast.add({ description: "Gửi câu hỏi tư vấn thành công!" });
+
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/consultations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          phone: formData.phone,
+          email: formData.email,
+          healthIssue: `[Chủ đề: ${formData.topic}] ${formData.question}`,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Gửi yêu cầu thất bại.");
+      }
+
+      setIsSubmitted(true);
+      toast.add({ description: "Gửi câu hỏi tư vấn thành công! Đã lưu câu hỏi vào hệ thống." });
+    } catch (err: unknown) {
+      toast.add({ description: err instanceof Error ? err.message : "Đã có lỗi xảy ra." });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -165,10 +191,11 @@ export default function ConsultationPage() {
 
               <button
                 type="submit"
-                className="flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition-colors hover:bg-primary-dark w-full sm:w-auto"
+                disabled={isSubmitting}
+                className="flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition-colors hover:bg-primary-dark w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Send className="size-4" />
-                Gửi yêu cầu tư vấn
+                {isSubmitting ? "Đang gửi..." : "Gửi yêu cầu tư vấn"}
               </button>
             </form>
           )}

@@ -30,14 +30,41 @@ export default function DealerPage() {
     ? MOCK_DEALERS
     : MOCK_DEALERS.filter((d) => d.city === selectedCity);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.fullName || !formData.phone) {
       toast.add({ description: "Vui lòng điền Họ tên và Số điện thoại." });
       return;
     }
-    setIsSubmitted(true);
-    toast.add({ description: "Đăng ký đại lý thành công! Bộ phận phát triển đại lý sẽ liên hệ." });
+
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/dealers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          phone: formData.phone,
+          email: formData.email,
+          region: formData.city,
+          message: formData.note,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Gửi đăng ký thất bại.");
+      }
+
+      setIsSubmitted(true);
+      toast.add({ description: "Đăng ký đại lý thành công! Đã lưu hồ sơ vào hệ thống." });
+    } catch (err: unknown) {
+      toast.add({ description: err instanceof Error ? err.message : "Đã có lỗi xảy ra." });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -236,10 +263,11 @@ export default function DealerPage() {
 
             <button
               type="submit"
-              className="flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-soft transition-colors hover:bg-primary-dark w-full"
+              disabled={isSubmitting}
+              className="flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-soft transition-colors hover:bg-primary-dark w-full disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Send className="size-4" />
-              Gửi đăng ký hợp tác đại lý
+              {isSubmitting ? "Đang gửi đăng ký..." : "Gửi đăng ký hợp tác đại lý"}
             </button>
           </form>
         )}

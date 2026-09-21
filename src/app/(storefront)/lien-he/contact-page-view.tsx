@@ -18,14 +18,41 @@ export function ContactPageView({ siteSettings }: { siteSettings: SiteSettings |
 
   const [isSent, setIsSent] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.fullName || !formData.phone || !formData.message) {
       toast.add({ description: "Vui lòng điền Họ tên, Số điện thoại và Nội dung tin nhắn." });
       return;
     }
-    setIsSent(true);
-    toast.add({ description: "Cảm ơn bạn! Thông điệp liên hệ đã được gửi thành công." });
+
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          phone: formData.phone,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Gửi tin nhắn thất bại.");
+      }
+
+      setIsSent(true);
+      toast.add({ description: "Cảm ơn bạn! Thông điệp liên hệ đã được gửi thành công." });
+    } catch (err: unknown) {
+      toast.add({ description: err instanceof Error ? err.message : "Đã có lỗi xảy ra." });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -167,10 +194,11 @@ export function ContactPageView({ siteSettings }: { siteSettings: SiteSettings |
 
               <button
                 type="submit"
-                className="flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-soft transition-colors hover:bg-primary-dark w-full sm:w-auto"
+                disabled={isSubmitting}
+                className="flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-soft transition-colors hover:bg-primary-dark w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Send className="size-4" />
-                Gửi liên hệ
+                {isSubmitting ? "Đang gửi..." : "Gửi liên hệ"}
               </button>
             </form>
           )}
