@@ -54,28 +54,22 @@ export function Footer({ siteSettings }: { siteSettings: SiteSettings | null }) 
         <div>
           <p className="mb-3 text-sm font-semibold text-foreground">Thông tin công ty</p>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            {siteSettings?.address ? (
-              <li className="flex gap-2">
-                <MapPin className="mt-0.5 size-4 shrink-0" aria-hidden />
-                {siteSettings.address}
-              </li>
-            ) : null}
-            {siteSettings?.hotline ? (
-              <li className="flex gap-2">
-                <Phone className="mt-0.5 size-4 shrink-0" aria-hidden />
-                <a href={`tel:${siteSettings.hotline.replace(/\s+/g, "")}`} className="hover:underline">
-                  {siteSettings.hotline}
-                </a>
-              </li>
-            ) : null}
-            {siteSettings?.email ? (
-              <li className="flex gap-2">
-                <Mail className="mt-0.5 size-4 shrink-0" aria-hidden />
-                <a href={`mailto:${siteSettings.email}`} className="hover:underline">
-                  {siteSettings.email}
-                </a>
-              </li>
-            ) : null}
+            <li className="flex gap-2">
+              <MapPin className="mt-0.5 size-4 shrink-0" aria-hidden />
+              <span>{siteSettings?.address || "23 Nguyễn Văn Thủ, Q12, TP.Hồ Chí Minh"}</span>
+            </li>
+            <li className="flex gap-2">
+              <Phone className="mt-0.5 size-4 shrink-0" aria-hidden />
+              <a href={`tel:${(siteSettings?.hotline || "0886554242").replace(/\s+/g, "")}`} className="hover:underline">
+                {siteSettings?.hotline || "0886554242"}
+              </a>
+            </li>
+            <li className="flex gap-2">
+              <Mail className="mt-0.5 size-4 shrink-0" aria-hidden />
+              <a href={`mailto:${siteSettings?.email || "dshnature@gmail.com"}`} className="hover:underline">
+                {siteSettings?.email || "dshnature@gmail.com"}
+              </a>
+            </li>
           </ul>
         </div>
 
