@@ -106,7 +106,7 @@ export default buildConfig({
           ? { generateFileURL: generateR2PublicFileURL }
           : true,
       },
-      bucket: process.env.R2_BUCKET || '',
+      bucket: process.env.R2_BUCKET_NAME || '',
       config: {
         endpoint: process.env.R2_ENDPOINT,
         region: 'auto',
