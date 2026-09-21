@@ -14,7 +14,8 @@ export async function getSiteSettings(): Promise<SiteSettingsType | null> {
       overrideAccess: true,
     });
     return settings as unknown as SiteSettingsType;
-  } catch {
+  } catch (err) {
+    console.error("[getSiteSettings] Error fetching site-settings:", err);
     return null;
   }
 }
