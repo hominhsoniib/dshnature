@@ -106,7 +106,7 @@ export default buildConfig({
           ? { generateFileURL: generateR2PublicFileURL }
           : true,
       },
-      bucket: process.env.R2_BUCKET_NAME || '',
+      bucket: process.env.R2_BUCKET_NAME || process.env.R2_BUCKET || '',
       config: {
         endpoint: process.env.R2_ENDPOINT,
         region: 'auto',
@@ -115,6 +115,7 @@ export default buildConfig({
           secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || '',
         },
         forcePathStyle: true,
+        maxAttempts: 2,
       },
     }),
   ],

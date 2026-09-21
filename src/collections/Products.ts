@@ -1,3 +1,4 @@
+import { revalidatePath } from 'next/cache'
 import type { CollectionConfig } from 'payload'
 
 import { isAdmin } from '@/access/isAdmin'
@@ -58,6 +59,34 @@ export const Products: CollectionConfig = {
           validateNoForbiddenWords(data.shortDescription)
         }
         return data
+      },
+    ],
+    afterChange: [
+      ({ doc }) => {
+        try {
+          revalidatePath('/')
+          revalidatePath('/san-pham')
+          if (doc?.slug) {
+            revalidatePath(`/san-pham/${doc.slug}`)
+          }
+          revalidatePath('/sitemap.xml')
+        } catch (err) {
+          console.error('[Products afterChange hook] revalidate error:', err)
+        }
+      },
+    ],
+    afterDelete: [
+      ({ doc }) => {
+        try {
+          revalidatePath('/')
+          revalidatePath('/san-pham')
+          if (doc?.slug) {
+            revalidatePath(`/san-pham/${doc.slug}`)
+          }
+          revalidatePath('/sitemap.xml')
+        } catch (err) {
+          console.error('[Products afterDelete hook] revalidate error:', err)
+        }
       },
     ],
   },
@@ -137,14 +166,14 @@ export const Products: CollectionConfig = {
               label: 'Các thông tin chi tiết (Tabs SP)',
               type: 'group',
               fields: [
-                { name: 'description', label: '1. Mô tả chi tiết', type: 'textarea' },
-                { name: 'ingredients', label: '2. Thành phần chính', type: 'textarea' },
-                { name: 'usage', label: '3. Công dụng sản phẩm', type: 'textarea' },
-                { name: 'targetUsers', label: '4. Đối tượng sử dụng', type: 'textarea' },
-                { name: 'howToUse', label: '5. Hướng dẫn sử dụng', type: 'textarea' },
-                { name: 'specification', label: '6. Quy cách đóng gói', type: 'textarea' },
-                { name: 'storage', label: '7. Hướng dẫn bảo quản', type: 'textarea' },
-                { name: 'productDossier', label: '8. Hồ sơ công bố / Giấy phép', type: 'textarea' },
+                { name: 'description', label: '1. Mô tả chi tiết', type: 'textarea', admin: { width: '50%' } },
+                { name: 'ingredients', label: '2. Thành phần chính', type: 'textarea', admin: { width: '50%' } },
+                { name: 'usage', label: '3. Công dụng sản phẩm', type: 'textarea', admin: { width: '50%' } },
+                { name: 'targetUsers', label: '4. Đối tượng sử dụng', type: 'textarea', admin: { width: '50%' } },
+                { name: 'howToUse', label: '5. Hướng dẫn sử dụng', type: 'textarea', admin: { width: '50%' } },
+                { name: 'specification', label: '6. Quy cách đóng gói', type: 'textarea', admin: { width: '50%' } },
+                { name: 'storage', label: '7. Hướng dẫn bảo quản', type: 'textarea', admin: { width: '50%' } },
+                { name: 'productDossier', label: '8. Hồ sơ công bố / Giấy phép', type: 'textarea', admin: { width: '50%' } },
               ],
             },
           ],
