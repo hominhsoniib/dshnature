@@ -7,6 +7,7 @@ function getPgPool() {
   if (!pool && process.env.DATABASE_URL) {
     pool = new pg.Pool({
       connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
       max: 5,
       idleTimeoutMillis: 10000,
     });
@@ -19,7 +20,7 @@ function getPgPool() {
  * and instant zero-latency retrieval of updated company info across all storefront pages.
  */
 export async function getSiteSettings(): Promise<SiteSettingsType | null> {
-  // 1. Direct pg SQL Query (Zero extra engines, 100% reliable on Vercel Serverless)
+  // 1. Direct pg SQL Query (Zero extra engines, 100% reliable on Vercel Serverless with SSL)
   try {
     const p = getPgPool();
     if (p) {
