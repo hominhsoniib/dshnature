@@ -17,6 +17,16 @@ import GoogleProvider from 'next-auth/providers/google'
  * (đang chờ) thì bỏ qua provider này thay vì để NextAuth khởi tạo với
  * clientId/secret rỗng (crash lúc gọi /api/auth/signin/google).
  */
+// Fail-fast: NextAuth tự sinh secret tạm cho development (kèm cảnh báo) nếu
+// thiếu NEXTAUTH_SECRET, nhưng ở production thì bắt buộc — thiếu sẽ khiến JWT
+// session ký/verify không an toàn (hoặc lỗi mơ hồ ở lần request đầu tiên thay
+// vì báo rõ ngay lúc khởi động).
+if (process.env.NODE_ENV === 'production' && !process.env.NEXTAUTH_SECRET) {
+  throw new Error(
+    'Missing required env var: NEXTAUTH_SECRET (bắt buộc ở production — tạo ngẫu nhiên, đủ dài, vd: openssl rand -base64 32).',
+  )
+}
+
 const providers: Provider[] = []
 
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
