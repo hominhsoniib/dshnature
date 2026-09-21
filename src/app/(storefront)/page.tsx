@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import {
   Award,
@@ -31,10 +32,18 @@ import {
   mockProductCategories,
 } from "@/features/home/mock-data";
 import type { Banner } from "@/types/payload-content";
+import { buildMetadata } from "@/lib/seo";
 
 // Nội dung trang chủ đổi khi admin sửa CMS, nhưng không cần realtime tuyệt
 // đối — cache 5 phút (CMS_INTEGRATION_PLAN.md §5.2).
 export const revalidate = 300;
+
+export const metadata: Metadata = buildMetadata({
+  title: "DSH NATURE | Đồng hành cùng sức khỏe gia đình",
+  description:
+    "DSH NATURE — sản phẩm chăm sóc sức khỏe chất lượng, an toàn và phù hợp với nhu cầu của gia đình Việt.",
+  path: "/",
+});
 
 const VALUE_ICONS = {
   "Chất lượng": BadgeCheck,

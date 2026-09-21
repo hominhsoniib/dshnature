@@ -4,12 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Award, BadgeCheck, CheckCircle2, FlaskConical, HeartHandshake, Leaf, ShieldCheck, Target, Users } from "lucide-react";
 import { SectionTitle } from "@/components/home/SectionTitle";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Giới thiệu DSH NATURE | Đồng hành cùng sức khỏe gia đình",
   description:
     "Tìm hiểu về Công ty Cổ phần DSH Nature — sứ mệnh, tầm nhìn, 5 giá trị cốt lõi, sơ đồ chiến lược và tiêu chuẩn chất lượng sản phẩm chăm sóc sức khỏe gia đình.",
-};
+  path: "/gioi-thieu",
+});
 
 export default function AboutPage() {
   return (

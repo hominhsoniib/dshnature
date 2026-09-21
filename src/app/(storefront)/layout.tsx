@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { ToastProvider, Toaster } from "@/components/ui/toast";
 import { getSiteSettings } from "@/lib/queries/site-settings";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import { organizationJsonLd } from "@/lib/structured-data";
 
 import { CartProvider } from "@/context/cart-context";
@@ -22,10 +23,31 @@ const inter = Inter({
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
+const DEFAULT_TITLE = "DSH NATURE | Đồng hành cùng sức khỏe gia đình";
+const DEFAULT_DESCRIPTION =
+  "DSH NATURE — sản phẩm chăm sóc sức khỏe chất lượng, an toàn và phù hợp với nhu cầu của gia đình Việt.";
+
+// metadataBase để Next.js resolve URL tương đối (OG image, canonical...)
+// thành tuyệt đối. Đây là default toàn site — không đặt `alternates.canonical`
+// ở layout vì canonical thuộc về từng trang cụ thể (trang nào không tự set
+// riêng thì không nên "thừa kế" nhầm canonical của layout).
 export const metadata: Metadata = {
-  title: "DSH NATURE | Đồng hành cùng sức khỏe gia đình",
-  description:
-    "DSH NATURE — sản phẩm chăm sóc sức khỏe chất lượng, an toàn và phù hợp với nhu cầu của gia đình Việt.",
+  metadataBase: new URL(SITE_URL),
+  title: DEFAULT_TITLE,
+  description: DEFAULT_DESCRIPTION,
+  openGraph: {
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    locale: "vi_VN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+  },
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {

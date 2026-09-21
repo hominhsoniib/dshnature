@@ -2,6 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllProducts, getProductBySlug } from "@/lib/queries/products";
+import { buildMetadata } from "@/lib/seo";
 import { productJsonLd } from "@/lib/structured-data";
 import { ProductDetailView } from "./product-detail-view";
 
@@ -30,10 +31,12 @@ export async function generateMetadata({
 
   // SEO field riêng cho Products chưa có ở Phase A — dùng name + shortDescription
   // mặc định (CMS_INTEGRATION_PLAN.md mục 4, item 4 — gộp vào Phase C sau).
-  return {
+  return buildMetadata({
     title: `${product.name} | DSH NATURE`,
     description: product.shortDescription,
-  };
+    path: `/san-pham/${slug}`,
+    image: product.images[0],
+  });
 }
 
 export default async function ProductDetailPage({

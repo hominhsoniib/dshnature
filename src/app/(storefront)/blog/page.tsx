@@ -5,12 +5,14 @@ import { Calendar, ChevronRight, Newspaper } from "lucide-react";
 import { SectionTitle } from "@/components/home/SectionTitle";
 import { EmptyState } from "@/components/ui/empty-state";
 import { getArticles, getDistinctCategories } from "@/lib/queries/articles";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Blog DSH NATURE | Tin tức & Hoạt động thương hiệu",
   description:
     "Cập nhật tin tức doanh nghiệp, sự kiện và góc chia sẻ sức khỏe từ thương hiệu DSH Nature.",
-};
+  path: "/blog",
+});
 
 export const revalidate = 120;
 

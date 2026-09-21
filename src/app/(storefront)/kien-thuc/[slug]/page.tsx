@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, Calendar, UserCheck } from "lucide-react";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import { getArticleBySlug, getArticles } from "@/lib/queries/articles";
+import { buildMetadata } from "@/lib/seo";
 
 export const revalidate = 120;
 
@@ -25,10 +26,13 @@ export async function generateMetadata({
     return { title: "Bài viết không tồn tại | DSH NATURE" };
   }
 
-  return {
+  return buildMetadata({
     title: `${article.title} | DSH NATURE`,
-    description: article.excerpt || undefined,
-  };
+    description: article.excerpt || "Kiến thức sức khỏe từ DSH Nature.",
+    path: `/kien-thuc/${slug}`,
+    image: article.image,
+    type: "article",
+  });
 }
 
 export default async function ArticleDetailPage({

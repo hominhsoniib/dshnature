@@ -5,12 +5,14 @@ import { BookOpen, Calendar, ChevronRight, UserCheck } from "lucide-react";
 import { SectionTitle } from "@/components/home/SectionTitle";
 import { EmptyState } from "@/components/ui/empty-state";
 import { getArticles, getDistinctCategories } from "@/lib/queries/articles";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Kiến thức sức khỏe | DSH NATURE",
   description:
     "Cẩm nang y khoa & thông tin tư vấn chăm sóc sức khỏe gia đình từ đội ngũ chuyên gia DSH Nature.",
-};
+  path: "/kien-thuc",
+});
 
 export const revalidate = 120;
 
