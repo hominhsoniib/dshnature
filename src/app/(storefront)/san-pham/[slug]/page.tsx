@@ -2,6 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllProducts, getProductBySlug } from "@/lib/queries/products";
+import { productJsonLd } from "@/lib/structured-data";
 import { ProductDetailView } from "./product-detail-view";
 
 // revalidate 60s (giống /san-pham) + pre-render tĩnh các slug đã biết tại
@@ -47,5 +48,13 @@ export default async function ProductDetailPage({
     notFound();
   }
 
-  return <ProductDetailView product={product} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: productJsonLd(product) }}
+      />
+      <ProductDetailView product={product} />
+    </>
+  );
 }

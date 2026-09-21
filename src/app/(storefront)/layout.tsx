@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { ToastProvider, Toaster } from "@/components/ui/toast";
 import { getSiteSettings } from "@/lib/queries/site-settings";
+import { organizationJsonLd } from "@/lib/structured-data";
 
 import { CartProvider } from "@/context/cart-context";
 
@@ -33,6 +34,10 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="vi" className={`${inter.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: organizationJsonLd(siteSettings) }}
+        />
         <ToastProvider>
           <CartProvider>
             <Header siteSettings={siteSettings} />
