@@ -9,7 +9,10 @@ import type { SiteSettings as SiteSettingsType } from "@/types/payload-content";
 export async function getSiteSettings(): Promise<SiteSettingsType | null> {
   try {
     const payload = await getPayloadClient();
-    const settings = await payload.findGlobal({ slug: "site-settings" });
+    const settings = await payload.findGlobal({
+      slug: "site-settings",
+      overrideAccess: true,
+    });
     return settings as unknown as SiteSettingsType;
   } catch {
     return null;
