@@ -1,3 +1,4 @@
+import { cache } from "react";
 import pg from "pg";
 import { getPayloadClient } from "@/lib/payload";
 import type { SiteSettings as SiteSettingsType } from "@/types/payload-content";
@@ -26,8 +27,13 @@ function getPgPool() {
 /**
  * Direct DB-first query for site-settings global. Ensures 100% reliability
  * and instant zero-latency retrieval of updated company info across all storefront pages.
+ *
+ * Bọc React.cache() ở export bên dưới — dedupe trong cùng 1 request React
+ * (layout.tsx + lien-he/page.tsx cùng gọi hàm này mỗi lần load /lien-he) để
+ * tránh round-trip DB thừa; page vẫn force-dynamic nên KHÔNG cache xuyên
+ * request, chỉ dedupe trong 1 lần render.
  */
-export async function getSiteSettings(): Promise<SiteSettingsType | null> {
+async function getSiteSettingsUncached(): Promise<SiteSettingsType | null> {
   // 1. Direct pg SQL Query (Zero extra engines, 100% reliable on Vercel Serverless with SSL)
   try {
     const p = getPgPool();
@@ -95,3 +101,5 @@ export async function getSiteSettings(): Promise<SiteSettingsType | null> {
     },
   } as unknown as SiteSettingsType;
 }
+
+export const getSiteSettings = cache(getSiteSettingsUncached);
