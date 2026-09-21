@@ -132,7 +132,7 @@ async function main() {
     )
   }
 
-  const newPassword = generateStrongPassword(16)
+  const newPassword = process.env.RESET_ADMIN_PASSWORD || generateStrongPassword(16)
 
   await payload.update({
     collection: 'users',
