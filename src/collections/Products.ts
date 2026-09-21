@@ -73,14 +73,7 @@ export const Products: CollectionConfig = {
               label: 'Tên sản phẩm',
               type: 'text',
               required: true,
-              admin: {
-                width: '50%',
-                description:
-                  'Gõ tự do — gợi ý bên dưới ô nhập lấy từ các sản phẩm đã có trong cùng danh mục (chọn Danh mục sản phẩm trước để thấy gợi ý), giúp tránh trùng lặp/đặt tên không nhất quán. Vẫn có thể nhập tên hoàn toàn mới.',
-                components: {
-                  Field: '@/components/admin/ProductNameField#ProductNameField',
-                },
-              },
+              admin: { width: '50%' },
             },
             {
               name: 'slug',
