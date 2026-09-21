@@ -4,9 +4,10 @@ import { useEffect } from "react";
 
 export function AdminEyeToggle() {
   useEffect(() => {
+    // Eye toggle cho password — KHÔNG bao giờ tạo wrapper div mới đè lên React DOM tree
     const attachEyeToggle = () => {
       const passwordInputs = document.querySelectorAll<HTMLInputElement>(
-        'input[type="password"], input[data-is-password="true"]'
+        'input[type="password"]'
       );
 
       passwordInputs.forEach((input) => {
@@ -16,16 +17,9 @@ export function AdminEyeToggle() {
         const parent = input.parentElement;
         if (!parent) return;
 
-        // Ensure container is created
-        let container = parent;
-        if (!parent.classList.contains("dsh-password-container")) {
-          container = document.createElement("div");
-          container.className = "dsh-password-container";
-          parent.insertBefore(container, input);
-          container.appendChild(input);
-        }
+        // Giữ nguyên parent, không tạo container div mới gây phá vỡ React form state
+        parent.style.position = "relative";
 
-        // Create Eye Button
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "dsh-eye-btn";
@@ -51,7 +45,6 @@ export function AdminEyeToggle() {
 
           if (input.type === "password") {
             input.type = "text";
-            input.dataset.isPassword = "true";
             if (eyeOpen) eyeOpen.style.display = "none";
             if (eyeClosed) eyeClosed.style.display = "inline";
           } else {
@@ -61,7 +54,7 @@ export function AdminEyeToggle() {
           }
         });
 
-        container.appendChild(btn);
+        parent.appendChild(btn);
       });
     };
 
@@ -71,12 +64,7 @@ export function AdminEyeToggle() {
       const navContainer =
         document.querySelector(".nav__scroll") ||
         document.querySelector("aside.nav") ||
-        document.querySelector("nav.nav") ||
-        document.querySelector("aside[class*='nav']") ||
-        document.querySelector("aside.sidebar nav") ||
-        document.querySelector("aside.sidebar") ||
-        document.querySelector(".nav-group")?.parentElement ||
-        document.querySelector("nav");
+        document.querySelector("nav.nav");
 
       if (!navContainer) return;
 
@@ -98,40 +86,6 @@ export function AdminEyeToggle() {
       `;
 
       navContainer.appendChild(group);
-    };
-
-    const attachViewWebsiteBtn = () => {
-      if (document.querySelector(".dsh-view-website-btn")) return;
-
-      const navHeader =
-        document.querySelector(".nav__header") ||
-        document.querySelector("aside.nav") ||
-        document.querySelector(".nav__scroll") ||
-        document.querySelector("aside") ||
-        document.querySelector("nav");
-
-      if (!navHeader) return;
-
-      const btnContainer = document.createElement("div");
-      btnContainer.className = "dsh-view-website-wrapper";
-      btnContainer.style.padding = "0.75rem 0.85rem 0.5rem 0.85rem";
-      btnContainer.style.marginBottom = "0.5rem";
-
-      btnContainer.innerHTML = `
-        <a href="/" target="_blank" rel="noopener noreferrer" class="dsh-view-website-btn" style="display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:0.65rem 1rem; color:#ffffff; background-color:#087443; font-weight:600; font-size:0.85rem; text-decoration:none; border-radius:10px; box-shadow:0 2px 8px rgba(8,116,67,0.25); transition:all 0.2s ease;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12"></line>
-            <polyline points="12 19 5 12 12 5"></polyline>
-          </svg>
-          <span>Quay lại Trang Web</span>
-        </a>
-      `;
-
-      if (navHeader.firstChild) {
-        navHeader.insertBefore(btnContainer, navHeader.firstChild);
-      } else {
-        navHeader.appendChild(btnContainer);
-      }
     };
 
     const attachTopHeaderBtn = () => {
@@ -176,26 +130,28 @@ export function AdminEyeToggle() {
         <span>Xem Trang Web</span>
       `;
 
-      if (headerControls.firstChild) {
-        headerControls.insertBefore(link, headerControls.firstChild);
-      } else {
-        headerControls.appendChild(link);
-      }
+      headerControls.appendChild(link);
     };
 
-    attachEyeToggle();
-    attachChangePwMenu();
-    attachViewWebsiteBtn();
-    attachTopHeaderBtn();
-
-    const timer = setInterval(() => {
+    const runAll = () => {
       attachEyeToggle();
       attachChangePwMenu();
-      attachViewWebsiteBtn();
       attachTopHeaderBtn();
-    }, 500);
+    };
 
-    return () => clearInterval(timer);
+    runAll();
+
+    // Dùng MutationObserver thay cho setInterval để không can thiệp vào React Form State khi đang gõ
+    const observer = new MutationObserver(() => {
+      runAll();
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   return null;

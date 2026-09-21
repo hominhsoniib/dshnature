@@ -26,7 +26,7 @@ export const SiteSettings: GlobalConfig = {
               name: 'companyName',
               label: 'Tên công ty',
               type: 'text',
-              required: true,
+              required: false,
               defaultValue: 'CÔNG TY CỔ PHẦN DSH NATURE',
               admin: {
                 width: '50%',
