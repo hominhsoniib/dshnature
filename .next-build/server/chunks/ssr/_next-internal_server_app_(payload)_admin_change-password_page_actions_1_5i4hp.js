@@ -1,0 +1,3 @@
+module.exports=[185074,a=>a.a(async(b,c)=>{try{var d=a.i(547236),e=a.i(866366),f=a.i(411729),g=b([d,e]);[d,e]=g.then?(await g)():g,a.s(["402b93f92bb432af29d1b9dc0f068a5aba9afe854f",()=>e.$$RSC_SERVER_ACTION_0,"60a303fbb6a13436fcf3f507a5a3bb90dd4ab42093",()=>f.$$RSC_SERVER_ACTION_0]),c()}catch(a){c(a)}},!1),547236,a=>a.a(async(b,c)=>{try{var d=a.i(866366),e=b([d]);[d]=e.then?(await e)():e,a.s([]),c()}catch(a){c(a)}},!1)];
+
+//# sourceMappingURL=_next-internal_server_app_%28payload%29_admin_change-password_page_actions_1_5i4hp.js.map

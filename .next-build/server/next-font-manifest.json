@@ -1,0 +1,67 @@
+{
+  "app": {
+    "[project]/src/app/(storefront)/blog/[slug]/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/src/app/(storefront)/blog/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/src/app/(storefront)/dai-ly/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/src/app/(storefront)/gio-hang/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/src/app/(storefront)/gioi-thieu/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/src/app/(storefront)/kien-thuc/[slug]/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/src/app/(storefront)/kien-thuc/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/src/app/(storefront)/lien-he/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/src/app/(storefront)/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/src/app/(storefront)/san-pham/[slug]/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/src/app/(storefront)/san-pham/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/src/app/(storefront)/tai-khoan/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/src/app/(storefront)/test-upload-bo/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/src/app/(storefront)/thanh-toan/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/src/app/(storefront)/tu-van/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pages": {},
+  "pagesUsingSizeAdjust": false
+}

@@ -1,0 +1,289 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/admin/:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, no-cache, must-revalidate, proxy-revalidate"
+        }
+      ],
+      "regex": "^/admin(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?(?:/)?$"
+    },
+    {
+      "source": "/lien-he",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, no-cache, must-revalidate, proxy-revalidate"
+        }
+      ],
+      "regex": "^/lien-he(?:/)?$"
+    },
+    {
+      "headers": [
+        {
+          "key": "Accept-CH",
+          "value": "Sec-CH-Prefers-Color-Scheme"
+        },
+        {
+          "key": "Vary",
+          "value": "Sec-CH-Prefers-Color-Scheme"
+        },
+        {
+          "key": "Critical-CH",
+          "value": "Sec-CH-Prefers-Color-Scheme"
+        },
+        {
+          "key": "X-Powered-By",
+          "value": "Next.js, Payload"
+        }
+      ],
+      "source": "/:path*",
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?(?:/)?$"
+    }
+  ],
+  "onMatchHeaders": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/admin/[[...segments]]",
+      "regex": "^/admin(?:/(.+?))?(?:/)?$",
+      "routeKeys": {
+        "nxtPsegments": "nxtPsegments"
+      },
+      "namedRegex": "^/admin(?:/(?<nxtPsegments>.+?))?(?:/)?$"
+    },
+    {
+      "page": "/api/auth/[...nextauth]",
+      "regex": "^/api/auth/(.+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPnextauth": "nxtPnextauth"
+      },
+      "namedRegex": "^/api/auth/(?<nxtPnextauth>.+?)(?:/)?$"
+    },
+    {
+      "page": "/api/files/[key]",
+      "regex": "^/api/files/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPkey": "nxtPkey"
+      },
+      "namedRegex": "^/api/files/(?<nxtPkey>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/[...slug]",
+      "regex": "^/api/(.+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/api/(?<nxtPslug>.+?)(?:/)?$"
+    },
+    {
+      "page": "/blog/[slug]",
+      "regex": "^/blog/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/blog/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/kien-thuc/[slug]",
+      "regex": "^/kien\\-thuc/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/kien\\-thuc/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/san-pham/[slug]",
+      "regex": "^/san\\-pham/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/san\\-pham/(?<nxtPslug>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/admin/change-password",
+      "regex": "^/admin/change\\-password(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/change\\-password(?:/)?$"
+    },
+    {
+      "page": "/api/consultations",
+      "regex": "^/api/consultations(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/consultations(?:/)?$"
+    },
+    {
+      "page": "/api/contact",
+      "regex": "^/api/contact(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/contact(?:/)?$"
+    },
+    {
+      "page": "/api/dealers",
+      "regex": "^/api/dealers(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/dealers(?:/)?$"
+    },
+    {
+      "page": "/api/graphql",
+      "regex": "^/api/graphql(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/graphql(?:/)?$"
+    },
+    {
+      "page": "/api/graphql-playground",
+      "regex": "^/api/graphql\\-playground(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/graphql\\-playground(?:/)?$"
+    },
+    {
+      "page": "/api/orders",
+      "regex": "^/api/orders(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/orders(?:/)?$"
+    },
+    {
+      "page": "/api/search",
+      "regex": "^/api/search(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/search(?:/)?$"
+    },
+    {
+      "page": "/api/upload",
+      "regex": "^/api/upload(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/upload(?:/)?$"
+    },
+    {
+      "page": "/blog",
+      "regex": "^/blog(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog(?:/)?$"
+    },
+    {
+      "page": "/dai-ly",
+      "regex": "^/dai\\-ly(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dai\\-ly(?:/)?$"
+    },
+    {
+      "page": "/favicon.ico",
+      "regex": "^/favicon\\.ico(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
+      "page": "/gio-hang",
+      "regex": "^/gio\\-hang(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/gio\\-hang(?:/)?$"
+    },
+    {
+      "page": "/gioi-thieu",
+      "regex": "^/gioi\\-thieu(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/gioi\\-thieu(?:/)?$"
+    },
+    {
+      "page": "/kien-thuc",
+      "regex": "^/kien\\-thuc(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/kien\\-thuc(?:/)?$"
+    },
+    {
+      "page": "/lien-he",
+      "regex": "^/lien\\-he(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/lien\\-he(?:/)?$"
+    },
+    {
+      "page": "/san-pham",
+      "regex": "^/san\\-pham(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/san\\-pham(?:/)?$"
+    },
+    {
+      "page": "/tai-khoan",
+      "regex": "^/tai\\-khoan(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/tai\\-khoan(?:/)?$"
+    },
+    {
+      "page": "/test-upload-bo",
+      "regex": "^/test\\-upload\\-bo(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/test\\-upload\\-bo(?:/)?$"
+    },
+    {
+      "page": "/thanh-toan",
+      "regex": "^/thanh\\-toan(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/thanh\\-toan(?:/)?$"
+    },
+    {
+      "page": "/tu-van",
+      "regex": "^/tu\\-van(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/tu\\-van(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

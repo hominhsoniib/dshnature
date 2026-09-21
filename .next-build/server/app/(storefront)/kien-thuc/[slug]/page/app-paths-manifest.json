@@ -1,0 +1,3 @@
+{
+  "/(storefront)/kien-thuc/[slug]/page": "app/(storefront)/kien-thuc/[slug]/page.js"
+}

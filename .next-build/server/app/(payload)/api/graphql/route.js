@@ -1,0 +1,10 @@
+var R=require("../../../../chunks/[turbopack]_runtime.js")("server/app/(payload)/api/graphql/route.js")
+R.c("server/chunks/[root-of-the-server]__0m-bxz8._.js")
+R.c("server/chunks/node_modules_next_dist_1ixxkvk._.js")
+R.c("server/chunks/[root-of-the-server]__0io28rt._.js")
+R.c("server/chunks/_0vik29v._.js")
+R.c("server/chunks/[root-of-the-server]__0fzv0kz._.js")
+R.c("server/chunks/[root-of-the-server]__12uj088._.js")
+R.c("server/chunks/_next-internal_server_app_(payload)_api_graphql_route_actions_1ne9ks_.js")
+R.m(394467)
+module.exports=R.m(394467).exports

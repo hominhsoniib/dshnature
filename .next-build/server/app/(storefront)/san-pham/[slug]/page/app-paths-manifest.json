@@ -1,0 +1,3 @@
+{
+  "/(storefront)/san-pham/[slug]/page": "app/(storefront)/san-pham/[slug]/page.js"
+}
