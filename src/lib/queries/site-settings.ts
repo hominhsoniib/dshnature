@@ -84,6 +84,12 @@ export async function getSiteSettings(): Promise<SiteSettingsType | null> {
     address: "23 Nguyễn Văn Thủ, Q12, TP.Hồ Chí Minh",
     workingHours: DEFAULT_WORKING_HOURS,
     mapEmbedUrl: DEFAULT_MAP_EMBED_URL,
+    socials: {
+      facebook: null,
+      youtube: null,
+      tiktok: null,
+      zalo: null,
+    },
     floatingContact: {
       hotline: "0886554242",
     },
