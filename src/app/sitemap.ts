@@ -52,9 +52,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/tu-van`, changeFrequency: "monthly", priority: 0.5 },
   ];
 
-  // Cart/account/checkout (gio-hang, tai-khoan, thanh-toan) và trang test nội
-  // bộ (test-upload-bo) cố ý KHÔNG đưa vào sitemap — không phải nội dung cần
-  // index, và checkout đứng riêng còn chứa dữ liệu theo phiên người dùng.
+  // Cart/account/checkout (gio-hang, tai-khoan, thanh-toan) cố ý KHÔNG đưa
+  // vào sitemap — không phải nội dung cần index, và checkout đứng riêng còn
+  // chứa dữ liệu theo phiên người dùng.
   const [products, blogArticles, healthArticles] = await Promise.all([
     getProductSlugs(),
     getArticleSlugs("blog"),
