@@ -12,6 +12,8 @@ export type SiteSettings = {
   hotline?: string | null
   email?: string | null
   address?: string | null
+  workingHours?: string | null
+  mapEmbedUrl?: string | null
   socials?: {
     facebook?: string | null
     youtube?: string | null

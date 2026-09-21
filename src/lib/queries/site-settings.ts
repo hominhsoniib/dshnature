@@ -2,6 +2,14 @@ import pg from "pg";
 import { getPayloadClient } from "@/lib/payload";
 import type { SiteSettings as SiteSettingsType } from "@/types/payload-content";
 
+// Dùng ở cả 3 tier bên dưới (query pg trực tiếp + fallback cuối cùng) —
+// khớp với defaultValue khai báo ở SiteSettings.ts cho bản ghi Payload global
+// tạo mới, nhưng bản ghi cũ (tạo trước khi thêm 2 field này) sẽ có cột NULL
+// nên vẫn cần default ở đây.
+export const DEFAULT_WORKING_HOURS = "Thứ 2 - Thứ 7: 08:00 - 17:30";
+export const DEFAULT_MAP_EMBED_URL =
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.863981044336!2d105.7801!3d21.0368!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab325697669d%3A0x401828f72c478a0!2zQ8OidSBHaeG6pXksIEjDoCBO4buZaSwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1700000000000!5m2!1svi!2s";
+
 let pool: pg.Pool | null = null;
 function getPgPool() {
   if (!pool && process.env.DATABASE_URL) {
@@ -33,6 +41,8 @@ export async function getSiteSettings(): Promise<SiteSettingsType | null> {
           hotline: row.hotline || "0886554242",
           email: row.email || "dshnature@gmail.com",
           address: row.address || "23 Nguyễn Văn Thủ, Q12, TP.Hồ Chí Minh",
+          workingHours: row.working_hours || DEFAULT_WORKING_HOURS,
+          mapEmbedUrl: row.map_embed_url || DEFAULT_MAP_EMBED_URL,
           socials: {
             facebook: row.socials_facebook,
             youtube: row.socials_youtube,
@@ -72,6 +82,8 @@ export async function getSiteSettings(): Promise<SiteSettingsType | null> {
     hotline: "0886554242",
     email: "dshnature@gmail.com",
     address: "23 Nguyễn Văn Thủ, Q12, TP.Hồ Chí Minh",
+    workingHours: DEFAULT_WORKING_HOURS,
+    mapEmbedUrl: DEFAULT_MAP_EMBED_URL,
     floatingContact: {
       hotline: "0886554242",
     },

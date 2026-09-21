@@ -523,11 +523,19 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface SiteSetting {
   id: number;
-  companyName: string;
+  companyName?: string | null;
   tagline?: string | null;
   hotline?: string | null;
   email?: string | null;
   address?: string | null;
+  /**
+   * Hiển thị ở trang Liên hệ.
+   */
+  workingHours?: string | null;
+  /**
+   * Vào Google Maps → Chia sẻ → Nhúng bản đồ → Sao chép URL trong thuộc tính src của thẻ <iframe> rồi dán vào đây. Để trống sẽ dùng bản đồ mặc định.
+   */
+  mapEmbedUrl?: string | null;
   socials?: {
     facebook?: string | null;
     youtube?: string | null;
@@ -552,6 +560,8 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   hotline?: T;
   email?: T;
   address?: T;
+  workingHours?: T;
+  mapEmbedUrl?: T;
   socials?:
     | T
     | {

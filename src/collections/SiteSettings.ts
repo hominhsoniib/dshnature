@@ -75,6 +75,24 @@ export const SiteSettings: GlobalConfig = {
               label: 'Địa chỉ trụ sở',
               type: 'textarea',
             },
+            {
+              name: 'workingHours',
+              label: 'Giờ làm việc',
+              type: 'text',
+              defaultValue: 'Thứ 2 - Thứ 7: 08:00 - 17:30',
+              admin: {
+                description: 'Hiển thị ở trang Liên hệ.',
+              },
+            },
+            {
+              name: 'mapEmbedUrl',
+              label: 'URL bản đồ nhúng (Google Maps)',
+              type: 'text',
+              admin: {
+                description:
+                  'Vào Google Maps → Chia sẻ → Nhúng bản đồ → Sao chép URL trong thuộc tính src của thẻ <iframe> rồi dán vào đây. Để trống sẽ dùng bản đồ mặc định.',
+              },
+            },
           ],
         },
         {

@@ -6,6 +6,13 @@ import { SectionTitle } from "@/components/home/SectionTitle";
 import { useToast } from "@/components/ui/toast";
 import type { SiteSettings } from "@/types/payload-content";
 
+// Component client — không import từ src/lib/queries/site-settings.ts (dùng
+// `pg`, server-only) nên lặp lại default ở đây, khớp với default của query
+// layer khi field workingHours/mapEmbedUrl chưa được admin điền.
+const DEFAULT_WORKING_HOURS = "Thứ 2 - Thứ 7: 08:00 - 17:30";
+const DEFAULT_MAP_EMBED_URL =
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.863981044336!2d105.7801!3d21.0368!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab325697669d%3A0x401828f72c478a0!2zQ8OidSBHaeG6pXksIEjDoCBO4buZaSwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1700000000000!5m2!1svi!2s";
+
 export function ContactPageView({ siteSettings }: { siteSettings: SiteSettings | null }) {
   const toast = useToast();
   const [formData, setFormData] = useState({
@@ -102,7 +109,7 @@ export function ContactPageView({ siteSettings }: { siteSettings: SiteSettings |
                 <Clock className="size-5 text-primary shrink-0 mt-0.5" />
                 <div>
                   <strong className="text-foreground block">Thời gian làm việc:</strong>
-                  <span>Thứ 2 - Thứ 7: 08:00 - 17:30</span>
+                  <span>{siteSettings?.workingHours || DEFAULT_WORKING_HOURS}</span>
                 </div>
               </div>
             </div>
@@ -211,7 +218,7 @@ export function ContactPageView({ siteSettings }: { siteSettings: SiteSettings |
         <div className="aspect-[21/9] w-full rounded-xl overflow-hidden bg-muted flex items-center justify-center border border-border">
           <iframe
             title="DSH Nature Map Location"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.863981044336!2d105.7801!3d21.0368!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab325697669d%3A0x401828f72c478a0!2zQ8OidSBHaeG6pXksIEjDoCBO4buZaSwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1700000000000!5m2!1svi!2s"
+            src={siteSettings?.mapEmbedUrl || DEFAULT_MAP_EMBED_URL}
             width="100%"
             height="100%"
             style={{ border: 0 }}
