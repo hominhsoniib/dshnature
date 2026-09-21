@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { sendAdminNotification } from "@/lib/email";
 
 export const dynamic = "force-dynamic";
 
@@ -70,6 +71,26 @@ export async function POST(request: NextRequest) {
           })),
         },
       },
+    });
+
+    await sendAdminNotification({
+      subject: `[DSH Nature] Đơn hàng mới #${order.orderNumber}`,
+      text: [
+        `Khách hàng: ${data.customerName}`,
+        `SĐT: ${data.customerPhone}`,
+        `Email: ${data.customerEmail || "(không có)"}`,
+        `Địa chỉ nhận hàng: ${data.shippingAddress}`,
+        `Phương thức thanh toán: ${data.paymentMethod.toUpperCase()}`,
+        `Ghi chú: ${data.note || "(không có)"}`,
+        "",
+        "Sản phẩm:",
+        ...data.items.map(
+          (item) => `- ${item.name} x${item.quantity} — ${item.price.toLocaleString("vi-VN")}đ`
+        ),
+        "",
+        `Tổng tiền: ${totalAmount.toLocaleString("vi-VN")}đ`,
+        `Mã đơn hàng: ${order.orderNumber}`,
+      ].join("\n"),
     });
 
     return NextResponse.json({

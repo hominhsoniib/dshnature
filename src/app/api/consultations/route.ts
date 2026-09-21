@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { sendAdminNotification } from "@/lib/email";
 
 export const dynamic = "force-dynamic";
 
@@ -37,6 +38,22 @@ export async function POST(request: NextRequest) {
         healthIssue: data.healthIssue,
         status: "pending",
       },
+    });
+
+    await sendAdminNotification({
+      subject: `[DSH Nature] Yêu cầu tư vấn mới từ ${data.fullName}`,
+      text: [
+        `Họ tên: ${data.fullName}`,
+        `SĐT: ${data.phone}`,
+        `Email: ${data.email || "(không có)"}`,
+        `Tuổi: ${data.age ?? "(không có)"}`,
+        `Giới tính: ${data.gender ?? "(không có)"}`,
+        "",
+        "Thắc mắc y khoa:",
+        data.healthIssue,
+        "",
+        `ID yêu cầu: ${consultation.id}`,
+      ].join("\n"),
     });
 
     return NextResponse.json({

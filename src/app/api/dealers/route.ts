@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { sendAdminNotification } from "@/lib/email";
 
 export const dynamic = "force-dynamic";
 
@@ -37,6 +38,20 @@ export async function POST(request: NextRequest) {
         message: data.message || null,
         status: "pending",
       },
+    });
+
+    await sendAdminNotification({
+      subject: `[DSH Nature] Đăng ký đại lý mới từ ${data.fullName}`,
+      text: [
+        `Họ tên: ${data.fullName}`,
+        `SĐT: ${data.phone}`,
+        `Email: ${data.email || "(không có)"}`,
+        `Khu vực kinh doanh: ${data.region}`,
+        `Kinh nghiệm: ${data.experience || "(không có)"}`,
+        `Ghi chú: ${data.message || "(không có)"}`,
+        "",
+        `ID đăng ký: ${dealerRequest.id}`,
+      ].join("\n"),
     });
 
     return NextResponse.json({
