@@ -9,6 +9,19 @@ const r2PublicHostname = process.env.R2_PUBLIC_URL
   : undefined;
 
 const nextConfig: NextConfig = {
+  async headers() {
+    return [
+      {
+        source: '/admin/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          },
+        ],
+      },
+    ]
+  },
   images: {
     // Media (banner, sản phẩm...) lưu trên Cloudflare R2 qua plugin
     // @payloadcms/storage-s3 — next/image cần khai báo domain ảnh ngoài mới
