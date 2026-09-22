@@ -549,6 +549,10 @@ export interface SiteSetting {
     zaloUrl?: string | null;
     messengerUrl?: string | null;
   };
+  aboutBrandImage?: number | Media | null;
+  aboutMissionImage?: number | Media | null;
+  aboutVisionImage?: number | Media | null;
+  aboutStrategyImage?: number | Media | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -579,6 +583,10 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         zaloUrl?: T;
         messengerUrl?: T;
       };
+  aboutBrandImage?: T;
+  aboutMissionImage?: T;
+  aboutVisionImage?: T;
+  aboutStrategyImage?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

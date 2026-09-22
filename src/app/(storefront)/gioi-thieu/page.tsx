@@ -6,6 +6,8 @@ import { ArrowRight, Award, BadgeCheck, CheckCircle2, FlaskConical, HeartHandsha
 import { SectionTitle } from "@/components/home/SectionTitle";
 import { buildMetadata } from "@/lib/seo";
 
+import { getSiteSettings } from "@/lib/queries/site-settings";
+
 export const metadata: Metadata = buildMetadata({
   title: "Giới thiệu DSH NATURE | Đồng hành cùng sức khỏe gia đình",
   description:
@@ -13,7 +15,23 @@ export const metadata: Metadata = buildMetadata({
   path: "/gioi-thieu",
 });
 
-export default function AboutPage() {
+function getMediaUrl(media: unknown, fallback: string): string {
+  if (!media) return fallback;
+  if (typeof media === "string") return media;
+  if (typeof media === "object" && media !== null && "url" in media && typeof (media as { url?: unknown }).url === "string") {
+    return (media as { url: string }).url;
+  }
+  return fallback;
+}
+
+export default async function AboutPage() {
+  const siteSettings = await getSiteSettings();
+
+  const brandImage = getMediaUrl(siteSettings?.aboutBrandImage, "/gioi-thieu/kien-truc-web.png");
+  const missionImage = getMediaUrl(siteSettings?.aboutMissionImage, "/gioi-thieu/su-menh.png");
+  const visionImage = getMediaUrl(siteSettings?.aboutVisionImage, "/gioi-thieu/tam-nhin.png");
+  const strategyImage = getMediaUrl(siteSettings?.aboutStrategyImage, "/gioi-thieu/so-do-chien-luoc.png");
+
   return (
     <div className="flex flex-col gap-12 py-8 md:gap-16 md:py-12">
       {/* Hero Header */}
@@ -73,7 +91,7 @@ export default function AboutPage() {
 
           <div className="relative aspect-video overflow-hidden rounded-2xl border border-border bg-white shadow-soft">
             <Image
-              src="/gioi-thieu/kien-truc-web.png"
+              src={brandImage}
               alt="Tổng quan thương hiệu DSH Nature"
               fill
               className="object-cover"
@@ -100,7 +118,7 @@ export default function AboutPage() {
           {/* Full Screen / Full Width Image Sứ mệnh */}
           <div className="relative aspect-[16/9] min-h-[350px] md:min-h-[500px] w-full overflow-hidden rounded-3xl border border-border bg-white p-4 md:p-8 shadow-soft-hover">
             <Image
-              src="/gioi-thieu/su-menh.png"
+              src={missionImage}
               alt="Sứ mệnh DSH Nature - Full màn hình"
               fill
               className="object-contain p-2 md:p-4"
@@ -127,7 +145,7 @@ export default function AboutPage() {
           {/* Full Screen / Full Width Image Tầm nhìn */}
           <div className="relative aspect-[16/9] min-h-[350px] md:min-h-[500px] w-full overflow-hidden rounded-3xl border border-border bg-cream p-4 md:p-8 shadow-soft-hover">
             <Image
-              src="/gioi-thieu/tam-nhin.png"
+              src={visionImage}
               alt="Tầm nhìn DSH Nature - Full màn hình"
               fill
               className="object-contain p-2 md:p-4"
@@ -146,7 +164,7 @@ export default function AboutPage() {
         />
         <div className="relative aspect-[21/9] min-h-[300px] w-full overflow-hidden rounded-2xl border border-border bg-white p-4 shadow-soft">
           <Image
-            src="/gioi-thieu/so-do-chien-luoc.png"
+            src={strategyImage}
             alt="Sơ đồ chiến lược DSH Nature"
             fill
             className="object-contain"

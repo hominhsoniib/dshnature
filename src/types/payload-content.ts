@@ -25,6 +25,10 @@ export type SiteSettings = {
     zaloUrl?: string | null
     messengerUrl?: string | null
   } | null
+  aboutBrandImage?: { url?: string | null } | string | null
+  aboutMissionImage?: { url?: string | null } | string | null
+  aboutVisionImage?: { url?: string | null } | string | null
+  aboutStrategyImage?: { url?: string | null } | string | null
 }
 
 export type Banner = {

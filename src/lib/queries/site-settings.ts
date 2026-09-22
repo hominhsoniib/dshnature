@@ -67,11 +67,12 @@ async function getSiteSettingsUncached(): Promise<SiteSettingsType | null> {
     console.error("[getSiteSettings] pg SQL error, trying Payload Local API:", dbErr);
   }
 
-  // 2. Fallback: Payload Local API
+  // 1. Fallback / Primary: Payload Local API with populated media depth
   try {
     const payload = await getPayloadClient();
     const settings = await payload.findGlobal({
       slug: "site-settings",
+      depth: 1,
       overrideAccess: true,
     });
     if (settings) {

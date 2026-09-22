@@ -161,6 +161,47 @@ export const SiteSettings: GlobalConfig = {
             },
           ],
         },
+        {
+          label: 'Hình ảnh Trang Giới thiệu',
+          fields: [
+            {
+              name: 'aboutBrandImage',
+              label: 'Hình ảnh Tổng quan thương hiệu',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description: 'Hiển thị ở phần Tổng quan doanh nghiệp trang /gioi-thieu (Mặc định: /gioi-thieu/kien-truc-web.png)',
+              },
+            },
+            {
+              name: 'aboutMissionImage',
+              label: 'Hình ảnh Sứ mệnh DSH Nature',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description: 'Hiển thị ở khối Sứ mệnh trang /gioi-thieu (Mặc định: /gioi-thieu/su-menh.png)',
+              },
+            },
+            {
+              name: 'aboutVisionImage',
+              label: 'Hình ảnh Tầm nhìn DSH Nature',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description: 'Hiển thị ở khối Tầm nhìn trang /gioi-thieu (Mặc định: /gioi-thieu/tam-nhin.png)',
+              },
+            },
+            {
+              name: 'aboutStrategyImage',
+              label: 'Hình ảnh Sơ đồ chiến lược',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description: 'Hiển thị ở khối Sơ đồ chiến lược trang /gioi-thieu (Mặc định: /gioi-thieu/so-do-chien-luoc.png)',
+              },
+            },
+          ],
+        },
       ],
     },
   ],
