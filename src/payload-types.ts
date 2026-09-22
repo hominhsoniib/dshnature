@@ -175,6 +175,7 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  sizes?: {};
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -213,7 +214,7 @@ export interface Product {
   /**
    * Tự động tạo slug chuẩn SEO từ Tên sản phẩm nếu để trống (vd: xuong-khop).
    */
-  slug: string;
+  slug?: string | null;
   category: number | ProductCategory;
   price: number;
   originalPrice?: number | null;
@@ -403,6 +404,7 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+  sizes?: T | {};
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

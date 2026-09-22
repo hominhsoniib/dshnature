@@ -108,7 +108,14 @@ export const Products: CollectionConfig = {
               name: 'slug',
               label: 'Đường dẫn (Slug)',
               type: 'text',
-              required: true,
+              // Không required: client-side validation của Payload admin chạy
+              // TRƯỚC khi request được gửi lên server, nên nếu field này
+              // required, để trống Slug sẽ bị chặn ngay ở trình duyệt với lỗi
+              // "trường bắt buộc" — hook tự sinh slug từ `name` (bên dưới,
+              // hooks.beforeChange) chỉ chạy server-side nên sẽ không bao giờ
+              // có cơ hội thực thi. `name` vẫn required nên hook luôn đảm bảo
+              // slug có giá trị hợp lệ trước khi lưu.
+              required: false,
               unique: true,
               admin: {
                 width: '50%',
