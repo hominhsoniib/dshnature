@@ -6,7 +6,7 @@ import { useState } from "react";
 
 import { NAV_ITEMS } from "@/lib/nav";
 
-/** Hamburger drawer mobile (brief mục 2: "Mobile: hamburger drawer + bottom nav"). */
+/** Hamburger drawer mobile với nút bấm Menu xanh lá nổi bật dễ thấy. */
 export function MobileMenu({
   cartCount = 0,
   onOpenSearch,
@@ -19,14 +19,16 @@ export function MobileMenu({
 
   return (
     <div className="lg:hidden">
+      {/* Nút bấm MENU xanh lá cực kỳ nổi bật trên đầu trang */}
       <button
         type="button"
         aria-label={open ? "Đóng menu" : "Mở menu"}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="flex size-9 items-center justify-center rounded-md text-foreground hover:bg-muted"
+        className="flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-1.5 text-xs font-bold text-white shadow-soft transition-all active:scale-95 hover:bg-primary-dark"
       >
-        {open ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
+        {open ? <X className="size-4" aria-hidden /> : <Menu className="size-4" aria-hidden />}
+        <span>{open ? "Đóng" : "MENU"}</span>
       </button>
 
       {open ? (
