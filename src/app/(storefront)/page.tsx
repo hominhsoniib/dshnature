@@ -144,7 +144,7 @@ export default async function Home() {
           eyebrow="Vì sao chọn DSH Nature"
           title="Giá trị nổi bật"
         />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-5">
           {mockCoreValues.map((v) => (
             <ValueCard
               key={v.title}
@@ -228,7 +228,7 @@ export default async function Home() {
       <section className="bg-cream px-4 py-12 md:px-6 md:py-16">
         <div className="mx-auto max-w-7xl">
           <SectionTitle title="Giá trị cốt lõi" />
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {mockCoreValues.map((v) => (
               <ValueCard
                 key={v.title}
