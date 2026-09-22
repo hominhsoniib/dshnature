@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, Search, ShoppingCart, User, X } from "lucide-react";
+import { ChevronDown, ExternalLink, Menu, Search, ShoppingCart, User, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -15,6 +15,7 @@ export function MobileMenu({
   onOpenSearch?: () => void;
 }) {
   const [open, setOpen] = useState(false);
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
 
   return (
     <div className="lg:hidden">
@@ -49,19 +50,76 @@ export function MobileMenu({
               </button>
             </div>
 
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
-              >
-                {item.href === "/gio-hang" ? (
-                  <ShoppingCart className="size-4" aria-hidden />
-                ) : null}
-                {item.href === "/gio-hang" ? `Giỏ hàng (${cartCount})` : item.label}
-              </Link>
-            ))}
+            {NAV_ITEMS.map((item) => {
+              const hasChildren = Boolean(item.children && item.children.length > 0);
+
+              if (hasChildren) {
+                const isOpen = openSubmenu === item.label;
+                return (
+                  <div key={item.label} className="flex flex-col gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setOpenSubmenu(isOpen ? null : item.label)}
+                      className="flex w-full items-center justify-between rounded-md px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
+                    >
+                      <span>{item.label}</span>
+                      <ChevronDown
+                        className={`size-4 text-muted-foreground transition-transform ${
+                          isOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                    {isOpen ? (
+                      <div className="ml-3 flex flex-col gap-1 border-l-2 border-primary/30 pl-2">
+                        {item.children?.map((child) => (
+                          <a
+                            key={child.href}
+                            href={child.href}
+                            target={child.external ? "_blank" : undefined}
+                            rel={child.external ? "noopener noreferrer" : undefined}
+                            onClick={() => setOpen(false)}
+                            className="flex items-center justify-between rounded-md px-3 py-2 text-xs font-semibold text-foreground hover:bg-primary-light hover:text-primary"
+                          >
+                            <span>{child.label}</span>
+                            {child.external ? <ExternalLink className="size-3 text-muted-foreground" /> : null}
+                          </a>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              }
+
+              if (item.external) {
+                return (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setOpen(false)}
+                    className="flex items-center justify-between gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
+                  >
+                    <span>{item.label}</span>
+                    <ExternalLink className="size-4 text-muted-foreground" aria-hidden />
+                  </a>
+                );
+              }
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
+                >
+                  {item.href === "/gio-hang" ? (
+                    <ShoppingCart className="size-4" aria-hidden />
+                  ) : null}
+                  {item.href === "/gio-hang" ? `Giỏ hàng (${cartCount})` : item.label}
+                </Link>
+              );
+            })}
 
             <div className="mt-2 flex items-center gap-1 border-t border-border pt-2">
               <button

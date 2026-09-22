@@ -77,10 +77,16 @@ export function Footer({ siteSettings }: { siteSettings: SiteSettings | null }) 
           <p className="mb-3 text-sm font-semibold text-foreground">Liên kết</p>
           <ul className="space-y-2 text-sm text-muted-foreground">
             {NAV_ITEMS.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href} className="hover:underline">
-                  {item.label}
-                </Link>
+              <li key={item.label}>
+                {item.external ? (
+                  <a href={item.href} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                    {item.label}
+                  </a>
+                ) : (
+                  <Link href={item.href} className="hover:underline">
+                    {item.label}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>

@@ -1,9 +1,18 @@
 /**
- * Menu chính — thứ tự đã CHỐT CỨNG (PROJECT_BRIEF.md mục 2, mục 1: "Không tự ý
- * đổi thứ tự menu hoặc thêm mục menu mới"). Dùng chung cho Navigation (desktop)
- * và MobileMenu (drawer) để không lệch thứ tự giữa 2 nơi.
+ * Menu chính — Dùng chung cho Navigation (desktop), MobileMenu (drawer) và Footer.
  */
-export const NAV_ITEMS = [
+export type NavItem = {
+  label: string;
+  href: string;
+  external?: boolean;
+  children?: {
+    label: string;
+    href: string;
+    external?: boolean;
+  }[];
+};
+
+export const NAV_ITEMS: NavItem[] = [
   { label: 'Trang chủ', href: '/' },
   { label: 'Giới thiệu', href: '/gioi-thieu' },
   { label: 'Sản phẩm', href: '/san-pham' },
@@ -11,9 +20,21 @@ export const NAV_ITEMS = [
   { label: 'Kiến thức sức khỏe', href: '/kien-thuc' },
   { label: 'Tư vấn sức khỏe', href: '/tu-van' },
   { label: 'Đại lý', href: '/dai-ly' },
+  {
+    label: 'Đối tác',
+    href: 'https://ando.badenfarm.com.vn/',
+    external: true,
+    children: [
+      {
+        label: 'CTY CP BÀ ĐEN FARM',
+        href: 'https://ando.badenfarm.com.vn/',
+        external: true,
+      },
+    ],
+  },
   { label: 'Blog', href: '/blog' },
   { label: 'Liên hệ', href: '/lien-he' },
-] as const
+];
 
 /** Bottom nav mobile — 5 mục cố định theo brief mục 2. */
 export const BOTTOM_NAV_ITEMS = [
@@ -22,4 +43,4 @@ export const BOTTOM_NAV_ITEMS = [
   { label: 'Giỏ hàng', href: '/gio-hang', icon: 'cart' },
   { label: 'Kiến thức', href: '/kien-thuc', icon: 'book' },
   { label: 'Tài khoản', href: '/tai-khoan', icon: 'user' },
-] as const
+] as const;
