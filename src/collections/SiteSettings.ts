@@ -202,6 +202,39 @@ export const SiteSettings: GlobalConfig = {
             },
           ],
         },
+        {
+          label: 'Danh sách Đối tác',
+          fields: [
+            {
+              name: 'partners',
+              label: 'Danh sách đối tác liên kết',
+              type: 'array',
+              labels: {
+                singular: 'Đối tác',
+                plural: 'Danh sách đối tác',
+              },
+              admin: {
+                description: 'Thêm, sửa, xóa các đối tác hiển thị trong menu "Đối tác" ở đầu trang (Header).',
+              },
+              fields: [
+                {
+                  name: 'name',
+                  label: 'Tên đối tác',
+                  type: 'text',
+                  required: true,
+                  admin: { width: '50%' },
+                },
+                {
+                  name: 'url',
+                  label: 'Đường dẫn liên kết (URL)',
+                  type: 'text',
+                  required: true,
+                  admin: { width: '50%' },
+                },
+              ],
+            },
+          ],
+        },
       ],
     },
   ],

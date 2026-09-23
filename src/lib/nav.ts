@@ -12,29 +12,44 @@ export type NavItem = {
   }[];
 };
 
-export const NAV_ITEMS: NavItem[] = [
-  { label: 'Trang chủ', href: '/' },
-  { label: 'Giới thiệu', href: '/gioi-thieu' },
-  { label: 'Sản phẩm', href: '/san-pham' },
-  { label: 'Giỏ hàng', href: '/gio-hang' },
-  { label: 'Kiến thức sức khỏe', href: '/kien-thuc' },
-  { label: 'Tư vấn sức khỏe', href: '/tu-van' },
-  { label: 'Đại lý', href: '/dai-ly' },
-  {
-    label: 'Đối tác',
-    href: 'https://ando.badenfarm.com.vn/',
-    external: true,
-    children: [
-      {
-        label: 'CTY CP BÀ ĐEN FARM',
-        href: 'https://ando.badenfarm.com.vn/',
-        external: true,
-      },
-    ],
-  },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Liên hệ', href: '/lien-he' },
-];
+export function getNavItems(partners?: { name: string; url: string }[] | null): NavItem[] {
+  const partnerChildren =
+    partners && partners.length > 0
+      ? partners.map((p) => ({
+          label: p.name,
+          href: p.url,
+          external: true,
+        }))
+      : [
+          {
+            label: 'CTY CP BÀ ĐEN FARM',
+            href: 'https://ando.badenfarm.com.vn/',
+            external: true,
+          },
+        ];
+
+  const firstPartnerHref = partnerChildren[0]?.href ?? 'https://ando.badenfarm.com.vn/';
+
+  return [
+    { label: 'Trang chủ', href: '/' },
+    { label: 'Giới thiệu', href: '/gioi-thieu' },
+    { label: 'Sản phẩm', href: '/san-pham' },
+    { label: 'Giỏ hàng', href: '/gio-hang' },
+    { label: 'Kiến thức sức khỏe', href: '/kien-thuc' },
+    { label: 'Tư vấn sức khỏe', href: '/tu-van' },
+    { label: 'Đại lý', href: '/dai-ly' },
+    {
+      label: 'Đối tác',
+      href: firstPartnerHref,
+      external: true,
+      children: partnerChildren,
+    },
+    { label: 'Blog', href: '/blog' },
+    { label: 'Liên hệ', href: '/lien-he' },
+  ];
+}
+
+export const NAV_ITEMS: NavItem[] = getNavItems();
 
 /** Bottom nav mobile — 5 mục cố định theo brief mục 2. */
 export const BOTTOM_NAV_ITEMS = [

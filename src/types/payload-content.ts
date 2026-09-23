@@ -29,6 +29,7 @@ export type SiteSettings = {
   aboutMissionImage?: { url?: string | null } | string | null
   aboutVisionImage?: { url?: string | null } | string | null
   aboutStrategyImage?: { url?: string | null } | string | null
+  partners?: { id?: string | null; name: string; url: string }[] | null
 }
 
 export type Banner = {

@@ -4,18 +4,21 @@ import { ChevronDown, ExternalLink, Menu, Search, ShoppingCart, User, X } from "
 import Link from "next/link";
 import { useState } from "react";
 
-import { NAV_ITEMS } from "@/lib/nav";
+import { getNavItems } from "@/lib/nav";
 
 /** Hamburger drawer mobile với nút bấm Menu xanh lá nổi bật dễ thấy. */
 export function MobileMenu({
   cartCount = 0,
+  partners,
   onOpenSearch,
 }: {
   cartCount?: number;
+  partners?: { name: string; url: string }[] | null;
   onOpenSearch?: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+  const navItems = getNavItems(partners);
 
   return (
     <div className="lg:hidden">
@@ -52,7 +55,7 @@ export function MobileMenu({
               </button>
             </div>
 
-            {NAV_ITEMS.map((item) => {
+            {navItems.map((item) => {
               const hasChildren = Boolean(item.children && item.children.length > 0);
 
               if (hasChildren) {

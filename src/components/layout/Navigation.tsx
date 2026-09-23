@@ -5,24 +5,27 @@ import { ChevronDown, ExternalLink, Search, ShoppingCart, User } from "lucide-re
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { NAV_ITEMS } from "@/lib/nav";
+import { getNavItems } from "@/lib/nav";
 
 /**
  * Nav chính desktop — bao gồm menu dropdown Đối tác.
  */
 export function Navigation({
   cartCount = 0,
+  partners,
   onOpenSearch,
 }: {
   cartCount?: number;
+  partners?: { name: string; url: string }[] | null;
   onOpenSearch?: () => void;
 }) {
   const pathname = usePathname();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const navItems = getNavItems(partners);
 
   return (
     <nav className="hidden items-center gap-0.5 xl:gap-1 lg:flex" aria-label="Menu chính">
-      {NAV_ITEMS.map((item) => {
+      {navItems.map((item) => {
         const isActive = item.href === "/" ? pathname === "/" : !item.external && pathname.startsWith(item.href);
         const isCart = item.href === "/gio-hang";
         const hasChildren = Boolean(item.children && item.children.length > 0);

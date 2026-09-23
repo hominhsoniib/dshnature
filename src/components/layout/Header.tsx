@@ -32,12 +32,14 @@ export function Header({
 
           <Navigation
             cartCount={totalItems}
+            partners={siteSettings?.partners}
             onOpenSearch={() => setIsSearchOpen(true)}
           />
 
           <div className="flex items-center gap-1 lg:hidden">
             <MobileMenu
               cartCount={totalItems}
+              partners={siteSettings?.partners}
               onOpenSearch={() => setIsSearchOpen(true)}
             />
           </div>

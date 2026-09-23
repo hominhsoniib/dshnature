@@ -34,13 +34,38 @@ function getPgPool() {
  * request, chỉ dedupe trong 1 lần render.
  */
 async function getSiteSettingsUncached(): Promise<SiteSettingsType | null> {
-  // 1. Direct pg SQL Query (Zero extra engines, 100% reliable on Vercel Serverless with SSL)
+  // 1. Primary: Payload Local API with populated media depth & array fields
+  try {
+    const payload = await getPayloadClient();
+    const settings = await payload.findGlobal({
+      slug: "site-settings",
+      depth: 1,
+      overrideAccess: true,
+    });
+    if (settings) {
+      return settings as unknown as SiteSettingsType;
+    }
+  } catch (err) {
+    console.error("[getSiteSettings] Payload Local API error, trying direct pg SQL:", err);
+  }
+
+  // 2. Direct pg SQL Query (Fallback)
   try {
     const p = getPgPool();
     if (p) {
       const res = await p.query(`SELECT * FROM site_settings LIMIT 1`);
       if (res.rows && res.rows.length > 0) {
         const row = res.rows[0];
+        let partners: { name: string; url: string }[] | undefined;
+        try {
+          const partnersRes = await p.query(`SELECT name, url FROM site_settings_partners ORDER BY _order ASC`);
+          if (partnersRes.rows && partnersRes.rows.length > 0) {
+            partners = partnersRes.rows.map((r) => ({ name: r.name, url: r.url }));
+          }
+        } catch {
+          // Table site_settings_partners might not exist yet before migration
+        }
+
         return {
           companyName: row.company_name || "CÔNG TY CỔ PHẦN DSH NATURE",
           tagline: row.tagline || "ĐỒNG HÀNH CÙNG SỨC KHỎE GIA ĐÌNH",
@@ -60,26 +85,12 @@ async function getSiteSettingsUncached(): Promise<SiteSettingsType | null> {
             zaloUrl: row.floating_contact_zalo_url,
             messengerUrl: row.floating_contact_messenger_url,
           },
+          partners,
         } as unknown as SiteSettingsType;
       }
     }
   } catch (dbErr) {
-    console.error("[getSiteSettings] pg SQL error, trying Payload Local API:", dbErr);
-  }
-
-  // 1. Fallback / Primary: Payload Local API with populated media depth
-  try {
-    const payload = await getPayloadClient();
-    const settings = await payload.findGlobal({
-      slug: "site-settings",
-      depth: 1,
-      overrideAccess: true,
-    });
-    if (settings) {
-      return settings as unknown as SiteSettingsType;
-    }
-  } catch (err) {
-    console.error("[getSiteSettings] Payload Local API error:", err);
+    console.error("[getSiteSettings] pg SQL error:", dbErr);
   }
 
   // 3. Ultimate fallback to real company defaults
