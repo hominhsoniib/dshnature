@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, ExternalLink, Search, ShoppingCart, User } from "lucide-react";
+import { Building2, ChevronDown, ExternalLink, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -16,7 +16,7 @@ export function Navigation({
   onOpenSearch,
 }: {
   cartCount?: number;
-  partners?: { name: string; url: string }[] | null;
+  partners?: { name: string; url: string; logo?: { url?: string | null } | string | null }[] | null;
   onOpenSearch?: () => void;
 }) {
   const pathname = usePathname();
@@ -49,7 +49,7 @@ export function Navigation({
               </a>
 
               <div
-                className={`absolute left-0 top-full z-50 mt-1 min-w-[230px] rounded-xl border border-border bg-white p-2 shadow-soft-hover transition-all duration-150 ${
+                className={`absolute left-0 top-full z-50 mt-1 min-w-[250px] rounded-xl border border-border bg-white p-2 shadow-soft-hover transition-all duration-150 ${
                   openDropdown === item.label ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-1"
                 }`}
               >
@@ -59,10 +59,21 @@ export function Navigation({
                     href={child.href}
                     target={child.external ? "_blank" : undefined}
                     rel={child.external ? "noopener noreferrer" : undefined}
-                    className="flex items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-xs font-semibold text-foreground hover:bg-primary-light hover:text-primary transition-colors"
+                    className="flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-xs font-semibold text-foreground hover:bg-primary-light hover:text-primary transition-colors group/item"
                   >
-                    <span>{child.label}</span>
-                    {child.external ? <ExternalLink className="size-3.5 text-muted-foreground" aria-hidden /> : null}
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      {child.logo ? (
+                        <img
+                          src={child.logo}
+                          alt={child.label}
+                          className="size-5 rounded-md object-contain border border-border/50 bg-white p-0.5 shrink-0"
+                        />
+                      ) : (
+                        <Building2 className="size-4 shrink-0 text-primary/80 group-hover/item:text-primary transition-colors" />
+                      )}
+                      <span className="truncate">{child.label}</span>
+                    </div>
+                    {child.external ? <ExternalLink className="size-3.5 shrink-0 text-muted-foreground" aria-hidden /> : null}
                   </a>
                 ))}
               </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, ExternalLink, Menu, Search, ShoppingCart, User, X } from "lucide-react";
+import { Building2, ChevronDown, ExternalLink, Menu, Search, ShoppingCart, User, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -13,7 +13,7 @@ export function MobileMenu({
   onOpenSearch,
 }: {
   cartCount?: number;
-  partners?: { name: string; url: string }[] | null;
+  partners?: { name: string; url: string; logo?: { url?: string | null } | string | null }[] | null;
   onOpenSearch?: () => void;
 }) {
   const [open, setOpen] = useState(false);
@@ -83,10 +83,21 @@ export function MobileMenu({
                             target={child.external ? "_blank" : undefined}
                             rel={child.external ? "noopener noreferrer" : undefined}
                             onClick={() => setOpen(false)}
-                            className="flex items-center justify-between rounded-md px-3 py-2 text-xs font-semibold text-foreground hover:bg-primary-light hover:text-primary transition-colors"
+                            className="flex items-center justify-between gap-2 rounded-md px-3 py-2 text-xs font-semibold text-foreground hover:bg-primary-light hover:text-primary transition-colors"
                           >
-                            <span>{child.label}</span>
-                            {child.external ? <ExternalLink className="size-3 text-muted-foreground" /> : null}
+                            <div className="flex items-center gap-2 min-w-0">
+                              {child.logo ? (
+                                <img
+                                  src={child.logo}
+                                  alt={child.label}
+                                  className="size-4 rounded object-contain border border-border/50 bg-white p-0.5 shrink-0"
+                                />
+                              ) : (
+                                <Building2 className="size-3.5 shrink-0 text-primary" />
+                              )}
+                              <span className="truncate">{child.label}</span>
+                            </div>
+                            {child.external ? <ExternalLink className="size-3 shrink-0 text-muted-foreground" /> : null}
                           </a>
                         ))}
                       </div>

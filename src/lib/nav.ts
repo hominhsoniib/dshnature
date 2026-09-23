@@ -9,22 +9,30 @@ export type NavItem = {
     label: string;
     href: string;
     external?: boolean;
+    logo?: string | null;
   }[];
 };
 
-export function getNavItems(partners?: { name: string; url: string }[] | null): NavItem[] {
+export function getNavItems(
+  partners?: { name: string; url: string; logo?: { url?: string | null } | string | null }[] | null
+): NavItem[] {
   const partnerChildren =
     partners && partners.length > 0
-      ? partners.map((p) => ({
-          label: p.name,
-          href: p.url,
-          external: true,
-        }))
+      ? partners.map((p) => {
+          const logoUrl = typeof p.logo === 'object' ? p.logo?.url : typeof p.logo === 'string' ? p.logo : null;
+          return {
+            label: p.name,
+            href: p.url,
+            external: true,
+            logo: logoUrl,
+          };
+        })
       : [
           {
             label: 'CTY CP BÀ ĐEN FARM',
             href: 'https://ando.badenfarm.com.vn/',
             external: true,
+            logo: null,
           },
         ];
 
